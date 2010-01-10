@@ -90,7 +90,10 @@ define function names or one of the available helper sets below:
 
 =head2 inside ($source, $target)
 
-=head2 inside ($source, [ $target1, $target2, $target3, ... ])
+=head2 inside ($source, [$target1, $target2, $target3, ...])
+
+=head2 inside ($source, { key1 => $target1, key2 => $target2, ...})
+
 
   if ( inside($obj1, $obj2) ) {
       # do something
@@ -101,11 +104,18 @@ define function names or one of the available helper sets below:
 Returns the index (starting from 1, so you always get a 'true' value) of first 
 target item completely inside $source. Otherwise returns undef.
 
-  @visible = inside($area, \@enemies);
+  my @visible = inside($area, \@enemies);
 
 If your code context wants it to return a list, C<< inside >> will return a 
 list of all indices (again, 1-based) completely inside $source. If no 
 elements are found, an empty list is returned. 
+
+  my @keys = inside($foo, \%bar);
+
+Similarly, you can also check which (if any) elements of a hash are inside 
+your element, which is useful if you group your objects like that instead of 
+in a list.
+
 
 
 =head1 USING IT IN YOUR OBJECTS
