@@ -92,9 +92,21 @@ define function names or one of the available helper sets below:
 
 =head2 inside ($source, [ $target1, $target2, $target3, ... ])
 
-Returns the index of target item (starting from 1, so you always get a 'true' value) when the $target is completely inside the $source. Otherwise returns undef.
+  if ( inside($obj1, $obj2) ) {
+      # do something
+  }
+  
+  die if inside($hero, \@bullets);
 
-If your code context wants it to return a list, C<< inside >> will return 
+Returns the index (starting from 1, so you always get a 'true' value) of first 
+target item completely inside $source. Otherwise returns undef.
+
+  @visible = inside($area, \@enemies);
+
+If your code context wants it to return a list, C<< inside >> will return a 
+list of all indices (again, 1-based) completely inside $source. If no 
+elements are found, an empty list is returned. 
+
 
 =head1 USING IT IN YOUR OBJECTS
 
