@@ -11,7 +11,7 @@ package Rect;
 
 package main;
 
-use Test::More tests => 8;
+use Test::More tests => 12;
 
 use Collision::Util ':all';
 
@@ -34,4 +34,14 @@ is_deeply(\@ret, [1], 'receiving all indexes 1');
 is_deeply(\@ret, [2], 'receiving all indices 2');
 
 @ret = check_contains($rect1, [$rect2, $rect1, $rect3, $rect2]);
-is_deeply(\@ret, [1, 2, 4], 'receiving all indices 3')
+is_deeply(\@ret, [1, 2, 4], 'receiving all indices 3');
+
+
+@ret = check_contains($rect1, { north => $rect2, south => $rect1, 
+                                east  => $rect3, west  => $rect2
+                              }
+                     );
+is(scalar(grep {$_ eq 'north'} @ret), 1, 'rect contains north key' );
+is(scalar(grep {$_ eq 'south'} @ret), 1, 'rect contains south key' );
+is(scalar(grep {$_ eq 'west' } @ret), 1, 'rect contains west key'  );
+is(scalar(grep {$_ eq 'east' } @ret), 0, 'rect contains east key'  );
