@@ -152,13 +152,17 @@ of in a list.
 
 Breno G. de Oliveira, C<< <garu at cpan.org> >>
 
+
+=head1 ACKNOWLEDGEMENTS
+
+Many thanks to Kartik Thakore for his help and insights.
+
+
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-collision-util at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Collision-Util>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
 
 
 =head1 SUPPORT
@@ -190,8 +194,6 @@ L<http://search.cpan.org/dist/Collision-Util/>
 
 =back
 
-
-=head1 ACKNOWLEDGEMENTS
 
 
 =head1 LICENSE AND COPYRIGHT
