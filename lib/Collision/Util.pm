@@ -30,7 +30,7 @@ sub check_contains {
         my $id = 0;
         foreach ( @{$target} ) {
             $id++;
-            if (contains_rect($self, $_) ) {
+            if (check_contains_rect($self, $_) ) {
                 push @ret, $id;
                 last unless wantarray;
             }
@@ -38,21 +38,22 @@ sub check_contains {
     }
     elsif ( $ref eq 'HASH' ) {
         foreach ( keys %{$target} ) {
-            if (contains_rect($self, $target->{$_}) ) {
+            if (check_contains_rect($self, $target->{$_}) ) {
                 push @ret, $_;
                 last unless wantarray;
             }
         }
     }
     else {
-        return contains_rect($self, $target);
+        return check_contains_rect($self, $target);
     }
     return wantarray ? @ret : $ret[0];
 }
 
 sub check_contains_rect {
+    my $contains;
     eval {
-        return ($_[0]->x <= $_[1]->x) 
+        $contains = ($_[0]->x <= $_[1]->x) 
             && ($_[0]->y <= $_[1]->y) 
             && ($_[0]->x + $_[0]->w >= $_[1]->x + $_[1]->w) 
             && ($_[0]->y + $_[0]->h >= $_[1]->y + $_[1]->h) 
@@ -61,6 +62,7 @@ sub check_contains_rect {
             ;
     };
     Carp::croak "elements should have x, y, w, h accessors" if $@;
+    return $contains;
 }
 
 
