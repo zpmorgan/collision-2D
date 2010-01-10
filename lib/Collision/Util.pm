@@ -3,8 +3,55 @@ package Collision::Util;
 use warnings;
 use strict;
 
+use Carp ();
+
 our $VERSION = '0.01';
 
+
+sub check_contains {
+    my ($self, $target) = (@_);
+    
+    Carp::croak "must receive a target"
+        unless $target;
+    
+    my @ret = ();
+    my $ref = ref $target;
+    if ( $ref eq 'ARRAY' ) {
+        my $id = 0;
+        foreach ( @{$target} ) {
+            $id++;
+            if (contains_rect($self, $_) ) {
+                push @ret, $id;
+                last unless wantarray;
+            }
+        }
+    }
+    elsif ( $ref eq 'HASH' ) {
+        foreach ( keys %{$target} ) {
+            if (contains_rect($self, $target->{$_}) ) {
+                push @ret, $_;
+                last unless wantarray;
+            }
+        }
+    }
+    else {
+        return contains_rect($self, $target);
+    }
+    return wantarray ? @ret : $ret[0];
+}
+
+sub check_contains_rect {
+    eval {
+        return ($_[0]->x <= $_[1]->x) 
+            && ($_[0]->y <= $_[1]->y) 
+            && ($_[0]->x + $_[0]->w >= $_[1]->x + $_[1]->w) 
+            && ($_[0]->y + $_[0]->h >= $_[1]->y + $_[1]->h) 
+            && ($_[0]->x + $_[0]->w > $_[1]->x) 
+            && ($_[0]->y + $_[0]->h > $_[1]->y)
+            ;
+    };
+    Carp::croak "elements should have x, y, w, h accessors" if $@;
+}
 
 
 42;
