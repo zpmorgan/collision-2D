@@ -3,6 +3,16 @@ package Collision::Util;
 use warnings;
 use strict;
 
+BEGIN {
+    require Exporter;
+    our @ISA = qw(Exporter);
+    our @EXPORT_OK = qw( check_contains check_contains_rect );
+    our %EXPORT_TAGS = (
+        all => [qw( check_contains check_contains_rect )],
+        std => [qw( check_contains )],
+    );
+}
+
 use Carp ();
 
 our $VERSION = '0.01';
