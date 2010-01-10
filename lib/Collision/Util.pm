@@ -35,7 +35,7 @@ let's go for a procedural approach:
   check_collision($rect1, $rect2);  # true
   check_collision($rect3, $rect1);  # false
   
-  # you can also check if them all in a single run:
+  # you can also check them all in a single run:
   check_collision($rect1, [$rect2, $rect3] );
   
 As you might have already realized, you can just as easily bundle collision 
@@ -48,7 +48,7 @@ detection into your objects:
   };
   
   # if your class has the (x, y, w, h) accessors,
-  # imported methods will work just like methods!
+  # imported functions will behave just like methods!
   use Collision::Util ':std';
   
 Then, further in your code:
