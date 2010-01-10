@@ -15,14 +15,54 @@ Collision::Util - A selection of general collision detection utilities
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+Say you have a class with C<< ->x() >>, C<< ->y() >>, C<< ->w() >>, and 
+C<< ->h() >> accessors, like L<< SDL::Rect >> or the one below:
 
-Perhaps a little code snippet.
+  package Block;
+  use Class::XSAccessor {
+      constructor => 'new',
+      accessors   => [ 'x', 'y', 'w', 'h' ],
+  };
+  
+let's go for a procedural approach:
+  
+  use Collision::Util ':std';
+  
+  my $rect1 = Block->new( x =>  1, y =>  1, w => 10, h => 10 );
+  my $rect2 = Block->new( x =>  5, y =>  9, w =>  6, h =>  4 );
+  my $rect3 = Block->new( x => 16, y => 12, w =>  3, h =>  3 );
+  
+  check_collision($rect1, $rect2);  # true
+  check_collision($rect3, $rect1);  # false
+  
+  # you can also check if them all in a single run:
+  check_collision($rect1, [$rect2, $rect3] );
+  
+As you might have already realized, you can just as easily bundle collision 
+detection into your objects:
 
-    use Collision::Util ':std';
+  package CollisionBlock;
+  use Class::XSAccessor {
+      constructor => 'new',
+      accessors   => [ 'x', 'y', 'w', 'h' ],
+  };
+  
+  # if your class has the (x, y, w, h) accessors,
+  # imported methods will work just like methods!
+  use Collision::Util ':std';
+  
+Then, further in your code:
 
-    my $foo = Collision::Util->new();
-    ...
+  my $rect1 = CollisionBlock->new( x =>  1, y =>  1, w => 10, h => 10 );
+  my $rect2 = CollisionBlock->new( x =>  5, y =>  9, w =>  6, h =>  4 );
+  my $rect3 = CollisionBlock->new( x => 16, y => 12, w =>  3, h =>  3 );
+  
+  $rect1->check_collision( $rect2 );  # true
+  $rect3->check_collision( $rect1 );  # false
+  
+  # you can also check if them all in a single run:
+  $rect1->check_collision( [$rect2, $rect3] );
+
 
 =head1 DESCRIPTION
 
@@ -33,7 +73,7 @@ it for any application that requires collision detection.
 =head1 EXPORTABLE SETS
 
 Collision::Util doesn't export anything by default. You have to explicitly 
-define function names or one of the available helper sets.
+define function names or one of the available helper sets below:
 
 =head2 :std
 
@@ -53,6 +93,8 @@ define function names or one of the available helper sets.
 =head2 inside ($source, [ $target1, $target2, $target3, ... ])
 
 Returns the index of target item (starting from 1, so you always get a 'true' value) when the $target is completely inside the $source. Otherwise returns undef.
+
+If your code context wants it to return a list, C<< inside >> will return 
 
 =head1 USING IT IN YOUR OBJECTS
 
