@@ -88,29 +88,29 @@ define function names or one of the available helper sets below:
 
 =head1 MAIN UTILITIES
 
-=head2 check_inside ($source, $target)
+=head2 check_contains ($source, $target)
 
-=head2 check_inside ($source, [$target1, $target2, $target3, ...])
+=head2 check_contains ($source, [$target1, $target2, $target3, ...])
 
-=head2 check_inside ($source, { key1 => $target1, key2 => $target2, ...})
+=head2 check_contains ($source, { key1 => $target1, key2 => $target2, ...})
 
 
-  if ( check_inside($ball, $goal) ) {
+  if ( check_contains($ball, $goal) ) {
       # SCORE !!
   }
   
-  die if check_inside($hero, \@bullets);
+  die if check_contains($hero, \@bullets);
 
 Returns the index (starting from 1, so you always get a 'true' value) of the 
 first target item completely inside $source. Otherwise returns undef.
 
-  my @visible = check_inside($area, \@enemies);
+  my @visible = check_contains($area, \@enemies);
 
 If your code context wants it to return a list, C<< inside >> will return a 
 list of all indices (again, 1-based) completely inside $source. If no 
 elements are found, an empty list is returned. 
 
-  my @names = check_inside($track, \%horses);
+  my @names = check_contains($track, \%horses);
 
 Similarly, you can also check which (if any) elements of a hash are inside 
 your element, which is useful if you group your objects like that instead of 
