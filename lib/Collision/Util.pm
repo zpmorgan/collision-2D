@@ -51,6 +51,9 @@ sub check_contains {
 }
 
 sub check_contains_rect {
+    Carp::croak "must receive a target"
+        unless $_[1];
+
     my $contains;
     eval {
         $contains = ($_[0]->x <= $_[1]->x) 
@@ -63,6 +66,59 @@ sub check_contains_rect {
     };
     Carp::croak "elements should have x, y, w, h accessors" if $@;
     return $contains;
+}
+
+sub check_collision {
+    my ($self, $target) = (@_);
+    
+    Carp::croak "must receive a target"
+        unless $target;
+    
+    my @ret = ();
+    my $ref = ref $target;
+    if ( $ref eq 'ARRAY' ) {
+        my $id = 0;
+        foreach ( @{$target} ) {
+            $id++;
+            if (check_collision_rect($self, $_) ) {
+                push @ret, $id;
+                last unless wantarray;
+            }
+        }
+    }
+    elsif ( $ref eq 'HASH' ) {
+        foreach ( keys %{$target} ) {
+            if (check_collision_rect($self, $target->{$_}) ) {
+                push @ret, $_;
+                last unless wantarray;
+            }
+        }
+    }
+    else {
+        return check_collision_rect($self, $target);
+    }
+    return wantarray ? @ret : $ret[0];
+}
+
+sub check_collision_rect {
+    Carp::croak "must receive a target"
+        unless $_[1];
+
+    my $collide;
+    eval {
+        $collide = (
+               ($_[0]->x >= $_[1]->x && $_[0]->x < $_[1]->x + $_[1]->w)  
+            || ($_[1]->x >= $_[0]->x && $_[1]->x < $_[0]->x + $_[0]->w)
+           ) 
+           &&
+           (
+               ($_[0]->y >= $_[1]->y && $_[0]->y < $_[1]->y + $_[1]->h)
+            || ($_[1]->y >= $_[0]->y && $_[1]->y < $_[0]->y + $_[0]->h)
+           )
+           ;
+    };
+    Carp::croak "elements should have x, y, w, h accessors" if $@;
+    return $collide;
 }
 
 
@@ -136,14 +192,23 @@ define function names or one of the available helper sets below:
 
 =head2 :std
 
+TODO
+
 =head2 :rect
+
+TODO
 
 =head2 :circ
 
+TODO
+
 =head2 :dot
+
+TODO
 
 =head2 :all
 
+TODO
 
 =head1 MAIN UTILITIES
 
@@ -205,6 +270,27 @@ of in a list.
 
 =head1 USING IT IN YOUR OBJECTS
 
+TODO (but SYNOPSIS should give you a hint)
+
+=head1 DIAGNOSTICS
+
+=over 4
+
+=item * I<< "must receive a target" >>
+
+You tried calling the function without a target. Remember, syntax is
+always C<< foo($source, $target) >>, or, if you're not using it 
+directly and the collision is a method inside object C<$source>, then 
+it's L<< $source->foo($target) >>. Here of course you should replace 
+I<foo> with the name of the C<< Collision::Util >> function you want.
+
+=item * I<< "elements should have x, y, w, h accessors" >>
+
+Both C<$source> and C<$target> must be objects with accessors for C<x> 
+(I<< left coordinate >> ), C<y> (I<< top coordinate >> ), C<w> 
+(I<< object's width >> ), and C<h> (I<< object's height >> ).
+
+=back
 
 
 =head1 AUTHOR
