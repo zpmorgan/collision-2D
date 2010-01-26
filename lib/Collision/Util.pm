@@ -6,10 +6,13 @@ use strict;
 BEGIN {
     require Exporter;
     our @ISA = qw(Exporter);
-    our @EXPORT_OK = qw( check_contains check_contains_rect );
+    our @EXPORT_OK = qw( 
+            check_contains check_contains_rect 
+            check_collision check_collision_rect
+    );
     our %EXPORT_TAGS = (
-        all => [qw( check_contains check_contains_rect )],
-        std => [qw( check_contains )],
+        all => \@EXPORT_OK,
+        std => [qw( check_contains check_collision )],
     );
 }
 
@@ -192,11 +195,11 @@ define function names or one of the available helper sets below:
 
 =head2 :std
 
-TODO
+exports C<< check_collision() >> and C<< check_contains() >>.
 
 =head2 :rect
 
-TODO
+exports C<< check_collision_rect() >> and C<< check_contains_rect() >>.
 
 =head2 :circ
 
@@ -208,7 +211,7 @@ TODO
 
 =head2 :all
 
-TODO
+exports all functions.
 
 =head1 MAIN UTILITIES
 
