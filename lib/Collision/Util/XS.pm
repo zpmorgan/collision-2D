@@ -1,4 +1,5 @@
 # TODO
+our $VERSION = '0.01';
 42;
 __END__
 
