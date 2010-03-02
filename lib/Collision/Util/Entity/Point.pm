@@ -19,8 +19,6 @@ sub collide_rect{
    #if we start inside rect, return the null collision, so to speak.
    if ($rect->contains_point($self)){
       return $self->null_collision($rect)
-      #unless ($params{time}){
-      #}
    }
    else{
       #start outside box, so return if no relative movement 
@@ -33,7 +31,7 @@ sub collide_rect{
    my $y2 = $y1 + ($self->relative_yv * $params{interval});
    
    #now see if point starts and ends on one of 4 sides of this rect.
-   #probably worth it because most things don't collide with each other every frame 
+   #probably worth it because most things don't collide with each other every frame
    if ($x1 > $rect->w and $x2 > $rect->w ){
       return
    }

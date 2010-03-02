@@ -48,13 +48,19 @@ use Test::More tests => 23;
    my $tiny_rect = hash2rect {x=>15000-.00005, y=>30000-.00005, h=>.0001, w=>.0001, xv=>-50, yv=>-100};
    my $accurate_bullet = hash2point { x=>-40000, y=>80100, xv=>500, yv=> -601};
    my $strange_collision = dynamic_collision ($accurate_bullet, $tiny_rect, interval=>400);
-   ok($strange_collision);
+   ok($strange_collision, 'small object at long distance');
    #is ($strange_collision->axis, 'y');
    ok (99.99 < $strange_collision->time);
    ok ($strange_collision->time < 100.01);
 }
 
+{
+   my $pie = hash2circle { x=>0, y=>0, radius=>1 };
+   my $raisin = hash2point { x=>-2, y=>0, xv=>2 };
+   my $raisin_collision = dynamic_collision($raisin,$pie);
+   is ($raisin_collision->time, .5, 'raisin hits left side of pie at t=1')
 
+}
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
 #let's say andy doesn't intersect any blocks in this environment.

@@ -6,10 +6,12 @@ use overload '""'  => sub{'entity'};
 has 'x' => (
    isa => 'Num',
    is => 'ro',
+   required => 1,
 );
 has 'y' => (
    isa => 'Num',
    is => 'ro',
+   required => 1,
 );
 
 has 'xv' => (
@@ -49,6 +51,7 @@ sub normalize{
    $self->relative_yv ($self->yv - $other->yv);
 }
 
+#an actual collision at t=0; 
 sub null_collision{
    my $self = shift;
    my $other = shift;

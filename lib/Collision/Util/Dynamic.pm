@@ -14,6 +14,7 @@ BEGIN {
       dynamic_collision
       hash2point hash2rect
       obj2point  obj2rect
+      hash2circle obj2circle
    );
    our %EXPORT_TAGS = (
       all => \@EXPORT_OK,
@@ -87,5 +88,27 @@ sub obj2rect{
    )
 }
 
+sub hash2circle{
+   my $hash = shift;
+   return Collision::Util::Entity::Circle->new (
+      x=>$hash->{x},
+      y=>$hash->{y},
+      xv=>$hash->{xv} || 0,
+      yv=>$hash->{yv} || 0,
+      radius => $hash->{radius},
+   )
+}
+
+sub obj2circle{
+   my $obj = shift;
+   return Collision::Util::Entity::Circle->new (
+      x=>$obj->x,
+      y=>$obj->y,
+      xv=>$obj->xv || 0,
+      yv=>$obj->yv || 0,
+      radius => $obj->radius,
+   )
+   
+}
 
 q|positively|

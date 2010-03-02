@@ -7,10 +7,12 @@ use overload '""'  => sub{'rect'};
 has 'w' => (
    isa => 'Num',
    is => 'ro',
+   required => 1,
 );
 has 'h' => (
    isa => 'Num',
    is => 'ro',
+   required => 1,
 );
 
 sub collide_rect{
