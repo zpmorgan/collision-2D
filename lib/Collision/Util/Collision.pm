@@ -1,6 +1,9 @@
 package Collision::Util::Collision;
 use Mouse;
 
+#this might be of use for calculating bounce vectors based on axes of collision. 
+# http://www.members.shaw.ca/mathematica/ahabTutorials/2dCollision.html
+
 has 'axis' => (
    is => 'ro',
    #isa => 

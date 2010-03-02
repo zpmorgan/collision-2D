@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 26;
+use Test::More tests => 44;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -69,6 +69,31 @@ use Test::More tests => 26;
    my $raisin2 = hash2point { x=>-1, y=>sqrt(3)/2, xv=>1 };
    my $raisin_collision2 = dynamic_collision($raisin2,$pie);
    is ($raisin_collision2->time, .5, 'raisin hits y=sqrt(3)/2, upper left quadrant of unit pie moving horizontally at t=1/2');
+   
+   #test points stopping short of hitting unit pie directly, coming from around 5*pi/4 rad
+   ok (dynamic_collision ($pie, hash2point { x=>-2, y=>-2, xv=>2.01-sqrt(2)/2, yv=>2.01-sqrt(2)/2 }), 'stop right after collision');
+   ok (!dynamic_collision ($pie, hash2point { x=>-2, y=>-2, xv=>1.99-sqrt(2)/2, yv=>1.99-sqrt(2)/2 }), 'stop right before collision');
+   
+   #test points moving up & to the right
+   ok (dynamic_collision ($pie, hash2point { x=>-sqrt(1.99), y=>0, xv=>10, yv=>10 }), 'up&right');
+   ok (!dynamic_collision ($pie, hash2point { x=>-sqrt(2.01), y=>0, xv=>10, yv=>10 }));
+   ok (dynamic_collision ($pie, hash2point { y=>-sqrt(1.99), x=>0, xv=>10, yv=>10 }));
+   ok (!dynamic_collision ($pie, hash2point { y=>-sqrt(2.01), x=>0, xv=>10, yv=>10 }));
+   #test points moving up & to the left
+   ok (dynamic_collision ($pie, hash2point { x=>sqrt(1.99), y=>0, xv=>-10, yv=>10 }), 'up&left');
+   ok (!dynamic_collision ($pie, hash2point { x=>sqrt(2.01), y=>0, xv=>-10, yv=>10 }));
+   ok (dynamic_collision ($pie, hash2point { y=>-sqrt(1.99), x=>0, xv=>-10, yv=>10 }));
+   ok (!dynamic_collision ($pie, hash2point { y=>-sqrt(2.01), x=>0, xv=>-10, yv=>10 }));
+   #test points moving down & to the right
+   ok (dynamic_collision ($pie, hash2point { x=>-sqrt(1.99), y=>0, xv=>10, yv=>-10 }), 'down&right');
+   ok (!dynamic_collision ($pie, hash2point { x=>-sqrt(2.01), y=>0, xv=>10, yv=>-10 }));
+   ok (dynamic_collision ($pie, hash2point { y=>sqrt(1.99), x=>0, xv=>10, yv=>-10 }));
+   ok (!dynamic_collision ($pie, hash2point { y=>sqrt(2.01), x=>0, xv=>10, yv=>-10 }));
+   #test points moving down & to the left
+   ok (dynamic_collision ($pie, hash2point { x=>sqrt(1.99), y=>0, xv=>-10, yv=>-10 }), 'down&left');
+   ok (!dynamic_collision ($pie, hash2point { x=>sqrt(2.01), y=>0, xv=>-10, yv=>-10 }));
+   ok (dynamic_collision ($pie, hash2point { y=>sqrt(1.99), x=>0, xv=>-10, yv=>-10 }));
+   ok (!dynamic_collision ($pie, hash2point { y=>sqrt(2.01), x=>0, xv=>-10, yv=>-10 }));
 }
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
