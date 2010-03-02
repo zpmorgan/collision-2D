@@ -44,6 +44,7 @@ sub invert_collide_circle_and_collision{
    );
 }
 
+
 sub intersects_circle{
    my ($self, $other) = @_;
    return 1 if  ($self->radius + $other->radius)

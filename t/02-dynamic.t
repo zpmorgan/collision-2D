@@ -5,8 +5,9 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 23;
+use Test::More tests => 26;
 
+#First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
    my $andy = hash2rect {x=>-1, y=>-1, h=>2, w=>2};
    my $bullet1 = hash2point { x=>-51, y=>0, xv=>100, yv=>16 }; #wild miss
@@ -54,12 +55,20 @@ use Test::More tests => 23;
    ok ($strange_collision->time < 100.01);
 }
 
+#now circle-point collisions. The method is $circle->collide_point($point,...)
 {
-   my $pie = hash2circle { x=>0, y=>0, radius=>1 };
-   my $raisin = hash2point { x=>-2, y=>0, xv=>2 };
-   my $raisin_collision = dynamic_collision($raisin,$pie);
-   is ($raisin_collision->time, .5, 'raisin hits left side of pie at t=1')
-
+   my $pie = hash2circle { x=>0, y=>0, radius=>1 };#the unit pie
+   my $raisinH = hash2point { x=>-2, y=>0, xv=>1 };
+   my $raisin_collisionH = dynamic_collision($raisinH,$pie);
+   is ($raisin_collisionH->time, 1, 'raisinH hits left side of pie at t=1');
+   
+   my $raisinV = hash2point { x=>0, y=>33, yv=>-2 };
+   my $raisin_collisionV = dynamic_collision($raisinV,$pie);
+   is ($raisin_collisionV->time, 2, 'raisinV hits top side of unit pie at t=2');
+   
+   my $raisin2 = hash2point { x=>-1, y=>sqrt(3)/2, xv=>1 };
+   my $raisin_collision2 = dynamic_collision($raisin2,$pie);
+   is ($raisin_collision2->time, .5, 'raisin hits y=sqrt(3)/2, upper left quadrant of unit pie moving horizontally at t=1/2');
 }
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
