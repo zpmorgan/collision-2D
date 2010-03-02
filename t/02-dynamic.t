@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 44;
+use Test::More tests => 52;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -95,6 +95,23 @@ use Test::More tests => 44;
    ok (dynamic_collision ($pie, hash2point { y=>sqrt(1.99), x=>0, xv=>-10, yv=>-10 }));
    ok (!dynamic_collision ($pie, hash2point { y=>sqrt(2.01), x=>0, xv=>-10, yv=>-10 }));
 }
+
+#Now do circle collisions!
+{
+   my $unitpie = hash2circle {x=>0, y=>0, };
+   my $doomdisk = hash2circle {x=>-12, y=>0, xv=>5};
+   my $collision = dynamic_collision($unitpie, $doomdisk, interval=>3);
+   ok ($collision, 'unitpie hits doomdisk'); 
+   my $rv_collision = dynamic_collision($doomdisk, $unitpie, interval=>3);
+   ok($rv_collision, 'doomdisk hits unitpie');
+   is ($collision->time, 2);
+   is ($rv_collision->time, 2);
+   ok ($collision->axis->[0] < 0);
+   ok ($rv_collision->axis->[0] > 0);
+   ok ($collision->axis->[1] == 0);
+   ok ($rv_collision->axis->[1] == 0);
+}
+
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
 #let's say andy doesn't intersect any blocks in this environment.

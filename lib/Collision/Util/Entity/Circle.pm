@@ -9,6 +9,7 @@ use overload '""'  => sub{'circle'};
 has 'radius' => (
    is => 'ro',
    isa => 'Num',
+   default => 1,
 );
 
 sub invert_collide_circle_and_collision{
@@ -125,16 +126,25 @@ sub collide_point{
 #Say, can't we just use the point algorithm by transferring the radius of one circle to the other?
 sub collide_circle{
    my ($self, $other, %params) = @_;
-   my $pt = Collision::Util::Entity::Point->new(
+   my $double_trouble = Collision::Util::Entity::Circle->new(
       relative_x => $self->relative_x,
       relative_y => $self->relative_y,
-      relative_vx => $self->relative_vx,
-      relative_vy => $self->relative_vy,
-   );
-   my $double_trouble = Collision::Util::Entity::Circle->new(
+      relative_xv => $self->relative_xv,
+      relative_yv => $self->relative_yv,
       radius => $self->radius + $other->radius,
+      y=>0,x=>0, #these shouldn't be used, as we're doing all relative calculations
+   );
+   
+   my $pt = Collision::Util::Entity::Point->new(
+      y=>44,x=>44, #these shouldn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->collide_point($pt, %params);
+   return Collision::Util::Collision->new(
+      ent1 => $self,
+      ent2 => $other,
+      time => $collision->time,
+      axis => $collision->axis,
+   );
 }
 
 

@@ -95,7 +95,7 @@ sub hash2circle{
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
       yv=>$hash->{yv} || 0,
-      radius => $hash->{radius},
+      radius => $hash->{radius} || 1,
    )
 }
 
@@ -106,7 +106,7 @@ sub obj2circle{
       y=>$obj->y,
       xv=>$obj->xv || 0,
       yv=>$obj->yv || 0,
-      radius => $obj->radius,
+      radius => $obj->radius || 1,
    )
    
 }
