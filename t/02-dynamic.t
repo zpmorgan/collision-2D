@@ -51,19 +51,19 @@ use Test::More tests => 26;
    my $strange_collision = dynamic_collision ($accurate_bullet, $tiny_rect, interval=>400);
    ok($strange_collision, 'small object at long distance');
    #is ($strange_collision->axis, 'y');
-   ok (99.99 < $strange_collision->time);
-   ok ($strange_collision->time < 100.01);
+   ok (99.99 < $strange_collision->time, 'time ~ 100');
+   ok ($strange_collision->time < 100.01, 'time ~ 100');
 }
 
 #now circle-point collisions. The method is $circle->collide_point($point,...)
 {
    my $pie = hash2circle { x=>0, y=>0, radius=>1 };#the unit pie
    my $raisinH = hash2point { x=>-2, y=>0, xv=>1 };
-   my $raisin_collisionH = dynamic_collision($raisinH,$pie);
+   my $raisin_collisionH = dynamic_collision($raisinH,$pie, interval=>3);
    is ($raisin_collisionH->time, 1, 'raisinH hits left side of pie at t=1');
    
-   my $raisinV = hash2point { x=>0, y=>33, yv=>-2 };
-   my $raisin_collisionV = dynamic_collision($raisinV,$pie);
+   my $raisinV = hash2point { x=>0, y=>5, yv=>-2 };
+   my $raisin_collisionV = dynamic_collision($raisinV,$pie, interval=>188);
    is ($raisin_collisionV->time, 2, 'raisinV hits top side of unit pie at t=2');
    
    my $raisin2 = hash2point { x=>-1, y=>sqrt(3)/2, xv=>1 };
