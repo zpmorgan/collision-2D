@@ -1,7 +1,10 @@
 package Collision::Util;
+use 5.010_000;
 
 use warnings;
 use strict;
+
+#use Collision::Util::Dynamic;
 
 BEGIN {
     require Exporter;
