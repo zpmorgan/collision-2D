@@ -9,7 +9,7 @@ has 'radius' => (
    isa => 'Num',
 );
 
-
+# http://www.members.shaw.ca/mathematica/ahabTutorials/2dCollision.html
 sub collide_circle{
    my ($self, $other, %params) = @_;
    

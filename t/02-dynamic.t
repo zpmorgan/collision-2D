@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 20;
+use Test::More tests => 23;
 
 {
    my $andy = hash2rect {x=>-1, y=>-1, h=>2, w=>2};
@@ -41,6 +41,17 @@ use Test::More tests => 20;
    ok (dynamic_collision ($andy, hash2point { x=>0, y=>-2, xv=>1.99, yv=>2 }));
    ok (!dynamic_collision ($andy, hash2point { x=>0, y=>-2, xv=>-2.01, yv=>2 }));
    ok (dynamic_collision ($andy, hash2point { x=>0, y=>-2, xv=>-1.99, yv=>2 }));
+   
+   #How about where both things are moving?
+   #This stuff may look failure-prone, but it actually passes when made orders of magnitude more precise
+   #attempt to hit at y=20000, x=10000, t=100
+   my $tiny_rect = hash2rect {x=>15000-.00005, y=>30000-.00005, h=>.0001, w=>.0001, xv=>-50, yv=>-100};
+   my $accurate_bullet = hash2point { x=>-40000, y=>80100, xv=>500, yv=> -601};
+   my $strange_collision = dynamic_collision ($accurate_bullet, $tiny_rect, interval=>400);
+   ok($strange_collision);
+   #is ($strange_collision->axis, 'y');
+   ok (99.99 < $strange_collision->time);
+   ok ($strange_collision->time < 100.01);
 }
 
 
