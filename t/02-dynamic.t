@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 52;
+use Test::More tests => 55;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -110,6 +110,14 @@ use Test::More tests => 52;
    ok ($rv_collision->axis->[0] > 0);
    ok ($collision->axis->[1] == 0);
    ok ($rv_collision->axis->[1] == 0);
+   warn 'foo';
+   #again, barely hit pie, and then barely stop short. from upper left.
+   my $collisionX = dynamic_collision ($unitpie, hash2circle({ x=>-10, y=>10, xv=>1, yv=>-1}), interval=>10-sqrt(1.99));
+   ok($collisionX, 'stop right after collision');
+   is ($collisionX->time, 10-sqrt(2));
+   ok (!dynamic_collision ($unitpie, hash2circle({ x=>-10, y=>10, xv=>1, yv=>-1}), interval=>10-sqrt(2.01)),
+      'stop right before collision');
+   
 }
 
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
@@ -119,7 +127,4 @@ use Test::More tests => 52;
 
 #but this bullet hits a block in 1st frame or second.
 #my $collision3 = dynamic_collision ($extreme_bullet, $grid_environment, interval=>1);
-
-
-
 

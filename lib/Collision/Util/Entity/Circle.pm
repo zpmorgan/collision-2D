@@ -139,6 +139,7 @@ sub collide_circle{
       y=>44,x=>44, #these shouldn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->collide_point($pt, %params);
+   return unless $collision;
    return Collision::Util::Collision->new(
       ent1 => $self,
       ent2 => $other,
