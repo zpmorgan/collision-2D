@@ -1,6 +1,6 @@
-package Collision::Util::Entity::Point;
+package Collision::2D::Entity::Point;
 use Mouse;
-extends 'Collision::Util::Entity';
+extends 'Collision::2D::Entity';
 
 use overload '""'  => sub{'point'};
 
@@ -47,7 +47,7 @@ sub collide_rect{
       }else {
          return
       }
-      return Collision::Util::Collision->new(
+      return Collision::2D::Collision->new(
          time => $t,
          axis => 'y',
          ent1 => $self,
@@ -114,7 +114,7 @@ sub collide_rect{
       }
    }
    return unless $best_axis;
-   return Collision::Util::Collision->new(
+   return Collision::2D::Collision->new(
       time => $best_time,
       axis => $best_axis,
       ent1 => $self,

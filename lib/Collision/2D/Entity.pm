@@ -1,4 +1,4 @@
-package Collision::Util::Entity;
+package Collision::2D::Entity;
 use Mouse;
 
 use overload '""'  => sub{'entity'};
@@ -55,7 +55,7 @@ sub normalize{
 sub null_collision{
    my $self = shift;
    my $other = shift;
-   return Collision::Util::Collision->new(
+   return Collision::2D::Collision->new(
       time => 0,
       ent1 => $self,
       ent2 => $other,

@@ -1,6 +1,6 @@
-package Collision::Util::Entity::Circle;
+package Collision::2D::Entity::Circle;
 use Mouse;
-extends 'Collision::Util::Entity';
+extends 'Collision::2D::Entity';
 
 use overload '""'  => sub{'circle'};
 
@@ -68,14 +68,14 @@ sub collide_rect{
    for (@pts){ #calc initial distance from center of circle
       $_->{dist} = sqrt($_->{x1}**2 + $_->{y1}**2);
    }
-   my $origin_point = Collision::Util::Entity::Point->new(
+   my $origin_point = Collision::2D::Entity::Point->new(
      # x => 0,y => 0, #actually not used, since circle is normalized with respect to the point
    );
    @pts = sort {$a->{dist} <=> $b->{dist}} @pts;
    #now detect null collision of closest rect corner
    #warn %{$pts[0]};
    if (0 and $pts[0]{dist} < $r){
-      return Collision::Util::Collision->new(
+      return Collision::2D::Collision->new(
        #  axis => $collision->axis,
          time => 0,
          ent1 => $self,
@@ -83,7 +83,7 @@ sub collide_rect{
       );
    }
    for (@pts[0,1,2]){ #do this for 3 initially closest rect corners
-      my $new_relative_circle = Collision::Util::Entity::Circle->new(
+      my $new_relative_circle = Collision::2D::Entity::Circle->new(
         # x => 0,y => 0, # used
          relative_x =>  $_->{x1},
          relative_y =>  $_->{y1},
@@ -94,7 +94,7 @@ sub collide_rect{
       my $collision = $new_relative_circle->collide_point ($origin_point, interval=>$params{interval});
       next unless $collision;
       #$_->{collision} = 
-      push @collisions, Collision::Util::Collision->new(
+      push @collisions, Collision::2D::Collision->new(
          axis => $collision->axis,
          time => $collision->time,
          ent1 => $self,
@@ -125,7 +125,7 @@ sub collide_rect{
       push @circ_points, [-$x1,-$y1+$r];
    }   #   warn @{$circ_points[0]};
    for (@circ_points){
-      my $rpt = Collision::Util::Entity::Point->new(
+      my $rpt = Collision::2D::Entity::Point->new(
          relative_x => $_->[0],
          relative_y => $_->[1],
          relative_xv => $self->relative_xv,
@@ -133,7 +133,7 @@ sub collide_rect{
       );
       my $collision = $rpt->collide_rect($rect, interval=>$params{interval});
       next unless $collision;
-      push @collisions, new Collision::Util::Collision(
+      push @collisions, new Collision::2D::Collision(
          time => $collision->time,
          axis => $collision->axis,
          ent1 => $self,
@@ -218,7 +218,7 @@ sub collide_point{
    my $y_at_t = $self->relative_y + $self->relative_yv*$time;
    my $axis = [-$x_at_t, -$y_at_t]; #vector from self to point
    
-   my $collision = Collision::Util::Collision->new(
+   my $collision = Collision::2D::Collision->new(
       time => $time,
       axis => $axis,
       ent1 => $self,
@@ -230,7 +230,7 @@ sub collide_point{
 #Say, can't we just use the point algorithm by transferring the radius of one circle to the other?
 sub collide_circle{
    my ($self, $other, %params) = @_;
-   my $double_trouble = Collision::Util::Entity::Circle->new(
+   my $double_trouble = Collision::2D::Entity::Circle->new(
       relative_x => $self->relative_x,
       relative_y => $self->relative_y,
       relative_xv => $self->relative_xv,
@@ -239,12 +239,12 @@ sub collide_circle{
       y=>0,x=>0, #these will not be used, as we're doing all relative calculations
    );
    
-   my $pt = Collision::Util::Entity::Point->new(
+   my $pt = Collision::2D::Entity::Point->new(
       y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->collide_point($pt, %params);
    return unless $collision;
-   return Collision::Util::Collision->new(
+   return Collision::2D::Collision->new(
       ent1 => $self,
       ent2 => $other,
       time => $collision->time,

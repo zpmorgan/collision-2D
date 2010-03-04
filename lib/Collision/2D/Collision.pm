@@ -1,4 +1,4 @@
-package Collision::Util::Collision;
+package Collision::2D::Collision;
 use Mouse;
 
 #this might be of use for calculating bounce vectors based on axes of collision. 
@@ -15,11 +15,11 @@ has 'time' => (
    default=> 0,
 );
 has 'ent1' => (
-   isa => 'Collision::Util::Entity',
+   isa => 'Collision::2D::Entity',
    is => 'ro',
 );
 has 'ent2' => (
-   isa => 'Collision::Util::Entity',
+   isa => 'Collision::2D::Entity',
    is => 'ro',
 );
 

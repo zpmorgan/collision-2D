@@ -1,11 +1,12 @@
-package Collision::Util::Dynamic;
+package Collision::2D;
 use warnings;
 use strict;
-use Collision::Util::Collision;
-use Collision::Util::Entity;
-use Collision::Util::Entity::Point;
-use Collision::Util::Entity::Rect;
-use Collision::Util::Entity::Circle;
+
+use Collision::2D::Collision;
+use Collision::2D::Entity;
+use Collision::2D::Entity::Point;
+use Collision::2D::Entity::Rect;
+use Collision::2D::Entity::Circle;
 
 BEGIN {
    require Exporter;
@@ -53,7 +54,7 @@ sub normalize_vec{
 
 sub hash2point{
    my $hash = shift;
-   return Collision::Util::Entity::Point->new (
+   return Collision::2D::Entity::Point->new (
       x=>$hash->{x},
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
@@ -62,7 +63,7 @@ sub hash2point{
 }
 sub hash2rect{
    my $hash = shift;
-   return Collision::Util::Entity::Rect->new (
+   return Collision::2D::Entity::Rect->new (
       x=>$hash->{x},
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
@@ -73,18 +74,16 @@ sub hash2rect{
 }
 sub obj2point{
    my $obj = shift;
-   return Collision::Util::Entity::Point->new (
+   return Collision::2D::Entity::Point->new (
       x=>$obj->x,
       y=>$obj->y,
       xv=>$obj->xv || 0,
       yv=>$obj->yv || 0,
-      h=>$obj->h,
-      w=>$obj->w,
    )
 }
 sub obj2rect{
    my $obj = shift;
-   return Collision::Util::Entity::Rect->new (
+   return Collision::2D::Entity::Rect->new (
       x=>$obj->x,
       y=>$obj->y,
       xv=>$obj->xv || 0,
@@ -96,7 +95,7 @@ sub obj2rect{
 
 sub hash2circle{
    my $hash = shift;
-   return Collision::Util::Entity::Circle->new (
+   return Collision::2D::Entity::Circle->new (
       x=>$hash->{x},
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
@@ -107,7 +106,7 @@ sub hash2circle{
 
 sub obj2circle{
    my $obj = shift;
-   return Collision::Util::Entity::Circle->new (
+   return Collision::2D::Entity::Circle->new (
       x=>$obj->x,
       y=>$obj->y,
       xv=>$obj->xv || 0,

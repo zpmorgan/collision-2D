@@ -2,8 +2,7 @@
 use strict;
 use warnings;
 
-#use Collision::Util ':all';
-use Collision::Util::Dynamic ':all';
+use Collision::2D ':all';
 
 use Test::More tests => 97;
 
@@ -20,10 +19,10 @@ use Test::More tests => 97;
    my $collision3 = dynamic_collision ($meteorite, $andy, interval=>1);
 
    ok (!defined $collision1);
-   isa_ok ($collision2, 'Collision::Util::Collision');
+   isa_ok ($collision2, 'Collision::2D::Collision');
    is ($collision2->axis, 'x', 'horizontal collision.');
    is ($collision2->time, .5, 'bullet hits andy in half of a time unit');
-   isa_ok ($collision3, 'Collision::Util::Collision');
+   isa_ok ($collision3, 'Collision::2D::Collision');
    is ($collision3->axis, 'y', 'vert collision.');
    is ($collision3->time, 8/20, 'meteorite hits andy at right time');
 

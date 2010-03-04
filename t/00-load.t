@@ -3,8 +3,8 @@
 use Test::More tests => 1;
 
 BEGIN {
-    use_ok( 'Collision::Util' ) || print "Bail out!
+    use_ok( 'Collision::2D' ) || print "Bail out!
 ";
 }
 
-diag( "Testing Collision::Util $Collision::Util::VERSION, Perl $], $^X" );
+diag( "Testing Collision::2D $Collision::2D::VERSION, Perl $], $^X" );

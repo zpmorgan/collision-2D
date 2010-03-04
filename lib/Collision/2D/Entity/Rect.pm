@@ -1,6 +1,6 @@
-package Collision::Util::Entity::Rect;
+package Collision::2D::Entity::Rect;
 use Mouse;
-extends 'Collision::Util::Entity';
+extends 'Collision::2D::Entity';
 
 use overload '""'  => sub{'rect'};
 
@@ -65,7 +65,7 @@ sub collide_rect{
    }
    @own_pts = sort {$a->{dist} <=> $b->{dist}} @own_pts;
    for (@own_pts[0,1,2]){ #do this for 3 initially closest rect corners
-      my $r_pt = Collision::Util::Entity::Point->new(
+      my $r_pt = Collision::2D::Entity::Point->new(
          relative_x =>  $_->{x},
          relative_y =>  $_->{y},
          relative_xv => $self->relative_xv,
@@ -73,7 +73,7 @@ sub collide_rect{
       );
       my $collision = $r_pt->collide_rect ($other, interval=>$params{interval});
       next unless $collision;
-      push @collisions, Collision::Util::Collision->new(
+      push @collisions, Collision::2D::Collision->new(
          axis => $collision->axis,
          time => $collision->time,
          ent1 => $self,
@@ -93,7 +93,7 @@ sub collide_rect{
    }
    @other_pts = sort {$a->{dist} <=> $b->{dist}} @other_pts;
    for (@other_pts[0,1,2]){ #do this for 3 initially closest rect corners
-      my $r_pt = Collision::Util::Entity::Point->new(
+      my $r_pt = Collision::2D::Entity::Point->new(
          relative_x =>  $_->{x},
          relative_y =>  $_->{y},
          relative_xv => -$self->relative_xv,
@@ -101,7 +101,7 @@ sub collide_rect{
       );
       my $collision = $r_pt->collide_rect ($self, interval=>$params{interval});
       next unless $collision;
-      push @collisions, Collision::Util::Collision->new(
+      push @collisions, Collision::2D::Collision->new(
          axis => $collision->axis,
          time => $collision->time,
          ent1 => $other,
