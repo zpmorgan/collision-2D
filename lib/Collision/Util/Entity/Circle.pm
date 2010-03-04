@@ -89,6 +89,7 @@ sub collide_rect{
          relative_y =>  $_->{y1},
          relative_xv => -$self->relative_xv,
          relative_yv => -$self->relative_yv,
+         radius => $self->radius,
       );
       my $collision = $new_relative_circle->collide_point ($origin_point, interval=>$params{interval});
       next unless $collision;

@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 85;
+use Test::More tests => 97;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -200,10 +200,40 @@ use Test::More tests => 85;
    my $not_touching2 = hash2rect  hash2rect {x=> 0, y=> 1.01,   xv=>1, yv=>1};
    ok(!dynamic_collision ($unitpie, $not_touching2, interval=>1.01));
    
+}
+
+#rect-rect collisions anyone?
+{
+   my $square1 = hash2rect {x=>-1, y=>-1, h=>2,w=>2};
+   my $square2 = hash2rect {x=>-4, y=>0, h=>2,w=>2, xv=>1};
+   $square2->normalize($square1);
+   $square1->normalize($square2);
+   #horizontal:
+   my $collision = $square1->collide_rect($square2, interval=>2);
+   ok($collision, 'squares collide h1');
+   is($collision->time, 1, 'squares collide at t=1');
+   is($collision->axis, 'x', 'vcollide axis is x');
+   $collision = $square2->collide_rect($square1, interval=>2);
+   ok($collision, 'squares collide h2');
+   is($collision->time, 1, 'squares collide at t=1');
+   is($collision->axis, 'x', 'vcollide axis is x');
+   
+   #vertical:
+   my $square3 = hash2rect {x=>0, y=>-4, h=>2,w=>2, yv=>2};
+   $square3->normalize($square1);
+   $square1->normalize($square3);
+   $collision = $square1->collide_rect($square3, interval=>2);
+   ok($collision, 'squares collide v1');
+   is($collision->time, .5, 'squares vcollide at t=.5');
+   is($collision->axis, 'y', 'vcollide axis is y');
+   $collision = $square3->collide_rect($square1, interval=>2);
+   ok($collision, 'squares collide v2');
+   is($collision->time, .5, 'squares vcollide at t=.5');
+   is($collision->axis, 'y', 'vcollide axis is y');
+   
    
    
 }
-
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
 #let's say myrtle doesn't intersect any blocks in this environment.

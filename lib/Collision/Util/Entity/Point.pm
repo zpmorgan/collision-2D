@@ -31,7 +31,7 @@ sub collide_rect{
    #if it contains point at t=0, relatively...
    if (  $x1>0 and $x1<$w
      and $y1>0 and $y1<$h){
-      return $self->null_collision;
+      return $self->null_collision($rect);
    }
    else{
       #start outside box, so return if no relative movement 
