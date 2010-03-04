@@ -72,7 +72,17 @@ sub collide_rect{
      # x => 0,y => 0, #actually not used, since circle is normalized with respect to the point
    );
    @pts = sort {$a->{dist} <=> $b->{dist}} @pts;
-   for (@pts[0,1,2]){ #do this for 3 initially closest points
+   #now detect null collision of closest rect corner
+   #warn %{$pts[0]};
+   if (0 and $pts[0]{dist} < $r){
+      return Collision::Util::Collision->new(
+       #  axis => $collision->axis,
+         time => 0,
+         ent1 => $self,
+         ent2 => $rect,
+      );
+   }
+   for (@pts[0,1,2]){ #do this for 3 initially closest rect corners
       my $new_relative_circle = Collision::Util::Entity::Circle->new(
         # x => 0,y => 0, # used
          relative_x =>  $_->{x1},

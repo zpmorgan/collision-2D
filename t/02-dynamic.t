@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 75;
+use Test::More tests => 81;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -164,10 +164,34 @@ use Test::More tests => 75;
    is_deeply (normalize_vec($collision->axis), [-sqrt(2)/2, -sqrt(2)/2],  'collision vector ok');
    
    my $rect2 = hash2rect {x=> -(sqrt(2)/2 + 3), y=> -(sqrt(2)/2 + 3),   xv=>1, yv=>1, w=>2, h=>2};
-   warn $rect2->x;
    $collision = dynamic_collision ($unitpie, $rect2, interval=>1.01);
    ok ($collision, 'rect (2,2) point collides with circle');
    is ($collision->time, 1, 'at right time');
+}
+
+{ #null collisions anyone?
+   my $unitpie = hash2circle { x=>0, y=>0, radius=>1 };#the unit pie
+   
+   #barely touching at start; using this to test null collision of rect corner
+   my $touching = hash2rect {x=> (sqrt(2)/2 - .01), y=> (sqrt(2)/2 - .01),   xv=>-1, yv=>-1, w=>2, h=>2};
+   my $null_c = dynamic_collision ($unitpie, $touching, interval=>4444);
+   ok ($null_c, 'rect(corner)-circle null collision');
+   is ($null_c->time, 0, 'null collision at t=0');
+   #not touching
+   my $not_touching = hash2rect {x=> (sqrt(2)/2 + .01), y=> (sqrt(2)/2 + .01),   xv=>1, yv=>1, w=>2, h=>2};
+   ok(!dynamic_collision ($unitpie, $not_touching, interval=>1.01));
+   
+   #barely touching again; now test null collision of rect side
+   my $touching2 = hash2rect {x=> 0, y=> -1.99,   xv=>1, yv=>1};
+   my $null_c2 = dynamic_collision ($unitpie, $touching2, interval=>4444);
+   ok ($null_c2, 'rect(side)-circle null collision');
+   is ($null_c2->time, 0, 'null collision at t=0');
+   #not touching
+   my $not_touching2 = hash2rect  hash2rect {x=> 0, y=> 1.01,   xv=>1, yv=>1};
+   ok(!dynamic_collision ($unitpie, $not_touching2, interval=>1.01));
+   
+   
+   
 }
 
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');

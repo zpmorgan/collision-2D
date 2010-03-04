@@ -67,8 +67,8 @@ sub hash2rect{
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
       yv=>$hash->{yv} || 0,
-      h=>$hash->{h},
-      w=>$hash->{w},
+      h=>$hash->{h} || 1,
+      w=>$hash->{w} || 1,
    )
 }
 sub obj2point{
@@ -89,8 +89,8 @@ sub obj2rect{
       y=>$obj->y,
       xv=>$obj->xv || 0,
       yv=>$obj->yv || 0,
-      h=>$obj->h,
-      w=>$obj->w,
+      h=>$obj->h || 1,
+      w=>$obj->w || 1,
    )
 }
 

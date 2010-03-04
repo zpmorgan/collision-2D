@@ -8,11 +8,13 @@ has 'w' => (
    isa => 'Num',
    is => 'ro',
    required => 1,
+   default=>1,
 );
 has 'h' => (
    isa => 'Num',
    is => 'ro',
    required => 1,
+   default=>1,
 );
 
 sub intersects_rect{
