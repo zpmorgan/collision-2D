@@ -122,7 +122,7 @@ use Test::More tests => 58;
 
 #now do circle-rect collisions!
 {
-   my $cannonball = hash2circle {x=>-5.25, y=>0, xv=>16, radius=>.5};
+   my $cannonball = hash2circle {x=>-5.5, y=>0, xv=>16, radius=>.5};
    my $unit_toast = hash2rect { x=>-1, y=>-1, w=>2,h=>2 };
    my $collision = dynamic_collision ($cannonball, $unit_toast, interval=>100);
    ok($collision, 'cannontoast collision exists');

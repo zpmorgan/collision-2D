@@ -97,24 +97,24 @@ sub collide_rect{
    my @circ_points; #these are relative coordinates to rect
    if ($x1+$w+$r < 0  and  $x2+$w+$r > 0){
       #add circle's left point
-      push @circ_points, [-$x1-$r,0];
+      push @circ_points, [-$x1-$r,-$y1];
    }
    if ($x1+$r > 0  and  $x2+$r < 0){
       #add circle's right point
-      push @circ_points, [-$x1+$r,0];
+      push @circ_points, [-$x1+$r,-$y1];
    }
    if ($y1+$h+$r < 0  and  $y2+$h+$r > 0){
       #add circle's bottom point
-      push @circ_points, [0,-$y1-$r];
+      push @circ_points, [-$x1,-$y1-$r];
    }
    if ($y1+$r > 0  and  $y2+$r < 0){
       #add circle's top point
-      push @circ_points, [0,-$y1+$r];
+      push @circ_points, [-$x1,-$y1+$r];
    }   #   warn @{$circ_points[0]};
    for (@circ_points){
       my $rpt = Collision::Util::Entity::Point->new(
-         relative_x => $_->[0] + $self->relative_x,
-         relative_y => $_->[1] + $self->relative_y,
+         relative_x => $_->[0],
+         relative_y => $_->[1],
          relative_xv => $self->relative_xv,
          relative_yv => $self->relative_yv,
       );
