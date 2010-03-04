@@ -15,6 +15,7 @@ BEGIN {
       hash2point hash2rect
       obj2point  obj2rect
       hash2circle obj2circle
+      normalize_vec
    );
    our %EXPORT_TAGS = (
       all => \@EXPORT_OK,
@@ -44,6 +45,11 @@ sub dynamic_collision{
    return $collision;
 }
 
+sub normalize_vec{
+   my ($x,$y) = @{shift()};
+   my $r = sqrt($x**2+$y**2);
+   return [$x/$r, $y/$r]
+}
 
 sub hash2point{
    my $hash = shift;

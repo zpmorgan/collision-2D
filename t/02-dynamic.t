@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 55;
+use Test::More tests => 58;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -119,6 +119,20 @@ use Test::More tests => 55;
       'stop right before collision');
    
 }
+
+#now do circle-rect collisions!
+{
+   my $cannonball = hash2circle {x=>-5.25, y=>0, xv=>16, radius=>.5};
+   my $unit_toast = hash2rect { x=>-1, y=>-1, w=>2,h=>2 };
+   my $collision = dynamic_collision ($cannonball, $unit_toast, interval=>100);
+   ok($collision, 'cannontoast collision exists');
+   is ($collision->time, 1/4);
+   is ($collision->axis, 'x', 'horizontal collision');
+   #is_deeply (normalize_vec $collision->axis, [0,1]);
+}
+
+
+
 
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 

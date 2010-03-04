@@ -12,23 +12,6 @@ has 'radius' => (
    default => 1,
 );
 
-sub invert_collide_circle_and_collision{
-   my ($self, $other, %params) = @_;
-   my $new_self = Collision::Util::Entity::Circle->new(
-      relative_x => $self->relative_y,
-      relative_y => $self->relative_x,
-      relative_vx => $self->relative_vy,
-      relative_vy => $self->relative_vx,
-      radius => $self->radius,
-   );
-   my $collision = $new_self->collide_circle($other, %params);
-   return Collision::Util::Collision->new(
-      axis => invert_axis($collision->axis),
-      time=>$collision->time,
-      ent1=>$self,
-      ent2=>$other,
-   );
-}
 
 
 sub intersects_circle{
@@ -43,10 +26,113 @@ sub intersects_point{
    return 0;
 }
 
+
 sub collide_rect{
    my ($self, $rect, %params) = @_;
+   my @collisions;
    
+   #my doing this we can consider $self to be stationary and $rect to be moving.
+   #this line segment is path of rect during this interval
+   my $r = $self->radius;
+   my $w = $rect->w;
+   my $h = $rect->h;
+   my $x1 = -$self->relative_x; #of rect!
+   my $x2 = $x1 - ($self->relative_xv * $params{interval});
+   my $y1 = -$self->relative_y;
+   my $y2 = $y1 - ($self->relative_yv * $params{interval});
+   
+   #now see if point starts and ends on one of 4 sides of this rect.
+   #probably worth it because most things don't collide with each other every frame
+   if ($x1 > $r and $x2 > $r ){
+      return
+   }
+   if ($x1+$w < -$r and $x2+$w < -$r){
+      return
+   }
+   if ($y1 > $r and $y2 > $r ){
+      return
+   }
+   if ($y1+$h < -$r and $y2+$h < -$r){
+      return
+   }
+   
+   #which of rect's 4 points should I consider?
+   my @start_pts = ([$x1, $y1], [$x1+$w, $y1], [$x1+$w, $y1+$h], [$x1, $y1+$h]);
+   my @end_pts = ([$x2, $y2], [$x2+$w, $y2], [$x2+$w, $y2+$h], [$x2, $y2+$h]);
+   my @pts = (
+      {x1 => $x1,    y1 => $y1},
+      {x1 => $x1+$w, y1 => $y1},
+      {x1 => $x1+$w, y1 => $y1+$h},
+      {x1 => $x1,    y1 => $y1+$h},
+   );
+   for (@pts){ #calc initial distance from center of circle
+      $_->{dist} = sqrt($_->{x1}**2 + $_->{y1}**2);
+   }
+   my $origin_point = Collision::Util::Entity::Point->new(
+     # x => 0,y => 0, #actually not used, since circle is normalized with respect to the point
+   );
+   @pts = sort {$a->{dist} <=> $b->{dist}} @pts;
+   for (@pts[0,1,2]){ #do this for 3 initially closest points
+      my $new_relative_circle = Collision::Util::Entity::Circle->new(
+        # x => 0,y => 0, # used
+         relative_x => -$_->{x1},
+         relative_y => -$_->{x1},
+         relative_xv => $self->relative_xv,
+         relative_yv => $self->relative_yv,
+      );
+      my $collision = $new_relative_circle->collide_point ($origin_point, interval=>$params{interval});
+      next unless $collision;
+      #$_->{collision} = 
+      push @collisions, Collision::Util::Collision->new(
+         axis => $collision->axis,
+         time => $collision->time,
+         ent1 => $self,
+         ent2 => $rect,
+      );
+   }
+   
+   # that looked at the rect corners. that was half of it. 
+   # now look for collisions between a side of the circle
+   #  and a side of the rect
+   my @circ_points; #these are relative coordinates to rect
+   if ($x1+$w+$r < 0  and  $x2+$w+$r > 0){
+      #add circle's left point
+      push @circ_points, [-$x1-$r,0];
+   }
+   if ($x1+$r > 0  and  $x2+$r < 0){
+      #add circle's right point
+      push @circ_points, [-$x1+$r,0];
+   }
+   if ($y1+$h+$r < 0  and  $y2+$h+$r > 0){
+      #add circle's bottom point
+      push @circ_points, [0,-$y1-$r];
+   }
+   if ($y1+$r > 0  and  $y2+$r < 0){
+      #add circle's top point
+      push @circ_points, [0,-$y1+$r];
+   }   #   warn @{$circ_points[0]};
+   for (@circ_points){
+      my $rpt = Collision::Util::Entity::Point->new(
+         relative_x => $_->[0] + $self->relative_x,
+         relative_y => $_->[1] + $self->relative_y,
+         relative_xv => $self->relative_xv,
+         relative_yv => $self->relative_yv,
+      );
+      my $collision = $rpt->collide_rect($rect, interval=>$params{interval});
+      next unless $collision;
+      push @collisions, new Collision::Util::Collision(
+         time => $collision->time,
+         axis => $collision->axis,
+         ent1 => $self,
+         ent2 => $rect,
+      );
+   }
+   return unless @collisions;
+   @collisions = sort {$a->time <=> $b->time} @collisions;
+   return $collisions[0]
 }
+
+
 
 
 #ok, so normal circle is sqrt(x**2+y**2)=r
@@ -65,15 +151,19 @@ sub collide_rect{
 sub collide_point{
    my ($self, $point, %params) = @_;
    #my $r = $self->radius;
-   if ($self->intersects_point($point)){
-      return $self->null_collision($point);
-   }
+   #if ($self->intersects_point($point)){
+   #   return $self->null_collision($point);
+   #}
    #x1,etc. is the path of the point, relative to $self.
    #it's probably easier to consider the point as stationary.
    my $x1 = -$self->relative_x;
    my $y1 = -$self->relative_y;
    my $x2 = $x1 - $self->relative_xv * $params{interval};
    my $y2 = $y1 - $self->relative_yv * $params{interval};
+   
+   if (sqrt($x1**2 + $y1**2) < $self->radius) {
+      return $self->null_collision($point);
+   }
    
    if ($x2-$x1 == 0  or  abs(($y2-$y1)/($x2-$x1)) > 100) { #a bit too vertical for my liking. so invert.
       if ($y2-$y1 == 0){ #relatively motionless.
@@ -132,11 +222,11 @@ sub collide_circle{
       relative_xv => $self->relative_xv,
       relative_yv => $self->relative_yv,
       radius => $self->radius + $other->radius,
-      y=>0,x=>0, #these shouldn't be used, as we're doing all relative calculations
+      y=>0,x=>0, #these will not be used, as we're doing all relative calculations
    );
    
    my $pt = Collision::Util::Entity::Point->new(
-      y=>44,x=>44, #these shouldn't be used, as we're doing all relative calculations
+      y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->collide_point($pt, %params);
    return unless $collision;

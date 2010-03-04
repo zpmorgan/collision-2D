@@ -17,18 +17,24 @@ sub collide_point{
 sub collide_rect{
    my ($self, $rect, %params) = @_;
    #if we start inside rect, return the null collision, so to speak.
-   if ($rect->contains_point($self)){
-      return $self->null_collision($rect)
-   }
-   else{
-      #start outside box, so return if no relative movement 
-      return unless $params{interval} and ($self->relative_x or $self->relative_y);
-   }
+   #if ($rect->contains_point($self)){
+   #   return $self->null_collision($rect)
+   #}
    #this line segment is path of point during this interval
    my $x1 = $self->relative_x;
    my $x2 = $x1 + ($self->relative_xv * $params{interval});
    my $y1 = $self->relative_y;
    my $y2 = $y1 + ($self->relative_yv * $params{interval});
+   
+   #if it contains point at t=0, relatively...
+   if (  $x1>0 and $x1<$rect->w
+     and $y1>0 and $y1<$rect->h){
+      return $self->null_collision;
+   }
+   else{
+      #start outside box, so return if no relative movement 
+      return unless $params{interval} and ($self->relative_x or $self->relative_y);
+   }
    
    #now see if point starts and ends on one of 4 sides of this rect.
    #probably worth it because most things don't collide with each other every frame

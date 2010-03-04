@@ -6,12 +6,12 @@ use overload '""'  => sub{'entity'};
 has 'x' => (
    isa => 'Num',
    is => 'ro',
-   required => 1,
+   #required => 1,
 );
 has 'y' => (
    isa => 'Num',
    is => 'ro',
-   required => 1,
+   #required => 1,
 );
 
 has 'xv' => (
