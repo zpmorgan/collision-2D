@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 81;
+use Test::More tests => 85;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -166,6 +166,16 @@ use Test::More tests => 81;
    my $rect2 = hash2rect {x=> -(sqrt(2)/2 + 3), y=> -(sqrt(2)/2 + 3),   xv=>1, yv=>1, w=>2, h=>2};
    $collision = dynamic_collision ($unitpie, $rect2, interval=>1.01);
    ok ($collision, 'rect (2,2) point collides with circle');
+   is ($collision->time, 1, 'at right time');
+   
+   my $rect3 = hash2rect {x=> (sqrt(2)/2 + 1), y=> -(sqrt(2)/2 + 3),   xv=>-1, yv=>1, w=>2, h=>2};
+   $collision = dynamic_collision ($unitpie, $rect3, interval=>2);
+   ok ($collision, 'rect (2,0) point (lower-right) collides with circle');
+   is ($collision->time, 1, 'at right time');
+   
+   my $rect4 = hash2rect {x=> -(sqrt(2)/2 + 3), y=> (sqrt(2)/2 + 1),   xv=>1, yv=>-1, w=>2, h=>2};
+   $collision = dynamic_collision ($unitpie, $rect3, interval=>2);
+   ok ($collision, 'rect (0,2) point (upper left-right) collides with circle');
    is ($collision->time, 1, 'at right time');
 }
 
