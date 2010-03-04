@@ -5,22 +5,27 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 58;
+use Test::More tests => 70;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
    my $andy = hash2rect {x=>-1, y=>-1, h=>2, w=>2};
    my $bullet1 = hash2point { x=>-51, y=>0, xv=>100, yv=>16 }; #wild miss
    my $bullet2 = hash2point { x=>-51, y=>0, xv=>100, yv=>0 }; #hit
+   my $meteorite = hash2point { x=>0, y=>80001, xv=>0, yv=>-200000 }; #hit
    #Bless you, Andy. Blandy.
 
    my $collision1 = dynamic_collision ($bullet1, $andy, interval=>1);
    my $collision2 = dynamic_collision ($bullet2, $andy, interval=>1);
+   my $collision3 = dynamic_collision ($meteorite, $andy, interval=>1);
 
    ok (!defined $collision1);
    isa_ok ($collision2, 'Collision::Util::Collision');
-   is ($collision2->axis, 'x', 'horizontal collision. should axis of collision be a vector?');
+   is ($collision2->axis, 'x', 'horizontal collision.');
    is ($collision2->time, .5, 'bullet hits andy in half of a time unit');
+   isa_ok ($collision3, 'Collision::Util::Collision');
+   is ($collision3->axis, 'y', 'vert collision.');
+   is ($collision3->time, 8/20, 'meteorite hits andy at right time');
 
    #test the corners
    ok (!dynamic_collision ($andy, hash2point { x=>-2, y=>0, xv=>2, yv=>2.02 }));
@@ -110,7 +115,7 @@ use Test::More tests => 58;
    ok ($rv_collision->axis->[0] > 0);
    ok ($collision->axis->[1] == 0);
    ok ($rv_collision->axis->[1] == 0);
-   warn 'foo';
+   
    #again, barely hit pie, and then barely stop short. from upper left.
    my $collisionX = dynamic_collision ($unitpie, hash2circle({ x=>-10, y=>10, xv=>1, yv=>-1}), interval=>10-sqrt(1.99));
    ok($collisionX, 'stop right after collision');
@@ -129,6 +134,25 @@ use Test::More tests => 58;
    is ($collision->time, 1/4);
    is ($collision->axis, 'x', 'horizontal collision');
    #is_deeply (normalize_vec $collision->axis, [0,1]);
+   
+   # top directly
+   my $ball2 = hash2circle {x=>0, y=>5.5, yv=>-16, radius=>.5};
+   $collision = dynamic_collision ($ball2, $unit_toast, interval=>100);
+   ok($collision);
+   is ($collision->time, 1/4);
+   is ($collision->axis, 'y', 'vertical collision');
+   # right directly
+   my $ball3 = hash2circle {x=>5.5, y=>0, xv=>-16, radius=>.5};
+   $collision = dynamic_collision ($ball3, $unit_toast, interval=>100);
+   ok($collision);
+   is ($collision->time, 1/4);
+   is ($collision->axis, 'x', 'h collision');
+   # bottom directly
+   my $ball4 = hash2circle {x=>0, y=>-5.5, yv=>16, radius=>.5};
+   $collision = dynamic_collision ($ball4, $unit_toast, interval=>100);
+   ok($collision);
+   is ($collision->time, 1/4);
+   is ($collision->axis, 'y', 'vertical collision');
 }
 
 
