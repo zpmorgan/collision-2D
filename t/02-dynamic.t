@@ -5,7 +5,7 @@ use warnings;
 #use Collision::Util ':all';
 use Collision::Util::Dynamic ':all';
 
-use Test::More tests => 70;
+use Test::More tests => 75;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -154,13 +154,25 @@ use Test::More tests => 70;
    is ($collision->time, 1/4);
    is ($collision->axis, 'y', 'vertical collision');
 }
-
-
-
+   #those didn't test the corners of the square with diagonal parts of the circle. these do:
+{
+   my $unitpie = hash2circle {x=>0, y=>0};
+   my $money = hash2rect {x=> (sqrt(2)/2 + 3), y=> (sqrt(2)/2 + 3),   xv=>-1, yv=>-1, w=>2, h=>2};
+   my $collision = dynamic_collision ($unitpie, $money, interval=>3.01);
+   ok ($collision, 'rect (0,0) point collides with circle');
+   is ($collision->time, 3, 'at right time');
+   is_deeply (normalize_vec($collision->axis), [-sqrt(2)/2, -sqrt(2)/2],  'collision vector ok');
+   
+   my $rect2 = hash2rect {x=> -(sqrt(2)/2 + 3), y=> -(sqrt(2)/2 + 3),   xv=>1, yv=>1, w=>2, h=>2};
+   warn $rect2->x;
+   $collision = dynamic_collision ($unitpie, $rect2, interval=>1.01);
+   ok ($collision, 'rect (2,2) point collides with circle');
+   is ($collision->time, 1, 'at right time');
+}
 
 #my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
 
-#let's say andy doesn't intersect any blocks in this environment.
+#let's say myrtle doesn't intersect any blocks in this environment.
 #ok (!dynamic_collision($myrtle, $grid_environment));
 
 #but this bullet hits a block in 1st frame or second.

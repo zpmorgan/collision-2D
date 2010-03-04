@@ -57,8 +57,8 @@ sub collide_rect{
    }
    
    #which of rect's 4 points should I consider?
-   my @start_pts = ([$x1, $y1], [$x1+$w, $y1], [$x1+$w, $y1+$h], [$x1, $y1+$h]);
-   my @end_pts = ([$x2, $y2], [$x2+$w, $y2], [$x2+$w, $y2+$h], [$x2, $y2+$h]);
+ #  my @start_pts = ([$x1, $y1], [$x1+$w, $y1], [$x1+$w, $y1+$h], [$x1, $y1+$h]);
+ #  my @end_pts = ([$x2, $y2], [$x2+$w, $y2], [$x2+$w, $y2+$h], [$x2, $y2+$h]);
    my @pts = (
       {x1 => $x1,    y1 => $y1},
       {x1 => $x1+$w, y1 => $y1},
@@ -75,10 +75,10 @@ sub collide_rect{
    for (@pts[0,1,2]){ #do this for 3 initially closest points
       my $new_relative_circle = Collision::Util::Entity::Circle->new(
         # x => 0,y => 0, # used
-         relative_x => -$_->{x1},
-         relative_y => -$_->{x1},
-         relative_xv => $self->relative_xv,
-         relative_yv => $self->relative_yv,
+         relative_x =>  $_->{x1},
+         relative_y =>  $_->{y1},
+         relative_xv => -$self->relative_xv,
+         relative_yv => -$self->relative_yv,
       );
       my $collision = $new_relative_circle->collide_point ($origin_point, interval=>$params{interval});
       next unless $collision;
@@ -90,7 +90,9 @@ sub collide_rect{
          ent2 => $rect,
       );
    }
-   
+   #return unless @collisions;
+   @collisions = sort {$a->time <=> $b->time} @collisions;
+   return $collisions[0] if defined $collisions[0];
    # that looked at the rect corners. that was half of it. 
    # now look for collisions between a side of the circle
    #  and a side of the rect
@@ -129,6 +131,7 @@ sub collide_rect{
    }
    return unless @collisions;
    @collisions = sort {$a->time <=> $b->time} @collisions;
+   #warn join ',', @collisions;
    return $collisions[0]
 }
 
