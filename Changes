@@ -1,5 +1,8 @@
-Revision history for Collision-Util
+Revision history for Collision-Dynamic
 
 0.01    Date/time
         First version, released on an unsuspecting world.
+0.02    Mar 5
+        2nd version, rewrite and rename from Collision::Util to Collision::2D
+        
 

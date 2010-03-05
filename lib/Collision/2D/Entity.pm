@@ -62,5 +62,41 @@ sub null_collision{
    );
 }
 
+1
 
-2
+__END__
+=head1 NAME
+
+Collision::2D::Entity - A moving entity. Don't use this directly.
+
+=head1 DESCRIPTION
+
+=head1 ATTRIBUTES
+
+=head2 x,y,xv,yv
+
+Absolute position and velocity in space.
+These are necessary if you want to do collisions through 
+L<dynamic_collision|Collision::2D/dynamic_collision>
+
+ dynamic_collision($circ1, $circ2);
+
+=head2 relative_x, relative_y, relative_xv, relative_yv
+
+Relative position and velocity in space.
+these are necessary if you want to do collisions directly through entity methods,
+
+ $circ1->collide_circle($circ2);
+
+In this case, both the absolute and relative position and velocity of $circ2
+is not used. The relative attributes of $circ1 are assumed to be relative to $circ2.
+
+
+=head1 METHODS
+
+=head2 normalize
+
+ $self->normalize($other); # $other isa entity
+This compares the absolute attributes of $self and $other.
+It only sets the relative attributes of $self.
+This is necessary to call collide_*($other) methods on $self.

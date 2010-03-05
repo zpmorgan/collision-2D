@@ -2,8 +2,13 @@ Changes
 MANIFEST
 Makefile.PL
 README
-lib/Collision/Util.pm
+lib/Collision/2D.pm
+lib/Collision/2D/Collision.pm
+lib/Collision/2D/Entity.pm
+lib/Collision/2D/Entity/Rect.pm
+lib/Collision/2D/Entity/Circle.pm
+lib/Collision/2D/Entity/Point.pm
 t/00-load.t
+t/02-dynamic.t
 t/manifest.t
-t/pod-coverage.t
 t/pod.t

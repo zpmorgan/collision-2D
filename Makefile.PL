@@ -16,7 +16,7 @@ WriteMakefile(
         'Mouse' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'Collision-Util-*' },
+    clean               => { FILES => 'Collision-2D-*' },
 );
 
 BEGIN { require 5.010 }

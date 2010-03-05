@@ -253,6 +253,43 @@ sub collide_circle{
 }
 
 
-
-
 3
+
+__END__
+=head1 NAME
+
+Collision::2D::Entity::Circle - A circle entity.
+
+=head1 DESCRIPTION
+
+This is an entity with a radius.
+Attributes x and y point to the center of the circle.
+
+=head1 ATTRIBUTES
+
+=head2 radius
+
+Each point on the circle is this distance from the center, at C<< ($circ->x, $circ->y) >>
+
+=head1 METHODS
+
+In any of these collide_* methods, relative coordinates must be set. See L<Entity|Collision::2D::Entity> for more info.
+
+=head2 collide_point
+
+ $self->normalize ($pt);
+ $self->collide_point($pt, interval=>1);
+
+=head2 collide_circle
+
+ $self->normalize ($circ);
+ $self->collide_circle($circ, interval=>1);
+
+=head2 collide_rect
+
+ $self->normalize ($rect);
+ $self->collide_rect($rect, interval=>1);
+
+
+
+
