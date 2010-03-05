@@ -123,7 +123,7 @@ q|positively|
 __END__
 =head1 NAME
 
-Collision::2D - A selection of dynamic collision detection routines
+Collision::2D - A selection of continuous collision detection routines
 
 =head1 SYNOPSIS
 
@@ -150,7 +150,7 @@ Collision::2D - A selection of dynamic collision detection routines
 
 =head1 DESCRIPTION
 
-Collision::2D contains sets of several geometrical classes to help you model dynamic
+Collision::2D contains sets of several geometrical classes to help you model dynamic (continuous)
 collisions in your programs. It is targeted for any game or other application that requires
 dynamic collision detection between moving circles, rectangles, and points.
 

@@ -23,6 +23,24 @@ has 'ent2' => (
    is => 'ro',
 );
 
+sub maxis{
+   my $self = shift;
+   my $axis = $self->axis;
+   return unless $axis;
+   return $axis if ref $axis eq 'ARRAY';
+   if ($axis eq 'x'){
+      if ($self->ent1->relative_xv > 0){
+         return [1,0];
+      }
+      return [-1,0];
+   }
+   #$axis eq 'y'
+   if ($self->ent1->relative_yv > 0){
+      return [0,1];
+   }
+   return [0,-1];
+}
+
 sub does_mario_defeat_goomba{}
 
 sub bounce_vector{
