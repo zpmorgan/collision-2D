@@ -1,5 +1,6 @@
 package Collision::2D::Entity::Circle;
 use Mouse;
+use Collision::2D::Entity::Rect;
 extends 'Collision::2D::Entity';
 
 use overload '""'  => sub{'circle'};
@@ -14,16 +15,24 @@ has 'radius' => (
 
 
 
+
+# formulas are the same as before with small modifs
 sub intersects_circle{
    my ($self, $other) = @_;
-   return 1 if  ($self->radius + $other->radius)
-      > sqrt(($self->x - $other->x)**2 + ($self->y - $other->y)**2);
-   return 0;
+
+   #sqrt is more expensive than square
+   return  ($self->radius + $other->radius)**2 > 
+		   ($self->x - $other->x)**2 + 
+		   ($self->y - $other->y)**2;
 }
+
+
 sub intersects_point{
    my ($self, $point) = @_;
-   return 1 if sqrt(($self->x - $point->x)**2 + ($self->y - $point->y)**2) < $self->radius;
-   return 0;
+
+   return   $self->radius**2 >
+		   ($self->x - $point->x)**2 + 
+		   ($self->y - $point->y)**2;
 }
 
 
@@ -219,8 +228,7 @@ sub collide_point{
    my $axis = [-$x_at_t, -$y_at_t]; #vector from self to point
    
    my $collision = Collision::2D::Collision->new(
-      time => $time,
-      axis => $axis,
+      time => $time, axis => $axis,
       ent1 => $self,
       ent2 => $point,
    );
@@ -255,6 +263,66 @@ sub collide_circle{
 }
 
 
+
+
+=head1 collide_grid(Collision::2D::Entity::Grid)
+
+Returns earliest collision with some entity on the grid.
+
+=cut
+
+
+sub collide_grid {
+	my ($self,$g) = @_;
+
+	my (@collisions);
+
+	my $r = $self->radius;
+
+
+
+	my $table = $g->table;
+	my $s     = $g->cell_size;
+
+	for my $x ( (-$r + $self->x) .. ($r + $self->x) ) {
+		for my $y ( (-$r + $self->y) .. ($r + $self->y) ) {
+			my $x1 = $x - $self->x;
+			my $y1 = $y - $self->y;
+			next if ($x1**2) + ($y1**2) > $r**2;
+
+			if($table->[$y/$s]->[$x/$s]) {
+				# we have something in the grid cell
+
+				push @collisions,$self->collide_rect( #the cell of the grid is a rect
+					Collision::2D::Entity::Rect->new({
+							w => $r<<1,
+							h => $r<<1,
+							x => $x - ($x % $s),
+							y => $y - ($y % $s),
+					})
+				);
+			}
+
+		}
+	};
+
+
+	return 
+	(
+		sort { $a->time < $b->time }
+		@collisions
+	)[0]; # the earliest collision
+}
+
+
+
+
+=head1 write_to_grid()
+
+Pushes the circle into the cells of the grid which cover it.
+
+=cut
+
 sub write_to_grid {
 	my ($self, $grid) = @_;
 
@@ -273,9 +341,15 @@ sub write_to_grid {
 			#
 			# these divisions can be avoided
 
-			$grid->table->[$y/$s]->[$x/$s] = 1;
+			push	@{$grid->table->[$y/$s][$x/$s]}, 
+			    	 $self;
 		}
 	}
+}
+
+
+sub remove_from_grid {
+	#to be implemented
 }
 
 
