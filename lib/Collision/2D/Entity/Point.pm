@@ -103,9 +103,7 @@ sub collide_rect{
          }
       }
       elsif ($y1 > $h and $y2 < $h){ #vertically pass rect's upper side
-      warn $self->x;
          my $t = ($y1 - $h) / -$self->relative_yv;
-         warn $t;
          if (!defined($best_time) or $t < $best_time){
             my $x_at_t = $x1 + ($t * $self->relative_xv);
             if ($x_at_t < $w  and  $x_at_t > 0) {

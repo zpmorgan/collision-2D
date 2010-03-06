@@ -56,15 +56,14 @@ sub bounce_vector{
    my ($self,%params) = @_;
    my $elasticity = $params{elasticity} // 1;
    my $axis = $self->maxis;
-   warn join ',', @{$self->maxis};
+   
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
    my $rxv = $self->ent1->relative_xv;
    my $ryv = $self->ent1->relative_yv;
    my $rv_len = sqrt($rxv**2 + $ryv**2);
    my $dot = $rxv*$axis->[0] + $ryv*$axis->[1];
    my $angle = acos($dot / ($axis_len * $rv_len));
-   warn "$rxv*$axis->[0] + $ryv*$axis->[1];";
-   warn $angle;
+   
    my $axis_scalar = $rv_len * cos($angle) / $axis_len;
    $axis_scalar *= -1 * (1+$elasticity);
    
