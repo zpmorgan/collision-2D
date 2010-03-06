@@ -1,12 +1,25 @@
-package Collision::Util::Grid;
+package Collision::2D::Entity::Grid;
 use Mouse;
+extends 'Collision::2D::Entity';
 use File::Slurp qw/slurp/; 
 use List::AllUtils qw/max/;
 
 
+
+=pod
+
+=head1 DESCRIPTION
+
+To detect collisions faster we'll write a Grid on which we'll mark objects (as well as the grid itself).
+Collisions can occur with other objects that are marked on the grid or with the grid itself.
+Should multiple collisions occur collide_with_grid will return the earliest one.
+On one cell of the 2D table below , there can be multiple Entities.
+
+=cut
+
 # table where we store if the cell is filled or not
 has table => (
-	isa => 'ArrayRef[ArrayRef[Any]]',
+	isa => 'ArrayRef[ArrayRef[ArrayRef[Collision::2D::Entity]]]',
 	is  => 'rw',
 	lazy => 1,
 	default => sub {
