@@ -31,9 +31,9 @@ has $_      => (
 	isa => 'Num',
 	is  => 'rw',
 	default => 0,
-) for qw/width height/;
+) for qw/width height/; #h and w?
 
-# cells will be squares of this size
+# granularity; cells will be squares of this size
 has cell_size => ( 
 	isa => 'Num',
 	is  => 'rw',
@@ -66,6 +66,7 @@ sub init_from_file {
 	$self->height($linenum);
 }
 
-
+no Mouse;
+__PACKAGE__->meta->make_immutable();
 
 1;
