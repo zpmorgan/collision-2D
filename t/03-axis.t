@@ -94,11 +94,11 @@ use Test::More tests => 22;
    my $rcbvec = $circ_collision->bounce_vector (relative=>1);
    my $icbvec = $circ_collision->bounce_vector (elasticity=>0, relative=>1);
    
-   is ($cbvec->[0], 0, 'elastic circle bounce');
-   is ($cbvec->[1], -100 - .888, 'elastic circle bounce');
-   is ($rcbvec->[0], 0, 'relative circle bounce');
-   is ($rcbvec->[1], -100, 'relative circle bounce');
-   is ($cbvec->[0], 100*sqrt(2)/2, 'inelastic circle bounce');
-   is ($cbvec->[1], -100*sqrt(2)/2, 'inelastic circle bounce');
+   is ($cbvec->[0], 0, 'elastic circle bounce'); #-100
+   is ($cbvec->[1], -100 - .888, 'elastic circle bounce'); #0
+   is ($rcbvec->[0], 0, 'relative circle bounce'); #-200
+   is ($rcbvec->[1], -100, 'relative circle bounce'); #0
+   is ($cbvec->[0], 100*sqrt(2)/2, 'inelastic circle bounce'); #-100
+   is ($cbvec->[1], -100*sqrt(2)/2, 'inelastic circle bounce'); #0
    
 }

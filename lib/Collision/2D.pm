@@ -35,7 +35,7 @@ sub dynamic_collision{
    # and return all collisions, starting with the closest
    if (ref $ent2 eq 'ARRAY'){
       my @collisions = map {dynamic_collision($ent1,$_,%params)} @$ent2;
-      return sort{$a<=>$b} grep{defined$_} @collisions;
+      return sort{$a->time <=> $b->time} grep{defined$_} @collisions;
    }
    
    #now, we sort by package name. This is so we can find specific routine in predictable namespace.
