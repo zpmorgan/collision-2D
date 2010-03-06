@@ -74,11 +74,11 @@ use Test::More tests => 22;
    
    my $widerect = hash2rect {x=>-100, w=>200, y=>0, h=>1};
    #point from above, moving right. hit at y=1.
-   my $py_pt = hash2point {x=>5,y=>8, xv=>.21212, yv=>-2};
-   my $py_collision = dynamic_collision ($py_pt, $widerect, interval=>20);
+   my $ny_pt = hash2point {x=>5,y=>8, xv=>.21212, yv=>-2};
+   my $ny_collision = dynamic_collision ($ny_pt, $widerect, interval=>20);
    #is ($py_collision->axis, 'y');
-   is ($py_collision->maxis->[0], .21212);
-   is ($py_collision->maxis->[1], 2);
+   #is ($ny_collision->maxis->[0], .21212);
+   #is ($ny_collision->maxis->[1], 2);
    
    
    

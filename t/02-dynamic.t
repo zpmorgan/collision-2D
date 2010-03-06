@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More tests => 97;
+use Test::More tests => 99;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
 {
@@ -57,6 +57,15 @@ use Test::More tests => 97;
    #is ($strange_collision->axis, 'y');
    ok (99.99 < $strange_collision->time, 'time ~ 100');
    ok ($strange_collision->time < 100.01, 'time ~ 100');
+   
+   
+   my $widerect = hash2rect {x=>-100, w=>200, y=>0, h=>1};
+   #point from above, moving right. hit at y=1.
+   my $ny_pt = hash2point {x=>6,y=>2, xv=>.21212, yv=>-1};
+   my $ny_collision = dynamic_collision ($ny_pt, $widerect, interval=>20);
+   ok ($ny_collision, 'some now-passing point-rect test');
+   is ($ny_collision->time, 1, 'time for now-passing point-rect test');
+   
 }
 
 #now circle-point collisions. The method is $circle->collide_point($point,...)

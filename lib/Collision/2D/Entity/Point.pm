@@ -54,7 +54,7 @@ sub collide_rect{
          ent2 => $rect,
       );
    }
-      
+   
    #now see if point starts and ends on one of 4 sides of this rect.
    #probably worth it because most things don't collide with each other every frame
    if ($x1 > $w and $x2 > $w ){
@@ -103,7 +103,9 @@ sub collide_rect{
          }
       }
       elsif ($y1 > $h and $y2 < $h){ #vertically pass rect's upper side
-         my $t = ($y1 - $w) / -$self->relative_xv;
+      warn $self->x;
+         my $t = ($y1 - $h) / -$self->relative_yv;
+         warn $t;
          if (!defined($best_time) or $t < $best_time){
             my $x_at_t = $x1 + ($t * $self->relative_xv);
             if ($x_at_t < $w  and  $x_at_t > 0) {
