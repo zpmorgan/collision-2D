@@ -122,5 +122,7 @@ sub contains_point{
       and  $point->y < $self->y + $self->h);
 }
 
+no Mouse;
+__PACKAGE__->meta->make_immutable;
 
 3

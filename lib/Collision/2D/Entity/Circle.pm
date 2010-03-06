@@ -236,22 +236,26 @@ sub collide_circle{
       relative_xv => $self->relative_xv,
       relative_yv => $self->relative_yv,
       radius => $self->radius + $other->radius,
-      y=>0,x=>0, #these will not be used, as we're doing all relative calculations
+      #y=>0,x=>0, #these will not be used, as we're doing all relative calculations
    );
    
    my $pt = Collision::2D::Entity::Point->new(
-      y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
+      #y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->collide_point($pt, %params);
    return unless $collision;
+   
    return Collision::2D::Collision->new(
       ent1 => $self,
       ent2 => $other,
       time => $collision->time,
       axis => $collision->axis,
+      #axis => [-$collision->axis->[0], -$collision->axis->[1]],
    );
 }
 
+no Mouse;
+__PACKAGE__->meta->make_immutable;
 
 3
 

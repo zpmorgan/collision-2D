@@ -122,5 +122,7 @@ sub collide_rect{
    );
 }
 
+no Mouse;
+__PACKAGE__->meta->make_immutable;
 
 2
