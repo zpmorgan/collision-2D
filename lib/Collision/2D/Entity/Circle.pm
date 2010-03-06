@@ -280,7 +280,6 @@ sub collide_grid {
 	my $r = $self->radius;
 
 
-
 	my $table = $g->table;
 	my $s     = $g->cell_size;
 
@@ -292,15 +291,11 @@ sub collide_grid {
 
 			if($table->[$y/$s]->[$x/$s]) {
 				# we have something in the grid cell
+				
+				for my $entity_inside_cell ( @{$table->[$y/$s]->[$x/$s]} ) {
+					push @collisions,$self->collide_rect( $entity_inside_cell );
+				};
 
-				push @collisions,$self->collide_rect( #the cell of the grid is a rect
-					Collision::2D::Entity::Rect->new({
-							w => $r<<1,
-							h => $r<<1,
-							x => $x - ($x % $s),
-							y => $y - ($y % $s),
-					})
-				);
 			}
 
 		}
