@@ -50,6 +50,7 @@ sub does_mario_defeat_goomba{}
 # If 'relative' is param, return that.
 # Else use it & ent2 to find the resulting absolute velocity.
 
+#Also, for now we assume that ent2 has infinite mass.
 use Math::Trig qw/acos/;
 
 sub bounce_vector{ 

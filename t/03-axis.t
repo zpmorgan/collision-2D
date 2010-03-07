@@ -3,8 +3,9 @@ use strict;
 use warnings;
 
 use Collision::2D ':all';
+use Test::Number::Delta;
 
-use Test::More tests => 22;
+use Test::More tests => 24;
 
 #first, bounce point off rect
 {
@@ -48,13 +49,13 @@ use Test::More tests => 22;
    $unitpie->normalize($pt);
    my $collision = $unitpie->collide_point ($unitpie, interval=>5);
    my $axis = normalize_vec ($collision->axis);
-   is ($axis->[0], -sqrt(2)/2);
-   is ($axis->[1], -sqrt(2)/2);
+   delta_ok ($axis->[0], -sqrt(2)/2);
+   delta_ok ($axis->[1], -sqrt(2)/2);
    
    my $nonpie = hash2circle {x=>-2,y=>-2, xv=>1, yv=>1};
    $nonpie->normalize($unitpie);
    my $collision2 = $nonpie->collide_circle ($unitpie, interval=>5);
-   is ($collision2->time, 2-sqrt(2));
+   delta_ok ($collision2->time, 2-sqrt(2));
    my $axis2 = normalize_vec ($collision2->axis);
    is ($axis2->[0], sqrt(2)/2);
    is ($axis2->[1], sqrt(2)/2);
@@ -75,30 +76,30 @@ use Test::More tests => 22;
    my $widerect = hash2rect {x=>-100, w=>200, y=>0, h=>1};
    #point from above, moving right. hit at y=1.
    my $ny_pt = hash2point {x=>5,y=>8, xv=>.21212, yv=>-2};
-   my $ny_collision = dynamic_collision ($ny_pt, $widerect, interval=>20);
-   #is ($py_collision->axis, 'y');
-   #is ($ny_collision->maxis->[0], .21212);
-   #is ($ny_collision->maxis->[1], 2);
-   
+   my $ny_collision = dynamic_collision ($ny_pt, $widerect, interval=>20); 
    
    
    
    #now do 2 moving circles  both moving horizontal, but bounce
-   # each other into y dimension
-   my $pxcirc = hash2circle {x=>-2, y=>-sqrt(2), xv=> 100, radius=>2 , y=>.888 };
-   my $nxcirc = hash2circle {x=> 2, y=> sqrt(2), xv=>-100, radius=>2 , y=>.888 };
+   # each other into y dimension; "deflection"?
+   my $pxcirc = hash2circle {x=>-2, y=>-sqrt(2), xv=> 100, radius=>2 , yv=>.888 };
+   my $nxcirc = hash2circle {x=> 2, y=> sqrt(2), xv=>-100, radius=>2 , yv=>.888 };
    
    $pxcirc->normalize($nxcirc);
    my $circ_collision = $pxcirc->collide_circle ($nxcirc, interval=>1);
+   
+   my $axis = normalize_vec $circ_collision->axis;
+   delta_ok ($axis->[0], sqrt(2)/2, 'circ-circ "deflection" axis of collision(x)');
+   delta_ok ($axis->[1], sqrt(2)/2, 'circ-circ "deflection" axis of collision(y)');
+   
    my $cbvec = $circ_collision->bounce_vector;
    my $rcbvec = $circ_collision->bounce_vector (relative=>1);
    my $icbvec = $circ_collision->bounce_vector (elasticity=>0, relative=>1);
-   
    is ($cbvec->[0], 0, 'elastic circle bounce'); #-100
    is ($cbvec->[1], -100 - .888, 'elastic circle bounce'); #0
-   is ($rcbvec->[0], 0, 'relative circle bounce'); #-200
+   delta_ok ($rcbvec->[0], 0, 'relative circle bounce'); #-200
    is ($rcbvec->[1], -100, 'relative circle bounce'); #0
-   is ($cbvec->[0], 100*sqrt(2)/2, 'inelastic circle bounce'); #-100
-   is ($cbvec->[1], -100*sqrt(2)/2, 'inelastic circle bounce'); #0
+   delta_ok ($cbvec->[0], 100*sqrt(2)/2, 'inelastic circle bounce'); #-100
+   delta_ok ($cbvec->[1], -100*sqrt(2)/2, 'inelastic circle bounce'); #0
    
 }
