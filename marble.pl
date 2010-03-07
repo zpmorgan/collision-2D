@@ -70,8 +70,12 @@ while ( $cont ) {
    
    for my $marble (@marbles){
       my $interval = 1;
-      $marble->{y} = -60 if $marble->{y} > 550;#wrap y
+      $marble->{y} = -60 if $marble->{y} > 560;#wrap y
+      $marble->{y} = 560 if $marble->{y} < -60;#wrap y
       $marble->{yv} = 40 if $marble->{yv} > 40; #y speed limit
+      $marble->{yv} = -40 if $marble->{yv} < -40; #y speed limit
+      $marble->{xv} = 40 if $marble->{xv} > 40; #x speed limit
+      $marble->{xv} = -40 if $marble->{xv} < -40; #x speed limit
       $marble->{x} = -60 if $marble->{x} > 960;#wrap x
       $marble->{x} = 960 if $marble->{x} < -60;#wrap x
       
