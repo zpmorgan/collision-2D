@@ -75,7 +75,7 @@ sub bounce_vector{
       return [$r_bounce_xv, $r_bounce_yv]
    }
    
-   return [$r_bounce_xv - $self->ent2->xv, $r_bounce_yv - $self->ent2->yv]
+   return [$r_bounce_xv + $self->ent2->xv, $r_bounce_yv + $self->ent2->yv]
 }
 
 

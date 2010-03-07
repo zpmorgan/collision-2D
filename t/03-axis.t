@@ -96,10 +96,10 @@ use Test::More tests => 27;
    my $rcbvec = $circ_collision->bounce_vector (relative=>1);
    my $icbvec = $circ_collision->bounce_vector (elasticity=>0, relative=>1);
    delta_ok ($cbvec->[0], -100, 'elastic circle bounce'); #-100
-   delta_ok ($cbvec->[1], -200 - .888, 'elastic circle bounce'); #0
+   delta_ok ($cbvec->[1], -200 + .888, 'elastic circle bounce'); #0
    delta_ok ($rcbvec->[0], 0, 'relative circle bounce'); #deflect vertically, relatively
    delta_ok ($rcbvec->[1], -200, 'relative circle bounce'); #rv is initially 200 ->
    delta_ok ($cbvec->[0],  -100, 'inelastic circle bounce'); #-100 
-   delta_ok ($cbvec->[1], -200-.888, 'inelastic circle bounce'); #0
+   delta_ok ($cbvec->[1], -200 + .888, 'inelastic circle bounce'); #0
    
 }
