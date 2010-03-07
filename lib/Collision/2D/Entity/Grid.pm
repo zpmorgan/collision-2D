@@ -31,7 +31,7 @@ has $_      => (
 	isa => 'Num',
 	is  => 'rw',
 	default => 0,
-) for qw/width height/; #h and w?
+) for qw/w h/;
 
 # granularity; cells will be squares of this size
 has cell_size => ( 
@@ -61,9 +61,9 @@ sub init_from_file {
 		my @line_ = split //,$line;
 		$self->table->[$linenum] = \@line_;
 		$linenum++;
-		$self->width(max($self->width,~~@line_));
+		$self->w(max($self->width,~~@line_));
 	};
-	$self->height($linenum);
+	$self->h($linenum);
 }
 
 no Mouse;
