@@ -20,7 +20,7 @@ On one cell of the 2D table below , there can be multiple Entities.
 # table where we store if the cell is filled or not
 has table => (
 	isa => 'ArrayRef[ArrayRef[ArrayRef[Collision::2D::Entity]]]',
-	is  => 'rw',
+	is  => 'ro',
 	lazy => 1,
 	default => sub {
 		[];
@@ -29,14 +29,14 @@ has table => (
 
 has $_      => (
 	isa => 'Num',
-	is  => 'rw',
+	is  => 'ro',
 	default => 0,
 ) for qw/w h/;
 
 # granularity; cells will be squares of this size
 has cell_size => ( 
 	isa => 'Num',
-	is  => 'rw',
+	is  => 'ro',
 );
 
 

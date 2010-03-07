@@ -121,8 +121,8 @@ use Test::More tests => 99;
    is ($rv_collision->time, 2);
    ok ($collision->axis->[0] < 0);
    ok ($rv_collision->axis->[0] > 0);
-   ok ($collision->axis->[1] == 0);
-   ok ($rv_collision->axis->[1] == 0);
+   is ($collision->axis->[1], 0);
+   is ($rv_collision->axis->[1], 0);
    
    #again, barely hit pie, and then barely stop short. from upper left.
    my $collisionX = dynamic_collision ($unitpie, hash2circle({ x=>-10, y=>10, xv=>1, yv=>-1}), interval=>10-sqrt(1.99));

@@ -17,6 +17,7 @@ BEGIN {
       hash2point hash2rect
       obj2point  obj2rect
       hash2circle obj2circle
+      hash2grid
       normalize_vec
    );
    our %EXPORT_TAGS = (
@@ -40,7 +41,7 @@ sub dynamic_collision{
    
    #now, we sort by package name. This is so we can find specific routine in predictable namespace.
    #for example, p comes before r, so point-rect collisions are at $point->collide_rect
-   ($ent1, $ent2) =  ($ent2, $ent1)  if  ("$ent1" ge "$ent2" );
+   ($ent1, $ent2) =  ($ent2, $ent1)  if  ("$ent1" gt "$ent2" );
    my $method = "collide_$ent2";
    
    $ent1->normalize($ent2);
@@ -118,6 +119,21 @@ sub obj2circle{
    )
    
 }
+
+sub hash2grid{
+   my $hash = shift;
+   my ($cell_size, $w, $h, $x, $y) = @{$hash}{qw/cell_size w h x y/};
+   die 'inadequate dimension info' unless $cell_size and $w and $h;
+   
+   return Collision::2D::Entity::Grid->new (
+      x=>$x,
+      y=>$y,
+      w=>$w,
+      h=>$h,
+      cell_size => $cell_size,
+   );
+}
+
 
 q|positively|
 __END__
