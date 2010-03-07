@@ -76,9 +76,9 @@ while ( $cont ) {
       $marble->{x} = 960 if $marble->{x} < -60;#wrap x
       
       $marble->{yv} += $grav;
-      my @collisions = map {dynamic_collision (hash2circle ($marble), hash2rect ($_))} @crates;
-      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2point ($_))} @dots;
-      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2circle ($_))} @lamps;
+      my @collisions = map {dynamic_collision (hash2circle ($marble), hash2rect ($_), interval=>$interval)} @crates;
+      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2point ($_), interval=>$interval)} @dots;
+      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2circle ($_), interval=>$interval)} @lamps;
       push @collisions, #collide with other marbles too
                  map {dynamic_collision (hash2circle ($marble), hash2circle ($_))} 
                  grep {$_ != $marble}
@@ -97,8 +97,8 @@ while ( $cont ) {
          redo;
       }
       else {
-         $marble->{y} += $marble->{yv};
-         $marble->{x} += $marble->{xv};
+         $marble->{y} += $marble->{yv}*$interval;
+         $marble->{x} += $marble->{xv}*$interval;
       }
    }
    SDL::Video::fill_rect(
