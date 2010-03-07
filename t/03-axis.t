@@ -5,7 +5,7 @@ use warnings;
 use Collision::2D ':all';
 use Test::Number::Delta;
 
-use Test::More tests => 24;
+use Test::More tests => 27;
 
 #first, bounce point off rect
 {
@@ -95,11 +95,11 @@ use Test::More tests => 24;
    my $cbvec = $circ_collision->bounce_vector;
    my $rcbvec = $circ_collision->bounce_vector (relative=>1);
    my $icbvec = $circ_collision->bounce_vector (elasticity=>0, relative=>1);
-   is ($cbvec->[0], 0, 'elastic circle bounce'); #-100
-   is ($cbvec->[1], -100 - .888, 'elastic circle bounce'); #0
-   delta_ok ($rcbvec->[0], 0, 'relative circle bounce'); #-200
-   is ($rcbvec->[1], -100, 'relative circle bounce'); #0
-   delta_ok ($cbvec->[0], 100*sqrt(2)/2, 'inelastic circle bounce'); #-100
-   delta_ok ($cbvec->[1], -100*sqrt(2)/2, 'inelastic circle bounce'); #0
+   delta_ok ($cbvec->[0], -100, 'elastic circle bounce'); #-100
+   delta_ok ($cbvec->[1], -200 - .888, 'elastic circle bounce'); #0
+   delta_ok ($rcbvec->[0], 0, 'relative circle bounce'); #deflect vertically, relatively
+   delta_ok ($rcbvec->[1], -200, 'relative circle bounce'); #rv is initially 200 ->
+   delta_ok ($cbvec->[0],  -100, 'inelastic circle bounce'); #-100 
+   delta_ok ($cbvec->[1], -200-.888, 'inelastic circle bounce'); #0
    
 }
