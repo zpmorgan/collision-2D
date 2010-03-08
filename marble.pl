@@ -41,14 +41,14 @@ my $app = SDL::Video::set_video_mode( 800, 500, 32, SDL_SWSURFACE );
 croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
-my $grav = 3;
+my $grav = 1;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
 my @crates = map {random_crate()} (1..4);
 my @dots = map {random_dot()} (1..4);
 my @lamps = map {random_lamp()} (1..2);
-my @marbles = map {random_marble()} (1..1);
+my @marbles = map {random_marble()} (1..3);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
