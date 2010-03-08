@@ -42,12 +42,13 @@ croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
 my $grav = 1;
+my $spd_limit = 13;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
-my @crates = map {random_crate()} (1..4);
-my @dots = map {random_dot()} (1..4);
-my @lamps = map {random_lamp()} (1..2);
+my @crates = map {random_crate()} (1..3);
+my @dots = map {random_dot()} (1..3);
+my @lamps = map {random_lamp()} (1..3);
 my @marbles = map {random_marble()} (1..3);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
@@ -72,12 +73,12 @@ while ( $cont ) {
       my $interval = 1;
       $marble->{y} = -60 if $marble->{y} > 560;#wrap y
       $marble->{y} = 560 if $marble->{y} < -60;#wrap y
-      $marble->{yv} = 40 if $marble->{yv} > 40; #y speed limit
-      $marble->{yv} = -40 if $marble->{yv} < -40; #y speed limit
-      $marble->{xv} = 40 if $marble->{xv} > 40; #x speed limit
-      $marble->{xv} = -40 if $marble->{xv} < -40; #x speed limit
       $marble->{x} = -60 if $marble->{x} > 960;#wrap x
       $marble->{x} = 960 if $marble->{x} < -60;#wrap x
+      $marble->{yv} = $spd_limit if $marble->{yv} > $spd_limit; #y speed limit
+      $marble->{yv} = -$spd_limit if $marble->{yv} < -$spd_limit; #y speed limit
+      $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
+      $marble->{xv} = -$spd_limit if $marble->{xv} < -$spd_limit; #x speed limit
       
       $marble->{yv} += $grav;
       my @collisions = map {dynamic_collision (hash2circle ($marble), hash2rect ($_), interval=>$interval)} @crates;
@@ -166,12 +167,12 @@ sub random_lamp{
    return $lamp
 }
 sub random_marble{
-   my $marble = {x=>100+rand(600), y=>100+rand(300), radius=>30+rand(50), xv=>0, yv=>0};
+   my $marble = {x=>100+rand(600), y=>100+rand(300), radius=>10+rand(35), xv=>0, yv=>0};
    $marble->{surf} = init_marble_surf($marble);
    return $marble
 }
 sub random_crate{
-   my $crate = {x=>rand(700), y=>150+rand(300), w=>rand(50)+50, h=>rand(50)+50};
+   my $crate = {x=>rand(700), y=>150+rand(100), w=>rand(50)+150, h=>rand(50)+50};
    $crate->{surf} = init_crate_surf($crate);
    return $crate
 }

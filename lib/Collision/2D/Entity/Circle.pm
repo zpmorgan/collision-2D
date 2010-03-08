@@ -117,19 +117,19 @@ sub collide_rect{
    # now look for collisions between a side of the circle
    #  and a side of the rect
    my @circ_points; #these are relative coordinates to rect
-   if ($x1+$w+$r < 0  and  $x2+$w+$r > 0){
+   if ($x1+$w < -$r  and  $x2+$w > -$r){
       #add circle's left point
       push @circ_points, [-$x1-$r,-$y1];
    }
-   if ($x1+$r > 0  and  $x2+$r < 0){
+   if ($x1 > $r  and  $x2 < $r){
       #add circle's right point
       push @circ_points, [-$x1+$r,-$y1];
    }
-   if ($y1+$h+$r < 0  and  $y2+$h+$r > 0){
+   if ($y1+$h < -$r  and  $y2+$h > -$r ){
       #add circle's bottom point
       push @circ_points, [-$x1,-$y1-$r];
    }
-   if ($y1+$r > 0  and  $y2+$r < 0){
+   if ($y1 > $r  and  $y2 < $r){
       #add circle's top point
       push @circ_points, [-$x1,-$y1+$r];
    }   #   warn @{$circ_points[0]};
