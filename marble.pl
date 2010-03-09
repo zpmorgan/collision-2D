@@ -5,7 +5,12 @@ use warnings; use strict;
 
 =head1 NAME Shooter.pl
 
-A demonstration to demonstrate a marble colliding with a staircase. Derived from kthakore's shooter.pl.
+A demonstration to demonstrate marbles colliding with static circles, rects, and points.
+
+Parameters like the numbers of marbles & static objects, gravity, and speed 
+limits are in the code.
+
+Derived from kthakore's shooter.pl.
 
 =cut
 
