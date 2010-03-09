@@ -2,7 +2,9 @@ Revision history for Collision-Dynamic
 
 0.01    Date/time
         First version, released on an unsuspecting world.
-0.02    Mar 5
+0.02    Mar 5, 2010
         2nd version, rewrite and rename from Collision::Util to Collision::2D
+0.03    Mar 9, 2010
+        Lots of circle-rect bugfixes, bounce vectors, & the marble demo
         
 

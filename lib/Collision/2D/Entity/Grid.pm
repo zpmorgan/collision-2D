@@ -1,4 +1,5 @@
-package Collision::2D::Entity::Grid;
+package #hide from CPAN indexer, for now
+   Collision::2D::Entity::Grid; 
 use Mouse;
 extends 'Collision::2D::Entity';
 use File::Slurp qw/slurp/; 

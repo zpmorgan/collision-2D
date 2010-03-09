@@ -8,6 +8,7 @@ use Collision::2D::Entity;
 use Collision::2D::Entity::Point;
 use Collision::2D::Entity::Rect;
 use Collision::2D::Entity::Circle;
+use Collision::2D::Entity::Grid;
 
 BEGIN {
    require Exporter;
@@ -17,9 +18,9 @@ BEGIN {
       hash2point hash2rect
       obj2point  obj2rect
       hash2circle obj2circle
-      hash2grid
       normalize_vec
    );
+     # hash2grid
    our %EXPORT_TAGS = (
       all => \@EXPORT_OK,
       #std => [qw( check_contains check_collision )],
@@ -122,7 +123,11 @@ sub obj2circle{
 
 sub hash2grid{
    my $hash = shift;
-   my ($cell_size, $w, $h, $x, $y) = @{$hash}{qw/cell_size w h x y/};
+   my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y) = @{$hash}{qw/cell_size w h x y cells cells_x cells_y/};
+   #if (no x or y) {
+      # do what? do + dimensions even need to be constrained?
+      # should x and y be derivable from specified number of $cells?
+   #}
    die 'inadequate dimension info' unless $cell_size and $w and $h;
    
    return Collision::2D::Entity::Grid->new (

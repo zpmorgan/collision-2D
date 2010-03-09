@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More tests => 8;
+use Test::More skip_all => 'grids are not yet.'; #tests => 8;
 
 #grids are an optimization, but here I suppose we'll just test function rather than performance
 
