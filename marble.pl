@@ -46,15 +46,15 @@ my $app = SDL::Video::set_video_mode( 800, 500, 32, SDL_SWSURFACE );
 croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
-my $grav = 1;
+my $grav = .2;
 my $spd_limit = 15;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
-my @crates = map {random_crate()} (1..3);
-my @dots = map {random_dot()} (1..8);
-my @lamps = map {random_lamp()} (1..3);
-my @marbles = map {random_marble()} (1..3);
+my @crates = map {random_crate()} (1..1);
+my @dots = map {random_dot()} (1..16);
+my @lamps = map {random_lamp()} (1..1);
+my @marbles = map {random_marble()} (1..6);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
@@ -100,7 +100,7 @@ while ( $cont ) {
          die 'aaah' unless $collision->axis;
          $marble->{y} += $marble->{yv} * $collision->time;
          $marble->{x} += $marble->{xv} * $collision->time; #0..
-         my $bvec = $collision->bounce_vector;
+         my $bvec = $collision->bounce_vector(elasticity=>1);
          $marble->{xv} = $bvec->[0];
          $marble->{yv} = $bvec->[1];
          $interval -= $collision->time; #leftover frame interval
