@@ -121,14 +121,32 @@ sub obj2circle{
    
 }
 
+# x and y are be derivable from specified number of $cells?
+#w < cell_size * cells_w
+#cells_w > cell_size / w
+#cells: both cells_x and cells_y. this means that you want this grid to be square.
+
+# do what? do + dimensions even need to be constrained?
 sub hash2grid{
    my $hash = shift;
-   my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y) = @{$hash}{qw/cell_size w h x y cells cells_x cells_y/};
-   #if (no x or y) {
-      # do what? do + dimensions even need to be constrained?
-      # should x and y be derivable from specified number of $cells?
-   #}
-   die 'inadequate dimension info' unless $cell_size and $w and $h;
+   my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y) 
+      = @{$hash}{qw/cell_size w h x y cells cells_x cells_y/};
+   die 'where?' unless $y and $x;
+   die 'require cell_size' unless $cell_size;
+   
+   if ($cells) {
+      $w = $cell_size * $cells_x;
+      $h = $cell_size * $cells_y;
+   }
+   else{
+      if ($cells_x) {
+         $w = $cell_size * $cells_x;
+      }
+      if ($cells_y){
+         $h = $cell_size * $cells_y;
+      }
+   }
+   die 'require some form of w and h' unless $w and $h;
    
    return Collision::2D::Entity::Grid->new (
       x=>$x,
