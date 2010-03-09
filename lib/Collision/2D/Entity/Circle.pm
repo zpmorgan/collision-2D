@@ -263,11 +263,6 @@ sub collide_circle{
 }
 
 
-=for comment collide_grid(Collision::2D::Entity::Grid)
-
-Returns earliest collision with some entity on the grid.
-
-=cut
 
 
 sub collide_grid {
@@ -308,11 +303,6 @@ sub collide_grid {
 }
 
 
-=for comment write_to_grid()
-
-Pushes the circle into the cells of the grid which cover it.
-
-=cut
 
 sub write_to_grid {
 	my ($self, $grid) = @_;
@@ -386,5 +376,14 @@ In any of these collide_* methods, relative coordinates must be set. See L<Entit
  $self->collide_rect($rect, interval=>1);
 
 
+
+=head2 write_to_grid()
+
+Pushes the circle into the cells of the grid which interesect with it.
+
+
+=head2 collide_grid(Collision::2D::Entity::Grid)
+
+Returns earliest collision with some entity on the grid.
 
 

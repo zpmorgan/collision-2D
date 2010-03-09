@@ -19,8 +19,8 @@ BEGIN {
       obj2point  obj2rect
       hash2circle obj2circle
       normalize_vec
+      hash2grid
    );
-     # hash2grid
    our %EXPORT_TAGS = (
       all => \@EXPORT_OK,
       #std => [qw( check_contains check_collision )],

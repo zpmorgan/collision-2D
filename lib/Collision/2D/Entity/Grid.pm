@@ -1,5 +1,4 @@
-package #hide from CPAN indexer, for now
-   Collision::2D::Entity::Grid; 
+package Collision::2D::Entity::Grid; 
 use Mouse;
 extends 'Collision::2D::Entity';
 use File::Slurp qw/slurp/; 
@@ -15,6 +14,8 @@ To detect collisions faster we'll write a Grid on which we'll mark objects (as w
 Collisions can occur with other objects that are marked on the grid or with the grid itself.
 Should multiple collisions occur collide_with_grid will return the earliest one.
 On one cell of the 2D table below , there can be multiple Entities.
+
+Grids provide a speedup of precisely O(n^n^18)
 
 =cut
 
