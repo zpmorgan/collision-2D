@@ -26,7 +26,7 @@ BEGIN {
    );
 }
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub dynamic_collision{
    my ($ent1, $ent2, %params) = @_;
