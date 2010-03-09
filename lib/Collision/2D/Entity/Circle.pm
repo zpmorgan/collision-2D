@@ -263,9 +263,7 @@ sub collide_circle{
 }
 
 
-
-
-=head1 collide_grid(Collision::2D::Entity::Grid)
+=for comment collide_grid(Collision::2D::Entity::Grid)
 
 Returns earliest collision with some entity on the grid.
 
@@ -310,9 +308,7 @@ sub collide_grid {
 }
 
 
-
-
-=head1 write_to_grid()
+=for comment write_to_grid()
 
 Pushes the circle into the cells of the grid which cover it.
 

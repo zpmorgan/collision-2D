@@ -258,9 +258,11 @@ define function names or use the :all tag.
  **maybe entities should be linked to whatever entities they stand/walk on?
  **How should entities fit into 'gaps' in the floor that are their exact size?
 
-=head1 AUTHOR
+=head1 CONTRIBUTORS
 
 Zach P. Morgan, C<< <zpmorgan at cpan.org> >>
+
+Stefan Petrea C<< <stefan.petrea@gmail.com> >>
 
 
 =head1 ACKNOWLEDGEMENTS
@@ -268,9 +270,7 @@ Zach P. Morgan, C<< <zpmorgan at cpan.org> >>
 Many thanks to Breno G. de Oliveira and Kartik Thakore for their help and insights.
 
 
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2010 Zach P. Morgan
+=head1 LICENSE
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
