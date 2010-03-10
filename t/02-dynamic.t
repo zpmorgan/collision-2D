@@ -243,7 +243,7 @@ use Test::Number::Delta;
    
    
 }
-#my $grid_environment = Collision::Util::Grid->new (file => 'level1.txt');
+#my $grid_environment = Collision::Util::Grid->new (stuff=>things);
 
 #let's say myrtle doesn't intersect any blocks in this environment.
 #ok (!dynamic_collision($myrtle, $grid_environment));

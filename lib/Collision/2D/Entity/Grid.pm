@@ -1,7 +1,6 @@
 package Collision::2D::Entity::Grid; 
 use Mouse;
 extends 'Collision::2D::Entity';
-use File::Slurp qw/slurp/; 
 use List::AllUtils qw/max/;
 
 
@@ -121,33 +120,6 @@ sub remove_circle{
 }
 
 
-#why? for debugging?
-sub serialize {
-	my ($self) = @_;
-	
-	join(
-		"\n",
-		map {
-			join('', @$_);
-		} @{$self->table}
-	);
-}
-
-
-
-#why? for debugging?
-sub init_from_file {
-	my ($self,$file) = @_;
-	my @lines = split /\n/,slurp($file);
-	my $linenum=0;
-	for my $line(@lines) {
-		my @line_ = split //,$line;
-		$self->table->[$linenum] = \@line_;
-		$linenum++;
-		$self->w(max($self->width,~~@line_));
-	};
-	$self->h($linenum);
-}
 
 no Mouse;
 __PACKAGE__->meta->make_immutable();
