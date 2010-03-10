@@ -5,19 +5,6 @@ use List::AllUtils qw/max/;
 
 
 
-=pod
-
-=head1 DESCRIPTION
-
-To detect collisions faster we'll write a Grid on which we'll mark objects (as well as the grid itself).
-Collisions can occur with other objects that are marked on the grid or with the grid itself.
-Should multiple collisions occur collide_with_grid will return the earliest one.
-On one cell of the 2D table below , there can be multiple Entities.
-
-Grids provide a speedup of precisely O(n^n^18)
-
-=cut
-
 # table where we store every grid child;
 # in each cell, a list of entities which intersect it
 # table is a list of rows, so it's table->[y][x] = [ent,...]
@@ -125,3 +112,29 @@ no Mouse;
 __PACKAGE__->meta->make_immutable();
 
 1;
+
+__END__
+
+
+=head1 NAME
+
+Collision::2D::Entity::Grid - A container for static entities.
+
+=head1 SYNOPSIS
+
+ my $grid = hash2grid {x=>-15, y=>-15, w=>30, h=>30,  cell_size => 2};
+ $grid->add_circle ($unit_pie);
+ my $collision = dynamic_collision ($grid, $thrown_pie, interval => 1);
+
+=head1 DESCRIPTION
+
+This is an optimization to detect collisions with a large number of static objects. Use it for a map!
+
+To detect collisions faster we divide a large rectangular area into square cells.
+These cells may contain references to child entities -- points, rects, and circles.
+
+Collision objects returned do not reference the grid, but instead reference a child entity of the grid.
+
+Grids provide a speedup of precisely O(n^n^18)
+
+=cut
