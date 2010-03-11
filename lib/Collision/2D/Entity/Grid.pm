@@ -1,7 +1,7 @@
 package Collision::2D::Entity::Grid; 
 use Mouse;
 extends 'Collision::2D::Entity';
-use List::AllUtils qw/max/;
+use List::AllUtils qw/max min/;
 
 
 
@@ -106,7 +106,32 @@ sub remove_circle{
    #find cells, grep from each
 }
 
-
+sub collide_point{
+   my ($self, $pt, %params) = @_;
+   my $rx = -$self->relative_x; #relative loc of point to grid
+   my $ry = -$self->relative_y; 
+   my $rxv = -$self->relative_xv; #relative velocity of point to grid
+   my $ryv = -$self->relative_yv; 
+   my $s = $self->cell_size;
+   my $cell_x_min = min ($rx/$s, ($rx+$rxv*$params{interval})/$s);
+   my $cell_x_max = max ($rx/$s, ($rx+$rxv*$params{interval})/$s);
+   my $cell_y_min = min ($ry/$s, ($ry+$ryv*$params{interval})/$s);
+   my $cell_y_max = max ($ry/$s, ($ry+$ryv*$params{interval})/$s);
+   
+   my @collisions;
+   for my $y ( $cell_y_min .. $cell_y_max ) {
+      next if $y < 0;
+      last if $y > $self->cells_y;
+      for my $x ( $cell_x_min .. $cell_x_max ) {
+         next if $x < 0;
+         last if $x > $self->cells_x;
+         next unless $self->table->[$y][$x];
+         for (@{$self->table->[$y][$x]}){ #each ent in cell
+            push @collisions, dynamic_collision($pt, $_);
+         }
+      }
+   }
+}
 
 no Mouse;
 __PACKAGE__->meta->make_immutable();

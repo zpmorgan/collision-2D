@@ -27,7 +27,7 @@ sub intersects_circle{
 }
 
 
-sub intersects_point{
+sub intersect_point{
    my ($self, $point) = @_;
 
    return   $self->radius**2 >
@@ -35,6 +35,37 @@ sub intersects_point{
 		   ($self->y - $point->y)**2;
 }
 
+#both stationary
+sub intersect_rect{
+   my ($self, $rect) = @_;
+   my $r = $self->radius;
+   my $w = $rect->w;
+   my $h = $rect->h;
+   my $x = $self->x - $rect->x; #of self, relative to rect!
+   my $y = $self->y - $rect->y; #of self, relative to rect!
+   
+   
+   if   ($x-$r > $w
+      or $y-$r > $h
+      or $x+$r < 0
+      or $y+$r < 0){
+         #warn "$x $y   w: $w, h: $h, r: $r";
+         return 0
+   }
+         warn "$x $y   w: $w, h: $h, r: $r";
+   return 1 if sqrt($x**2 + $y**2) < $r;
+   return 1 if sqrt(($x-$w)**2 + $y**2) < $r;
+   return 1 if sqrt(($x-$w)**2 + ($y-$h)**2) < $r;
+   return 1 if sqrt($x**2 + ($y-$h)**2) < $r;
+   
+   for ([$x,$y-$r], [$x-$r,$y], [$x,$y+$r], [$x+$r,$y]){
+      my ($x,$y) = @$_;
+      warn join ',', @$_;
+      return 1 if $x>0 and $y>0
+              and $x<$w and $y<$h;
+   }
+   return 0;
+}
 
 sub collide_rect{
    my ($self, $rect, %params) = @_;
@@ -173,10 +204,6 @@ sub collide_rect{
 #Then, see which intercept, if any, is the closest after starting point
 sub collide_point{
    my ($self, $point, %params) = @_;
-   #my $r = $self->radius;
-   #if ($self->intersects_point($point)){
-   #   return $self->null_collision($point);
-   #}
    #x1,etc. is the path of the point, relative to $self.
    #it's probably easier to consider the point as stationary.
    my $x1 = -$self->relative_x;
