@@ -52,7 +52,6 @@ sub intersect_rect{
          #warn "$x $y   w: $w, h: $h, r: $r";
          return 0
    }
-         warn "$x $y   w: $w, h: $h, r: $r";
    return 1 if sqrt($x**2 + $y**2) < $r;
    return 1 if sqrt(($x-$w)**2 + $y**2) < $r;
    return 1 if sqrt(($x-$w)**2 + ($y-$h)**2) < $r;
@@ -60,7 +59,6 @@ sub intersect_rect{
    
    for ([$x,$y-$r], [$x-$r,$y], [$x,$y+$r], [$x+$r,$y]){
       my ($x,$y) = @$_;
-      warn join ',', @$_;
       return 1 if $x>0 and $y>0
               and $x<$w and $y<$h;
    }
