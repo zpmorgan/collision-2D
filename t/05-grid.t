@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More  tests => 8;
+use Test::More  tests => 17;
 
 #grids are an optimization, but here I suppose we'll just test function rather than performance
 

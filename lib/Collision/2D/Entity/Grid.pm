@@ -2,6 +2,8 @@ package Collision::2D::Entity::Grid;
 use Mouse;
 extends 'Collision::2D::Entity';
 use List::AllUtils qw/max min/;
+use POSIX qw(ceil);
+
 
 
 
@@ -30,7 +32,7 @@ has cells_x => (
 	is  => 'ro',
 	lazy  => 1,
 	default => sub{
-         return int( 1 + $_[0]->x / $_[0]->cell_size)
+         return ceil( $_[0]->w / $_[0]->cell_size)
    },
 );
 has cells_y => (
@@ -38,7 +40,7 @@ has cells_y => (
 	is  => 'ro',
 	lazy  => 1,
 	default => sub{
-         return int( 1 + $_[0]->y / $_[0]->cell_size)
+         return ceil( $_[0]->h / $_[0]->cell_size)
    },
 );
 
@@ -78,6 +80,25 @@ sub cells_intersect_circle{
    return @cells
    
 }
+sub cells_intersect_rect{
+   my ($self, $rect) = @_;
+   my @cells; # [int,int], ...
+   
+	#must find a faster way to find points inside
+   my $rx = $rect->x - $self->x; #relative
+   my $ry = $rect->y - $self->y;
+   my $s = $self->cell_size;
+   for my $y ( ($ry/$s) .. ($ry + $rect->h)/$s ) {
+      next if $y < 0;
+      last if $y >= $self->cells_y;
+      for my $x ( ($rx/$s) .. ($rx + $rect->w)/$s ) {
+         next if $x < 0;
+         last if $x >= $self->cells_x;
+         push @cells, [$x,$y];
+      }
+   }
+   return @cells
+}
 
 sub add_point {
    my ($self, $pt) = @_;
@@ -93,7 +114,14 @@ sub add_point {
    my $cell_y = int ($ry / $s);
    push	@{$self->table->[$cell_y][$cell_x]}, $pt;
 }
-sub add_rect {} #todo
+sub add_rect {
+   my ($self, $rect) = @_;
+   my @cells = $self->cells_intersect_rect ($rect);
+   for (@cells){
+      push	@{$self->table->[$_->[0]][$_->[1]]}, $rect;
+   }
+   warn @{$self->table->[1][1]} if $self->table->[1][1];
+}
 sub add_circle {
    my ($self, $circle) = @_;
    my @cells = $self->cells_intersect_circle ($circle);

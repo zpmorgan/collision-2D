@@ -16,6 +16,7 @@ WriteMakefile(
         'Mouse' => 0,
 		  'Test::Number::Delta' => 0,
 		  'List::AllUtils' => 0,
+		  'POSIX' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Collision-2D-*' },

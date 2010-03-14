@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More tests => 99;
+use Test::More tests => 101;
 use Test::Number::Delta;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
@@ -209,6 +209,10 @@ use Test::Number::Delta;
    my $not_touching2 = hash2rect  hash2rect {x=> 0, y=> 1.01,   xv=>1, yv=>1};
    ok(!dynamic_collision ($unitpie, $not_touching2, interval=>1.01));
    
+   #where no corner/side points are inside the other!
+   my $imposition = hash2rect {x=> -.99, y=>-.99, h=>1.98, w=>1.98};
+   ok(dynamic_collision ($unitpie, $imposition));
+   ok ($unitpie->intersect_rect($imposition));
 }
 
 #rect-rect collisions anyone?

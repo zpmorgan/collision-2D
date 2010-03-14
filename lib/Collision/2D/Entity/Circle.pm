@@ -15,8 +15,6 @@ has 'radius' => (
 
 
 
-
-# formulas are the same as before with small modifs
 sub intersects_circle{
    my ($self, $other) = @_;
 
@@ -52,10 +50,12 @@ sub intersect_rect{
          #warn "$x $y   w: $w, h: $h, r: $r";
          return 0
    }
-   return 1 if sqrt($x**2 + $y**2) < $r;
-   return 1 if sqrt(($x-$w)**2 + $y**2) < $r;
-   return 1 if sqrt(($x-$w)**2 + ($y-$h)**2) < $r;
-   return 1 if sqrt($x**2 + ($y-$h)**2) < $r;
+   return 1 if ($x**2 + $y**2) < $r**2;
+   return 1 if (($x-$w)**2 + $y**2) < $r**2;
+   return 1 if (($x-$w)**2 + ($y-$h)**2) < $r**2;
+   return 1 if ($x**2 + ($y-$h)**2) < $r**2;
+   #detect 'imposition', whereall corner+side points are outside the other entity
+   return 1 if (($x-$w/2)**2 + ($y-$h/2)**2) < $r**2;
    
    for ([$x,$y-$r], [$x-$r,$y], [$x,$y+$r], [$x+$r,$y]){
       my ($x,$y) = @$_;
@@ -92,6 +92,9 @@ sub collide_rect{
    }
    if ($y1+$h < -$r and $y2+$h < -$r){
       return
+   }
+   if (($x1+$w/2)**2 + ($y1+$h/2)**2 < $r**2) { #imposition?
+      return $self->null_collision($rect);
    }
    
    #which of rect's 4 points should I consider?
