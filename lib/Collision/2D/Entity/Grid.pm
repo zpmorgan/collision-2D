@@ -5,6 +5,7 @@ use List::AllUtils qw/max min/;
 use POSIX qw(ceil);
 
 
+use overload '""'  => sub{'bgrid'}; #before circle :|
 
 
 # table where we store every grid child;
@@ -120,7 +121,6 @@ sub add_rect {
    for (@cells){
       push	@{$self->table->[$_->[0]][$_->[1]]}, $rect;
    }
-   warn @{$self->table->[1][1]} if $self->table->[1][1];
 }
 sub add_circle {
    my ($self, $circle) = @_;
@@ -130,8 +130,29 @@ sub add_circle {
    }
 }
 
+sub intersect_circle {
+   my ($self, $circle) = @_;
+   my @cells = $self->cells_intersect_circle ($circle);
+   for (@cells){
+      for my $ent (@{$self->table->[$_->[0]][$_->[1]]}){
+         return 1 if $circle->intersect($ent);
+      }
+   }
+   return 0
+}
+sub intersect_rect {
+   my ($self, $rect) = @_;
+   my @cells = $self->cells_intersect_circle ($rect);
+   for (@cells){
+      for my $ent (@{$self->table->[$_->[0]][$_->[1]]}){
+         return 1 if $rect->intersect($ent);
+      }
+   }
+   return 0
+}
+
 sub remove_circle{
-   #find cells, grep from each
+   #find cells, grep circle from each
 }
 
 sub collide_point{
@@ -155,7 +176,7 @@ sub collide_point{
          last if $x > $self->cells_x;
          next unless $self->table->[$y][$x];
          for (@{$self->table->[$y][$x]}){ #each ent in cell
-            push @collisions, dynamic_collision($pt, $_);
+            push @collisions, Collision::2D::dynamic_collision($pt, $_);
          }
       }
    }

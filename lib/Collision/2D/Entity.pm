@@ -62,6 +62,16 @@ sub null_collision{
    );
 }
 
+sub intersect{
+   my ($self, $other) = @_;
+   return Collision::2D::intersection ($self, $other);
+}
+
+sub collide{
+   my ($self, $other) = @_;
+   return Collision::2D::dynamic_collision ($self, $other);
+}
+
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 1

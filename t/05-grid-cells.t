@@ -27,8 +27,8 @@ sub grid_3x3{
 my @COW = qw|(-1,-1) (0,-1) (1,-1)  (-1,0) (0,0) (1,0)  (-1,1) (0,1) (1,1) |;
 
 my @grids; #[4] at center, [3..5] is center row, [6..8] is top row..
-for my $y(-1..2){
-   for my $x(-1..2){
+for my $y(-1..1){
+   for my $x(-1..1){
       push @grids, grid_3x3 ($x, $y);
    }
 }
@@ -47,14 +47,14 @@ is (ref $grids[4]->table->[1][1][0], 'Collision::2D::Entity::Rect', 'rect in cen
    
    is ( grid_3x3()->cells_intersect_circle($smallest_circle), 1,
          'smallest_circle intersects 1 cell');
-   ok ($smallest_circle->collide_grid($grids[4]), 'smallest vs. center square');
-   ok (!$smallest_circle->collide_grid($grids[$_]), 'smallest_circle vs. grid '.$COW[$_])
+   ok ($smallest_circle->intersect($grids[4]), 'smallest vs. center square');
+   ok (!$smallest_circle->intersect($grids[$_]), 'smallest_circle vs. grid '.$COW[$_])
          for (0..3,5..8);
    
    is ( grid_3x3()->cells_intersect_circle($corner_circle), 1,
          'corner intersects 1 cell');
-   ok ($smallest_circle->collide_grid($grids[0]), 'corner_circle vs. corner square');
-   ok (!$smallest_circle->collide_grid($grids[$_]), 'corner_circle vs. grid '.$COW[$_])
+   ok ($corner_circle->intersect($grids[0]), 'corner_circle vs. corner square');
+   ok (!$corner_circle->intersect($grids[$_]), 'corner_circle vs. grid '.$COW[$_])
          for (1..8);
    
 }

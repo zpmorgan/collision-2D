@@ -51,6 +51,21 @@ sub dynamic_collision{
    return $collision;
 }
 
+sub intersection{
+   my ($ent1, $ent2) = @_;
+   if (ref $ent2 eq 'ARRAY'){
+      for (@$ent2){
+         return 1 if intersection($ent1, $_);
+      }
+      return 0;
+   }
+   ($ent1, $ent2) =  ($ent2, $ent1)  if  ("$ent1" gt "$ent2" );
+   my $method = "intersect_$ent2";
+   
+   return 1 if $ent1->$method($ent2);
+   return 0;
+}
+
 sub normalize_vec{
    my ($x,$y) = @{shift()};
    my $r = sqrt($x**2+$y**2);
@@ -233,6 +248,14 @@ By default, the interval is 1.
  my $collision = dynamic_collision ($circle, $point, interval => 4);
  #$collision->time == 1. More on that in L<Collision::2D::Collision>.
  #$collision->axis ~~ [0,1] or [0,-1]. More on that in L<Collision::2D::Collision>.
+
+=item intersection
+
+ print 'whoops' unless intersection ($table, $pie);
+
+Detects overlap between 2 entities. This is similar to dynamic_collision,
+except that time and motion is not considered. intersection() does not return a
+L<Collision::2D::Collision>, but instead true or false values.
 
 =item hash2circle, hash2point, hash2rect
 

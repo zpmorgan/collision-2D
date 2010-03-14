@@ -15,7 +15,7 @@ has 'radius' => (
 
 
 
-sub intersects_circle{
+sub intersect_circle{
    my ($self, $other) = @_;
 
    #sqrt is more expensive than square
@@ -292,7 +292,7 @@ sub collide_circle{
 
 
 
-
+#broken & not relative.
 sub collide_grid {
 	my ($self,$g) = @_;
 
@@ -312,7 +312,6 @@ sub collide_grid {
 
 			if($table->[$y/$s]->[$x/$s]) {
 				# we have something in the grid cell
-				
 				for my $entity_inside_cell ( @{$table->[$y/$s]->[$x/$s]} ) {
 					push @collisions,$self->collide_rect( $entity_inside_cell );
 				};
@@ -321,7 +320,6 @@ sub collide_grid {
 
 		}
 	};
-
 
 	return 
 	(
