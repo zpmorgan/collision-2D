@@ -5,7 +5,7 @@ no warnings 'qw';
 
 use Collision::2D ':all';
 
-use Test::More  tests => 65;
+use Test::More  tests => 84;
 
 #motionless circle with rects on grids
 # the rects represent cells
@@ -18,6 +18,7 @@ sub grid_3x3{
    if (defined $x){
       #be a good citizen and don't touch your neighbors.
       my $rect = hash2rect {x=>$x+.0001, y=>$y+.0001, w=>.9998, h=>.9998};
+      is ($grid->cells_intersect_rect ($rect), 1, "rect representing single(!) cell at x: $x y: $y");
       $grid->add_rect ($rect);
    }
    return $grid;
@@ -57,6 +58,14 @@ is (ref $grids[4]->table->[1][1][0], 'Collision::2D::Entity::Rect', 'rect in cen
    ok ($corner_circle->intersect($grids[0]), 'corner_circle vs. corner square');
    ok (!$corner_circle->intersect($grids[$_]), 'corner_circle vs. grid '.$COW[$_])
          for (1..8);
+   
+   is ( grid_3x3()->cells_intersect_circle($small_circle), 5,
+         'corner intersects 1 cell');
+   #die join ',',map {'('.$_->[0].','.$_->[1].')'} grid_3x3()->cells_intersect_circle($small_circle);
+   ok ($small_circle->intersect($grids[$_]), "small_circle vs. $COW[$_] square")
+      for (4,3,5,1,7);
+   ok (!$small_circle->intersect($grids[$_]), 'small_circle vs. grid '.$COW[$_])
+         for (0,2,6,8);
          
    is ( grid_3x3()->cells_intersect_circle($med_circle), 5,
          'corner intersects 1 cell');
@@ -64,7 +73,7 @@ is (ref $grids[4]->table->[1][1][0], 'Collision::2D::Entity::Rect', 'rect in cen
       for (4,3,5,1,7);
    ok (!$med_circle->intersect($grids[$_]), 'med_circle vs. grid '.$COW[$_])
          for (0,2,6,8);
-         
+   
    is ( grid_3x3()->cells_intersect_circle($large_circle), 9,
          'corner intersects 1 cell');
    ok ($large_circle->intersect($grids[$_]), "large_circle vs. $COW[$_] square")
