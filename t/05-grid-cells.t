@@ -5,7 +5,7 @@ no warnings 'qw';
 
 use Collision::2D ':all';
 
-use Test::More  tests => 51;
+use Test::More  tests => 65;
 
 #motionless circle with rects on grids
 # the rects represent cells
@@ -81,7 +81,87 @@ is (ref $grids[4]->table->[1][1][0], 'Collision::2D::Entity::Rect', 'rect in cen
    
 }
 
+#test cells_intersect_rect
+{
+   my $empty_grid = grid_3x3();
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>-.9995, y=>-.9995, h=>.999, w=>.999}),
+      1,
+      '1 cell intersects lil\' rect at ~(-1,-1)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>.0005, y=>.0005, h=>.999, w=>.999}),
+      1,
+      '1 cell intersects lil\' rect at ~(0,0)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>1.0005, y=>1.0005, h=>.999, w=>.999}),
+      1,
+      '1 cell intersects lil\' rect at ~(1,1)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>2.0005, y=>1.0005, h=>.999, w=>.999}),
+      0,
+      '0 cells intersect lil\' rect at ~(2,1)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>1.0005, y=>2.0005, h=>.999, w=>.999}),
+      0,
+      '0 cells intersect lil\' rect at ~(1,2)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>-1.9995, y=>-1.9995, h=>.999, w=>.999}),
+      0,
+      '0 cells intersect lil\' rect at ~(-2,-2)'
+   );
+   
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>-1.9995, y=>-1.9995, h=>1.999, w=>1.999}),
+      1,
+      '1 cell intersect big\' rect at ~(-2,-2)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>-0.9995, y=>-0.9995, h=>1.999, w=>1.999}),
+      4,
+      '4 cells intersect big rect at ~(-1,-1)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>.0005, y=>.0005, h=>1.999, w=>1.999}),
+      4,
+      '4 cells intersect big rect at ~(0,0)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>.0005, y=>1.0005, h=>1.999, w=>1.999}),
+      2,
+      '2 cells intersect big rect at ~(0,1)'
+   );
+   is ($empty_grid->cells_intersect_rect (
+      hash2rect {x=>1.0005, y=>1.0005, h=>1.999, w=>1.999}),
+      1,
+      '1 cells intersect big rect at ~(1,1)'
+   );
+}
 
+#now with a dense grid
+{
+   my $dense_grid = hash2grid {x=>0, y=>0, cell_size => .01, w=>1, h=>1};
+   is ($dense_grid->cells_intersect_rect (
+      hash2rect {x=>0.8, y=>0.5, h=>1.999, w=>1.999}),
+      1000,
+      '1000 dense cells intersect some rect at (.8,.5)'
+   );
+   is ($dense_grid->cells_intersect_circle (
+      hash2circle {x=>0.8, y=>0.5, r=>.0099 }),
+      4,
+      '4 dense cells intersect some rect with radius=.099'
+   );
+   is ($dense_grid->cells_intersect_circle (
+      hash2circle {x=>0.8, y=>0.5, r=>.0101 }),
+      12,
+      '12 dense cells intersect some rect with radius=.101'
+   );
+   
+}
 
 
 

@@ -2,7 +2,7 @@ package Collision::2D::Entity::Grid;
 use Mouse;
 extends 'Collision::2D::Entity';
 use List::AllUtils qw/max min/;
-use POSIX qw(ceil);
+use POSIX qw(ceil floor);
 
 
 use overload '""'  => sub{'bgrid'}; #before circle :|
@@ -61,8 +61,10 @@ sub cells_intersect_circle{
    my $rx = $circle->x - $self->x; #relative
    my $ry = $circle->y - $self->y;
    my $s = $self->cell_size;
-   for my $y ( max(0, $ry - $r) .. min ($self->cells_y-1, $ry + $r) ) {
-      for my $x ( max(0, $rx - $r) .. min ($self->cells_x-1, $ry + $r) ) {
+   
+   for my $y ( max(0, ($ry-$r)/$s) .. floor min ($self->cells_y-1, ($ry+$r)/$s) ) {
+      for my $x ( max(0, ($rx-$r)/$s) .. floor min ($self->cells_x-1, ($rx+$r)/$s) ) {
+         #warn $ry + $y*$s;
          my $rect = Collision::2D::Entity::Rect->new (
             x => $self->x + $x*$s,
             y => $self->y + $y*$s,
@@ -85,10 +87,9 @@ sub cells_intersect_rect{
    my $rx = $rect->x - $self->x; #relative
    my $ry = $rect->y - $self->y;
    my $s = $self->cell_size;
-   for my $y ( ($ry/$s) .. ($ry + $rect->h)/$s ) {
-      next if $y < 0;
-      last if $y >= $self->cells_y;
-      for my $x ( ($rx/$s) .. ($rx + $rect->w)/$s ) {
+   
+   for my $y ( max(0, $ry/$s) .. floor min ($self->cells_y-1, ($ry + $rect->h)/$s) ) {
+      for my $x ( max(0, $rx/$s) .. floor min ($self->cells_x-1, ($ry + $rect->w)/$s) ) {
          next if $x < 0;
          last if $x >= $self->cells_x;
          push @cells, [$x,$y];

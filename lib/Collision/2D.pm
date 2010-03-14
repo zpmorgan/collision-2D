@@ -120,7 +120,7 @@ sub hash2circle{
       y=>$hash->{y},
       xv=>$hash->{xv} || 0,
       yv=>$hash->{yv} || 0,
-      radius => $hash->{radius} || 1,
+      radius => $hash->{radius} || $hash->{r} || 1,
    )
 }
 
@@ -146,7 +146,7 @@ sub hash2grid{
    my $hash = shift;
    my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y) 
       = @{$hash}{qw/cell_size w h x y cells cells_x cells_y/};
-   die 'where?' unless $y and $x;
+   die 'where?' unless defined $y and defined $x;
    die 'require cell_size' unless $cell_size;
    
    if ($cells) {
