@@ -114,14 +114,8 @@ sub collide_rect{
    );
    @pts = sort {$a->{dist} <=> $b->{dist}} @pts;
    #now detect null collision of closest rect corner
-   #warn %{$pts[0]};
    if (0 and $pts[0]{dist} < $r){
-      return Collision::2D::Collision->new(
-       #  axis => $collision->axis,
-         time => 0,
-         ent1 => $self,
-         ent2 => $rect,
-      );
+      return $self->null_collision($rect)
    }
    for (@pts[0,1,2]){ #do this for 3 initially closest rect corners
       my $new_relative_circle = Collision::2D::Entity::Circle->new(
@@ -143,8 +137,9 @@ sub collide_rect{
       );
    }
    #return unless @collisions;
-   @collisions = sort {$a->time <=> $b->time} @collisions;
-   return $collisions[0] if defined $collisions[0];
+   #@collisions = sort {$a->time <=> $b->time} @collisions;
+   #return $collisions[0] if defined $collisions[0];
+   
    # that looked at the rect corners. that was half of it. 
    # now look for collisions between a side of the circle
    #  and a side of the rect

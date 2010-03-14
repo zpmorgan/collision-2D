@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More tests => 121;
+use Test::More tests => 141;
 use Test::Number::Delta;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
@@ -253,10 +253,11 @@ use Test::Number::Delta;
    my $rect = hash2rect {x=>200, y=>200, w=>150, h=>70};
    
    for (1..20){
-      my $circ = hash2circle {x=>200+$_, y=>160, radius=>30, yv=>15};
-      my $collision = dynamic_collision ($rect, $circ);
-      warn ("x=".(200+$_));
-      warn join ',',@{normalize_vec($collision->maxis)};
+      my $circ = hash2circle {x=>200+$_, y=>155, radius=>30, yv=>15};
+      my $collision = dynamic_collision ($rect, $circ, interval=>2);
+      #warn ("x=".(200+$_));
+      is ($collision->time, 1);
+      #warn join ',',@{normalize_vec($collision->maxis)};
       is_deeply (normalize_vec($collision->maxis), [0,1]);
    }
 }
