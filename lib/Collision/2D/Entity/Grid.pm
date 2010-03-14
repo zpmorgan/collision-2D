@@ -61,12 +61,8 @@ sub cells_intersect_circle{
    my $rx = $circle->x - $self->x; #relative
    my $ry = $circle->y - $self->y;
    my $s = $self->cell_size;
-   for my $y ( ($ry - $r) .. ($ry + $r) ) {
-      next if $y < 0;
-      last if $y > $self->cells_y;
-      for my $x ( ($rx - $r) .. ($ry + $r) ) {
-         next if $x < 0;
-         last if $x > $self->cells_x;
+   for my $y ( max(0, $ry - $r) .. min ($self->cells_y-1, $ry + $r) ) {
+      for my $x ( max(0, $rx - $r) .. min ($self->cells_x-1, $ry + $r) ) {
          my $rect = Collision::2D::Entity::Rect->new (
             x => $self->x + $x*$s,
             y => $self->y + $y*$s,
