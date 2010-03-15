@@ -28,12 +28,6 @@ sub intersect_circle{
 
 sub intersect_point{
    my ($self, $point) = @_;
-   #warn $self->radius**2 ;
-   #warn (($self->x - $point->x)**2);
-   #warn (($self->y - $point->y)**2);
-   #warn (($self->x - $point->x)**2 + 
-	#	   ($self->y - $point->y)**2);
-   #die;
    return   $self->radius**2 >
          ($self->x - $point->x)**2 + 
          ($self->y - $point->y)**2;

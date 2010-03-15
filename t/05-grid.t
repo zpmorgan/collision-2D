@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More  tests => 17;
+use Test::More  tests => 18;
 
 #grids are an optimization, but here I suppose we'll just test function rather than performance
 
@@ -17,6 +17,7 @@ use Test::More  tests => 17;
       hash2point ({x=>1.8887 + sqrt(2), y=>-1.1234 - sqrt(2)}),
       hash2point ({x=>1.8889 - sqrt(2), y=>-1.1234 - sqrt(2)}),
       hash2point ({x=>1.8889 - sqrt(2), y=>-1.1234 + sqrt(2)}),
+      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1234}), #E, very in
    );
    my @points_out = (
       hash2point ({x=>1.8887 - sqrt(2), y=>-1.1234 - sqrt(2)}),
@@ -31,6 +32,7 @@ use Test::More  tests => 17;
    ok (intersection ($grid, $points_in[1]), 'SE collision');
    ok (intersection ($grid, $points_in[2]), 'SW collision');
    ok (intersection ($grid, $points_in[3]), 'NW collision');
+   ok (intersection ($grid, $points_in[4]), 'E collision');
    ok (!intersection ($grid, $points_out[0]), 'NE non-collision');
    ok (!intersection ($grid, $points_out[1]), 'SE non-collision');
    ok (!intersection ($grid, $points_out[2]), 'SW non-collision');

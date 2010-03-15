@@ -52,6 +52,7 @@ has cell_size => (
 );
 
 #nonmoving circle, not necessarily normalized
+#returns list of [cell_x,cell_y],...
 sub cells_intersect_circle{
    my ($self, $circle) = @_;
    my @cells; # [int,int], ...
@@ -75,8 +76,7 @@ sub cells_intersect_circle{
          }
       }
    }
-   return @cells
-   
+   return @cells;
 }
 sub cells_intersect_rect{
    my ($self, $rect) = @_;
@@ -114,14 +114,14 @@ sub add_rect {
    my ($self, $rect) = @_;
    my @cells = $self->cells_intersect_rect ($rect);
    for (@cells){
-      push @{$self->table->[$_->[0]][$_->[1]]}, $rect;
+      push @{$self->table->[$_->[1]][$_->[0]]}, $rect;
    }
 }
 sub add_circle {
    my ($self, $circle) = @_;
    my @cells = $self->cells_intersect_circle ($circle);
    for (@cells){
-      push @{$self->table->[$_->[0]][$_->[1]]}, $circle;
+      push @{$self->table->[$_->[1]][$_->[0]]}, $circle;
    }
 }
 
@@ -129,7 +129,7 @@ sub intersect_circle {
    my ($self, $circle) = @_;
    my @cells = $self->cells_intersect_circle ($circle);
    for (@cells){
-      for my $ent (@{$self->table->[$_->[0]][$_->[1]]}){
+      for my $ent (@{$self->table->[$_->[1]][$_->[0]]}){
          return 1 if $circle->intersect($ent);
       }
    }
@@ -137,7 +137,7 @@ sub intersect_circle {
 }
 sub intersect_rect {
    my ($self, $rect) = @_;
-   my @cells = $self->cells_intersect_circle ($rect);
+   my @cells = $self->cells_intersect_rect ($rect);
    for (@cells){
       for my $ent (@{$self->table->[$_->[0]][$_->[1]]}){
          return 1 if $rect->intersect($ent);
@@ -147,7 +147,7 @@ sub intersect_rect {
 }
 
 sub remove_circle{
-   #find cells, grep circle from each
+   #find cells, grep circle from each...
 }
 
 sub intersect_point{
@@ -156,13 +156,12 @@ sub intersect_point{
    my $ry = $pt->y - $self->y; 
    my $s = $self->cell_size;
    my $cell_x = $rx/$s;
-   my $cell_y = $rx/$s;
+   my $cell_y = $ry/$s;
    return if $cell_x<0 or $cell_y<0 
           or $cell_x>= $self->cells_x
           or $cell_y>= $self->cells_y;
    my @collisions;
    for (@{$self->table->[$cell_y][$cell_x]}){ #each ent in cell
-      warn $_;
       push @collisions, Collision::2D::intersection($pt, $_);
    }
    @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
