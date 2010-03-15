@@ -2,6 +2,7 @@ package Collision::2D::Entity::Rect;
 use Mouse;
 extends 'Collision::2D::Entity';
 
+sub _p{4} #low priority
 use overload '""'  => sub{'rect'};
 
 has 'w' => (

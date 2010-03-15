@@ -3,6 +3,7 @@ use Mouse;
 use Collision::2D::Entity::Rect;
 extends 'Collision::2D::Entity';
 
+sub _p{2} #highish priority
 use overload '""'  => sub{'circle'};
 
 #in a circle, x and y denote center. 

@@ -11,32 +11,30 @@ use Test::More  tests => 17;
 #motionless circle with points on grid
 {
    my $pie = hash2circle {x=>1.8888, y=>-1.1234, radius=>2}; #motionless
-   my $grid = hash2grid {x=>-15, y=>-15, w=>30, h=>30,  cell_size => 2 };
+   my $grid = hash2grid {x=>-15, y=>-15, w=>30, h=>30,  cell_size => .888 };
    my @points_in = (
-      hash2point {x=>1.8887 + sqrt(2), y=>-1.1233 + sqrt(2)},
-      hash2point {x=>1.8887 + sqrt(2), y=>-1.1235 - sqrt(2)},
-      hash2point {x=>1.8889 - sqrt(2), y=>-1.1235 - sqrt(2)},
-      hash2point {x=>1.8889 - sqrt(2), y=>-1.1233 + sqrt(2)},
+      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1233 + sqrt(2)}),
+      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1235 - sqrt(2)}),
+      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1235 - sqrt(2)}),
+      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1233 + sqrt(2)}),
    );
    my @points_out = (
-      hash2point {x=>1.8887 - sqrt(2), y=>-1.1233 - sqrt(2)},
-      hash2point {x=>1.8887 - sqrt(2), y=>-1.1235 + sqrt(2)},
-      hash2point {x=>1.8889 + sqrt(2), y=>-1.1235 + sqrt(2)},
-      hash2point {x=>1.8889 + sqrt(2), y=>-1.1233 - sqrt(2)},
+      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1233 - sqrt(2)}),
+      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1235 + sqrt(2)}),
+      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1235 + sqrt(2)}),
+      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1233 - sqrt(2)}),
    );
-   $grid->add_point ($_) for (@points_in, @points_out);
+   #$grid->add_point ($_) for (@points_in, @points_out);
+   $grid->add_circle($pie);
    
-   my @in_collisions = map {dynamic_collision ($grid, $_)} @points_in;
-   my @out_collisions = map {dynamic_collision ($grid, $_)} @points_out;
-   
-   ok ($in_collisions[0], 'NE collision');
-   ok ($in_collisions[1], 'SE collision');
-   ok ($in_collisions[2], 'SW collision');
-   ok ($in_collisions[3], 'NW collision');
-   ok (!$out_collisions[0], 'NE non-collision');
-   ok (!$out_collisions[1], 'SE non-collision');
-   ok (!$out_collisions[2], 'SW non-collision');
-   ok (!$out_collisions[3], 'NW non-collision');
+   ok (intersection ($grid, $points_in[0]), 'NE collision');
+   ok (intersection ($grid, $points_in[1]), 'SE collision');
+   ok (intersection ($grid, $points_in[2]), 'SW collision');
+   ok (intersection ($grid, $points_in[3]), 'NW collision');
+   ok (!intersection ($grid, $points_out[0]), 'NE non-collision');
+   ok (!intersection ($grid, $points_out[1]), 'SE non-collision');
+   ok (!intersection ($grid, $points_out[2]), 'SW non-collision');
+   ok (!intersection ($grid, $points_out[3]), 'NW non-collision');
 }
 
 # just a circle on grid

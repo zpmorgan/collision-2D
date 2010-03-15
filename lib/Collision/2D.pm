@@ -15,6 +15,7 @@ BEGIN {
    our @ISA = qw(Exporter);
    our @EXPORT_OK = qw( 
       dynamic_collision
+      intersection
       hash2point hash2rect
       obj2point  obj2rect
       hash2circle obj2circle
@@ -42,7 +43,7 @@ sub dynamic_collision{
    
    #now, we sort by package name. This is so we can find specific routine in predictable namespace.
    #for example, p comes before r, so point-rect collisions are at $point->collide_rect
-   ($ent1, $ent2) =  ($ent2, $ent1)  if  ("$ent1" gt "$ent2" );
+   ($ent1, $ent2) =  ($ent2, $ent1)  if  ($ent1->_p > $ent2->_p );
    my $method = "collide_$ent2";
    
    $ent1->normalize($ent2);
@@ -59,7 +60,7 @@ sub intersection{
       }
       return 0;
    }
-   ($ent1, $ent2) =  ($ent2, $ent1)  if  ("$ent1" gt "$ent2" );
+   ($ent1, $ent2) =  ($ent2, $ent1)  if  ($ent1->_p > $ent2->_p );
    my $method = "intersect_$ent2";
    
    return 1 if $ent1->$method($ent2);

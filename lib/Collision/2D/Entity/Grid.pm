@@ -4,8 +4,8 @@ extends 'Collision::2D::Entity';
 use List::AllUtils qw/max min/;
 use POSIX qw(ceil floor);
 
-
-use overload '""'  => sub{'bgrid'}; #before circle :|
+sub _p{1} #highest priority -- include all relevant methods in this module
+use overload '""'  => sub{'grid'};
 
 
 # table where we store every grid child;
@@ -151,6 +151,25 @@ sub remove_circle{
    #find cells, grep circle from each
 }
 
+sub intersect_point{
+   my ($self, $pt) = @_;
+   my $rx = $pt->x - $self->x; #relative loc of point to grid
+   my $ry = $pt->y - $self->y; 
+   my $s = $self->cell_size;
+   my $cell_x = $rx/$s;
+   my $cell_y = $rx/$s;
+   return if $cell_x<0 or $cell_y<0 
+          or $cell_x>= $self->cells_x
+          or $cell_y>= $self->cells_y;
+   my @collisions;
+   for (@{$self->table->[$cell_y][$cell_x]}){ #each ent in cell
+      warn $_;
+      push @collisions, Collision::2D::intersection($pt, $_);
+   }
+   @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
+   return $collisions[0];
+}
+   
 sub collide_point{
    my ($self, $pt, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of point to grid
@@ -176,6 +195,8 @@ sub collide_point{
          }
       }
    }
+   @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
+   return $collisions[0];
 }
 
 no Mouse;
