@@ -12,43 +12,43 @@ use overload '""'  => sub{'grid'};
 # in each cell, a list of entities which intersect it
 # table is a list of rows, so it's table->[y][x] = [ent,...]
 has table => (
-	isa => 'ArrayRef[ArrayRef[ArrayRef[Collision::2D::Entity]]]',
-	is  => 'ro',
-	lazy => 1,
-	default => sub {
-		[];
-	},
+   isa => 'ArrayRef[ArrayRef[ArrayRef[Collision::2D::Entity]]]',
+   is  => 'ro',
+   lazy => 1,
+   default => sub {
+      [];
+   },
 );
 
 has $_      => (
-	isa => 'Num',
-	is  => 'ro',
-	default => 0,
+   isa => 'Num',
+   is  => 'ro',
+   default => 0,
 ) for qw/w h/;
 
 #there's a reason you can't find, say, cell row count with @{$grid->table}
 #that reason is autovivication
 has cells_x => (
-	isa => 'Int',
-	is  => 'ro',
-	lazy  => 1,
-	default => sub{
-         return ceil( $_[0]->w / $_[0]->cell_size)
+   isa => 'Int',
+   is  => 'ro',
+   lazy  => 1,
+   default => sub{
+      return ceil( $_[0]->w / $_[0]->cell_size)
    },
 );
 has cells_y => (
-	isa => 'Int',
-	is  => 'ro',
-	lazy  => 1,
-	default => sub{
-         return ceil( $_[0]->h / $_[0]->cell_size)
+   isa => 'Int',
+   is  => 'ro',
+   lazy  => 1,
+   default => sub{
+      return ceil( $_[0]->h / $_[0]->cell_size)
    },
 );
 
 # granularity; cells will be squares of this size
 has cell_size => ( 
-	isa => 'Num',
-	is  => 'ro',
+   isa => 'Num',
+   is  => 'ro',
 );
 
 #nonmoving circle, not necessarily normalized
@@ -56,7 +56,7 @@ sub cells_intersect_circle{
    my ($self, $circle) = @_;
    my @cells; # [int,int], ...
    
-	#must find a faster way to find points inside
+   #must find a faster way to find points inside
    my $r = $circle->radius;
    my $rx = $circle->x - $self->x; #relative
    my $ry = $circle->y - $self->y;
@@ -82,7 +82,6 @@ sub cells_intersect_rect{
    my ($self, $rect) = @_;
    my @cells; # [int,int], ...
    
-	#must find a faster way to find points inside
    my $rx = $rect->x - $self->x; #relative
    my $ry = $rect->y - $self->y;
    my $s = $self->cell_size;
@@ -109,20 +108,20 @@ sub add_point {
    
    my $cell_x = int ($rx / $s);
    my $cell_y = int ($ry / $s);
-   push	@{$self->table->[$cell_y][$cell_x]}, $pt;
+   push @{$self->table->[$cell_y][$cell_x]}, $pt;
 }
 sub add_rect {
    my ($self, $rect) = @_;
    my @cells = $self->cells_intersect_rect ($rect);
    for (@cells){
-      push	@{$self->table->[$_->[0]][$_->[1]]}, $rect;
+      push @{$self->table->[$_->[0]][$_->[1]]}, $rect;
    }
 }
 sub add_circle {
    my ($self, $circle) = @_;
    my @cells = $self->cells_intersect_circle ($circle);
    for (@cells){
-      push	@{$self->table->[$_->[0]][$_->[1]]}, $circle;
+      push @{$self->table->[$_->[0]][$_->[1]]}, $circle;
    }
 }
 

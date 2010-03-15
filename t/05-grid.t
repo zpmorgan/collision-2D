@@ -13,16 +13,16 @@ use Test::More  tests => 17;
    my $pie = hash2circle {x=>1.8888, y=>-1.1234, radius=>2}; #motionless
    my $grid = hash2grid {x=>-15, y=>-15, w=>30, h=>30,  cell_size => .888 };
    my @points_in = (
-      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1233 + sqrt(2)}),
-      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1235 - sqrt(2)}),
-      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1235 - sqrt(2)}),
-      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1233 + sqrt(2)}),
+      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1234 + sqrt(2)}),
+      hash2point ({x=>1.8887 + sqrt(2), y=>-1.1234 - sqrt(2)}),
+      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1234 - sqrt(2)}),
+      hash2point ({x=>1.8889 - sqrt(2), y=>-1.1234 + sqrt(2)}),
    );
    my @points_out = (
-      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1233 - sqrt(2)}),
-      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1235 + sqrt(2)}),
-      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1235 + sqrt(2)}),
-      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1233 - sqrt(2)}),
+      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1234 - sqrt(2)}),
+      hash2point ({x=>1.8887 - sqrt(2), y=>-1.1234 + sqrt(2)}),
+      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1234 + sqrt(2)}),
+      hash2point ({x=>1.8889 + sqrt(2), y=>-1.1234 - sqrt(2)}),
    );
    #$grid->add_point ($_) for (@points_in, @points_out);
    $grid->add_circle($pie);

@@ -21,17 +21,22 @@ sub intersect_circle{
 
    #sqrt is more expensive than square
    return  ($self->radius + $other->radius)**2 > 
-		   ($self->x - $other->x)**2 + 
-		   ($self->y - $other->y)**2;
+         ($self->x - $other->x)**2 + 
+         ($self->y - $other->y)**2;
 }
 
 
 sub intersect_point{
    my ($self, $point) = @_;
-
+   #warn $self->radius**2 ;
+   #warn (($self->x - $point->x)**2);
+   #warn (($self->y - $point->y)**2);
+   #warn (($self->x - $point->x)**2 + 
+	#	   ($self->y - $point->y)**2);
+   #die;
    return   $self->radius**2 >
-		   ($self->x - $point->x)**2 + 
-		   ($self->y - $point->y)**2;
+         ($self->x - $point->x)**2 + 
+         ($self->y - $point->y)**2;
 }
 
 #both stationary
