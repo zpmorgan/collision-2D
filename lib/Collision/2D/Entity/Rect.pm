@@ -29,10 +29,12 @@ sub intersect_rect{
 
 sub collide_rect{
    my ($self, $other, %params) = @_;
+   my $xv = $self->relative_xv;
+   my $yv = $self->relative_yv;
    my $x1 = $self->relative_x;
-   my $x2 = $x1 + ($self->relative_xv * $params{interval});
    my $y1 = $self->relative_y;
-   my $y2 = $y1 + ($self->relative_yv * $params{interval});
+   my $x2 = $x1 + ($xv * $params{interval});
+   my $y2 = $y1 + ($yv * $params{interval});
    my $sw = $self->w;
    my $sh = $self->h;
    my $ow = $other->w;
@@ -55,28 +57,41 @@ sub collide_rect{
    my $best_axis;
    
    if ($x1+$sw < 0){ #hit on left of $other
-      $best_time = -($x1+$sw)/$self->relative_xv;
-      $best_axis = 'x';
-   }
-   if ($y1+$sh < 0){ #hit on bottom of $other
-      my $time = -($y1+$sh)/$self->relative_yv;
-      if ($time<$best_time){
-         $best_time = $time;
-         $best_axis = 'y';
-      }
-   }
-   if ($x1 > $ow){ #hit on right of $other
-      my $time = -($x1 - $ow)/$self->relative_xv;
-      if ($time<$best_time){
+      my $time = -($x1+$sw)/$xv;
+      my $yatt = $y1+$yv*$time;
+      if ($yatt + $sh > 0 and $yatt < $oh){
          $best_time = $time;
          $best_axis = 'x';
       }
    }
-   if ($y1 > $oh){ #hit on right of $top
-      my $time = -($y1 - $oh)/$self->relative_yv;
+   if ($y1+$sh < 0){ #hit on bottom of $other
+      my $time = -($y1+$sh)/$yv;
       if ($time<$best_time){
-         $best_time = $time;
-         $best_axis = 'y';
+         my $xatt = $x1+$xv*$time;
+         if ($xatt + $sw > 0 and $xatt < $ow){
+            $best_time = $time;
+            $best_axis = 'y';
+         }
+      }
+   }
+   if ($x1 > $ow){ #hit on right of $other
+      my $time = -($x1 - $ow)/$xv;
+      if ($time<$best_time){
+         my $yatt = $y1+$yv*$time;
+         if ($yatt + $sh > 0 and $yatt < $oh){
+            $best_time = $time;
+            $best_axis = 'x';
+         }
+      }
+   }
+   if ($y1 > $oh){ #hit on right of $top
+      my $time = -($y1 - $oh)/$yv;
+      if ($time<$best_time){
+         my $xatt = $x1+$xv*$time;
+         if ($xatt + $sw > 0 and $xatt < $ow){
+            $best_time = $time;
+            $best_axis = 'y';
+         }
       }
    }
    

@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More tests => 141;
+use Test::More tests => 145;
 use Test::Number::Delta;
 
 #First do rect-point collisions. the method is $point->collide_rect($rect,...)
@@ -244,6 +244,15 @@ use Test::Number::Delta;
    is($collision->time, .5, 'squares vcollide at t=.5');
    is($collision->axis, 'y', 'vcollide axis is y');
    
+   my $foomiss = hash2rect {x=>-3.1+6, y=>-3-6, h=>2,w=>2, xv=>-6, yv=>6};
+   my $foohit = hash2rect {x=>-2.9+6, y=>-3-6, h=>2,w=>2, xv=>-6, yv=>6};
+   my $barmiss = hash2rect {y=>-3.1+6, x=>-3-6, h=>2,w=>2, yv=>-6, xv=>6};
+   my $barhit = hash2rect {y=>-2.9+6, x=>-3-6, h=>2,w=>2, yv=>-6, xv=>6};
+   #diagonally passing and/or colliding
+   ok (dynamic_collision ($square1, $foohit), 'rectrect diag hit');
+   ok (!dynamic_collision ($square1, $foomiss), 'rectrect diag miss');
+   ok (dynamic_collision ($square1, $barhit), 'rectrect diag hit');
+   ok (!dynamic_collision ($square1, $barmiss), 'rectrect diag miss');
 }
 
 #bad circle-rect behavior is apparent in marble.pl
