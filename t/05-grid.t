@@ -42,8 +42,8 @@ use Test::More  tests => 18;
 # just a circle on grid
 {
    
-   my $pie = hash2circle {x=>.5, y=>.5, radius=>1.01}; #motionless
-   my $grid = hash2grid {x=>-1, y=>-1, w=>3, h=>3,  cell_size => 1 };
+   my $pie = hash2circle {x=>.5, y=>.5, radius=>.51}; #motionless
+   my $grid = hash2grid {x=>-1, y=>-1, w=>4, h=>4,  cell_size => 1 };
    $grid->add_circle ($pie);
    
    ok ($grid->table->[1][1], 'circle is primarily here');
