@@ -228,12 +228,12 @@ sub collide_rect{
    for my $y ($cell_y_min .. $cell_y_max) {
       for my $x ($cell_x_min .. $cell_x_max) {
          next unless $self->table->[$y][$x];
-      #   next unless Collision::2D::dynamic_collision ( #rect collides with cell?
-      #      $rect, Collision::2D::hash2rect ({
-      #         x => $self->x + $x*$s,
-      #         y => $self->y + $y*$s,
-      #         w => $s, h => $s,
-      #      }));
+         next unless Collision::2D::dynamic_collision ( #rect collides with cell?
+            $rect, Collision::2D::hash2rect ({
+               x => $self->x + $x*$s,
+               y => $self->y + $y*$s,
+               w => $s, h => $s,
+            }));
          for (@{$self->table->[$y][$x]}){ #each ent in cell
             push @collisions, Collision::2D::dynamic_collision($rect, $_);
          }
