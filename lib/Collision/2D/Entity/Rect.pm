@@ -19,12 +19,12 @@ has 'h' => (
 );
 
 sub intersect_rect{
-   return ($_[0]->x <= $_[1]->x) #wat?
-            && ($_[0]->y <= $_[1]->y) #wat?
-            && ($_[0]->x + $_[0]->w >= $_[1]->x + $_[1]->w) 
-            && ($_[0]->y + $_[0]->h >= $_[1]->y + $_[1]->h) 
-            && ($_[0]->x + $_[0]->w > $_[1]->x) 
-            && ($_[0]->y + $_[0]->h > $_[1]->y);
+   my ($self, $other) = @_;
+   return (
+               ($self->x < $other->x + $other->w) 
+            && ($self->y < $other->y + $other->h) 
+            && ($self->x + $self->w > $other->x) 
+            && ($self->y + $self->h > $other->y));
 }
 
 sub collide_rect{

@@ -51,6 +51,19 @@ has cell_size => (
    is  => 'ro',
 );
 
+sub add{
+   my ($self, @others) = @_;
+   for (@others){
+      if (ref $_ eq 'ARRAY'){
+         $self->add(@$_);
+      }
+      my $method = "add_$_";
+      $self->$method($_);
+   }
+   
+}
+
+
 #nonmoving circle, not necessarily normalized
 #returns list of [cell_x,cell_y],...
 sub cells_intersect_circle{
@@ -139,7 +152,7 @@ sub intersect_rect {
    my ($self, $rect) = @_;
    my @cells = $self->cells_intersect_rect ($rect);
    for (@cells){
-      for my $ent (@{$self->table->[$_->[0]][$_->[1]]}){
+      for my $ent (@{$self->table->[$_->[1]][$_->[0]]}){
          return 1 if $rect->intersect($ent);
       }
    }
