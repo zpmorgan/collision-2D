@@ -210,6 +210,39 @@ sub collide_point{
    return $collisions[0];
 }
 
+sub collide_rect{
+   my ($self, $rect, %params) = @_;
+   my $rx = -$self->relative_x; #relative loc of rect to grid
+   my $ry = -$self->relative_y; 
+   my $rxv = -$self->relative_xv; #relative velocity of rect to grid
+   my $ryv = -$self->relative_yv; 
+   my $s = $self->cell_size;
+   my $w = $rect->w;
+   my $h = $rect->h;
+   my $cell_x_min = max(0,  min ($rx/$s, ($rx+$rxv*$params{interval})/$s));
+   my $cell_y_min = max(0,  min ($ry/$s, ($ry+$ryv*$params{interval})/$s));
+   my $cell_x_max = min($self->cells_x-1,  max ($rx/$s, ($rx+$w+$rxv*$params{interval})/$s));
+   my $cell_y_max = min($self->cells_y-1,  max ($ry/$s, ($ry+$h+$ryv*$params{interval})/$s));
+   
+   my @collisions;
+   for my $y ($cell_y_min .. $cell_y_max) {
+      for my $x ($cell_x_min .. $cell_x_max) {
+         next unless $self->table->[$y][$x];
+      #   next unless Collision::2D::dynamic_collision ( #rect collides with cell?
+      #      $rect, Collision::2D::hash2rect ({
+      #         x => $self->x + $x*$s,
+      #         y => $self->y + $y*$s,
+      #         w => $s, h => $s,
+      #      }));
+         for (@{$self->table->[$y][$x]}){ #each ent in cell
+            push @collisions, Collision::2D::dynamic_collision($rect, $_);
+         }
+      }
+   }
+   @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
+   return $collisions[0];
+}
+
 no Mouse;
 __PACKAGE__->meta->make_immutable();
 

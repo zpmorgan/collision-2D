@@ -4,7 +4,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More  tests => 76;
+use Test::More  tests => 88;
 
 #grids are an optimization, but here I suppose we'll just test function rather than performance
 
@@ -71,5 +71,15 @@ use Test::More  tests => 76;
    ok ($grid->collide (hash2rect {x=>1,      y=>-.9994, h=>1, w=>1}));
    ok ($grid->collide (hash2rect {x=>-.9994, y=>1,      h=>1, w=>1}));
    ok ($grid->collide (hash2rect {x=>-.9994, y=>-.9994, h=>1, w=>1}));
+   
+   #now in srsly motion
+   ok ($grid->collide (hash2rect {x=>1+5,      y=>1-5,      h=>1, w=>1, xv=>-5, yv=>5}), 'RR, NE corner from SE');
+   ok ($grid->collide (hash2rect {x=>1-5,      y=>1+5,      h=>1, w=>1, xv=>5, yv=>-5}), 'RR, NE corner from NW');
+   ok ($grid->collide (hash2rect {x=>1+5,      y=>-.9994+5, h=>1, w=>1, xv=>-5, yv=>-5}), 'RR, SE corner from SW');
+   ok ($grid->collide (hash2rect {x=>1-5,      y=>-.9994-5, h=>1, w=>1, xv=>5, yv=>5}), 'RR, SE corner from NE');
+   ok ($grid->collide (hash2rect {x=>-.9994+5, y=>1+5,          h=>1, w=>1, xv=>-5, yv=>-5}));
+   ok ($grid->collide (hash2rect {x=>-.9994-5, y=>1-5,          h=>1, w=>1, xv=>5, yv=>5}));
+   ok ($grid->collide (hash2rect {x=>-.9994+5, y=>-.9994-5,     h=>1, w=>1, xv=>-5, yv=>5}));
+   ok ($grid->collide (hash2rect {x=>-.9994-5, y=>-.9994+5,     h=>1, w=>1, xv=>5, yv=>-5}));
 }
 
