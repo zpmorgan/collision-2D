@@ -76,7 +76,9 @@ while ( $cont ) {
    }
    
    for my $marble (@marbles,@squarbles){
-      my $interval = 1;
+      $marble->{interval} = 1;
+   }
+   for my $marble (@marbles,@squarbles){
       $marble->{y} = -60 if $marble->{y} > 560;#wrap y
       $marble->{y} = 560 if $marble->{y} < -60;#wrap y
       $marble->{x} = -60 if $marble->{x} > 960;#wrap x
@@ -89,11 +91,16 @@ while ( $cont ) {
       
       #squarble?
       my $ent = $marble->{h} ? hash2rect($marble) : hash2circle ($marble);
-      my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @crates;
-      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @dots;
-      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @lamps;
+      my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @crates;
+      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @dots;
+      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @lamps;
       push @collisions, #collide with other marbles too
-                 map {dynamic_collision (hash2circle ($marble), hash2circle ($_))} 
+                 map {dynamic_collision (
+                     $ent, 
+                     $_->{h} ? hash2rect($_) : hash2circle ($_),
+                     interval=>$marble->{interval},
+                     keep_order=>1
+                     )} 
                  grep {$_ != $marble}
                  (@marbles,@squarbles);
       @collisions = grep {$_ and $_->time} @collisions;
@@ -106,12 +113,12 @@ while ( $cont ) {
          my $bvec = $collision->bounce_vector(elasticity=>1);
          $marble->{xv} = $bvec->[0];
          $marble->{yv} = $bvec->[1];
-         $interval -= $collision->time; #leftover frame interval
+         $marble->{interval} -= $collision->time; #leftover frame interval
          redo;
       }
       else {
-         $marble->{y} += $marble->{yv}*$interval;
-         $marble->{x} += $marble->{xv}*$interval;
+         $marble->{y} += $marble->{yv}*$marble->{interval};
+         $marble->{x} += $marble->{xv}*$marble->{interval};
       }
    }
    SDL::Video::fill_rect(

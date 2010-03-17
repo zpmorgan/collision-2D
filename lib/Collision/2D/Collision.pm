@@ -63,6 +63,7 @@ sub bounce_vector{
    my $ryv = $self->ent1->relative_yv;
    my $rv_len = sqrt($rxv**2 + $ryv**2);
    my $dot = $rxv*$axis->[0] + $ryv*$axis->[1];
+   warn $rv_len;
    my $angle = acos($dot / ($axis_len * $rv_len));
    
    my $axis_scalar = $rv_len * cos($angle) / $axis_len;
@@ -78,7 +79,17 @@ sub bounce_vector{
    return [$r_bounce_xv + $self->ent2->xv, $r_bounce_yv + $self->ent2->yv]
 }
 
-
+sub invert{
+   my $self = shift;
+   my $axis = $self->axis;
+   return Collision::2D::Collision->new(
+      ent1=>$self->ent2,
+      ent2=>$self->ent1,
+      time=>$self->time,
+      axis => ((ref($axis) eq 'ARRAY') ? [-$axis->[0], -$axis->[1]] : $axis),
+   )
+   
+}
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 1
@@ -130,4 +141,17 @@ This is to provide some context for L</axis>. This is useful because
 dynamic_collision doesn't preserve the order of your entities.
 
 =back
+
+=head1 METHODS
+
+=over
+
+=item bounce_vector
+
+=item invert
+
+my $other_collision = $self->invert();
+
+This returns the inverse of this collision. That is, the time remains,
+but ent1 and ent2 are swapped, and the axis is inversed. This does not effect $self.
 

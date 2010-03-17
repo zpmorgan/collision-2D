@@ -43,12 +43,20 @@ sub dynamic_collision{
    
    #now, we sort by package name. This is so we can find specific routine in predictable namespace.
    #for example, p comes before r, so point-rect collisions are at $point->collide_rect
-   ($ent1, $ent2) =  ($ent2, $ent1)  if  ($ent1->_p > $ent2->_p );
+   my $swapped;
+   if  ($ent1->_p > $ent2->_p ){
+      ($ent1, $ent2) =  ($ent2, $ent1);
+      $swapped=1
+   }
    my $method = "collide_$ent2";
    
    $ent1->normalize($ent2);
    my $collision = $ent1->$method($ent2, %params);
-   
+   return unless $collision;
+   if ($params{keep_order} and $swapped){
+      #original ent1 needs to be ent1 in collision
+      return $collision->invert;
+   }
    return $collision;
 }
 
