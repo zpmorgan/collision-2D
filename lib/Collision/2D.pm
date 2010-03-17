@@ -28,7 +28,7 @@ BEGIN {
    );
 }
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
 sub dynamic_collision{
    my ($ent1, $ent2, %params) = @_;
@@ -295,7 +295,6 @@ define function names or use the :all tag.
 
  *point-point collisions? Don't expect much if you try it now.
  *either triangles or line segments (or both!) to model slopes.
- *Collision::2D::Entity::Grid. Because terrain is often on a grid.
  *Something that can model walking on mario-style platformers.
  **maybe entities should be linked to whatever entities they stand/walk on?
  **How should entities fit into 'gaps' in the floor that are their exact size?

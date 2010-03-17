@@ -55,6 +55,7 @@ my @crates = map {random_crate()} (1..2);
 my @dots = map {random_dot()} (1..8);
 my @lamps = map {random_lamp()} (1..5);
 my @marbles = map {random_marble()} (1..3);
+my @squarbles = map {random_squarble()} (1..3);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
@@ -74,7 +75,7 @@ while ( $cont ) {
       }
    }
    
-   for my $marble (@marbles){
+   for my $marble (@marbles,@squarbles){
       my $interval = 1;
       $marble->{y} = -60 if $marble->{y} > 560;#wrap y
       $marble->{y} = 560 if $marble->{y} < -60;#wrap y
@@ -84,15 +85,17 @@ while ( $cont ) {
       $marble->{yv} = -$spd_limit if $marble->{yv} < -$spd_limit; #y speed limit
       $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
       $marble->{xv} = -$spd_limit if $marble->{xv} < -$spd_limit; #x speed limit
-      
       $marble->{yv} += $grav;
-      my @collisions = map {dynamic_collision (hash2circle ($marble), hash2rect ($_), interval=>$interval)} @crates;
-      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2point ($_), interval=>$interval)} @dots;
-      push @collisions, map {dynamic_collision (hash2circle ($marble), hash2circle ($_), interval=>$interval)} @lamps;
+      
+      #squarble?
+      my $ent = $marble->{h} ? hash2rect($marble) : hash2circle ($marble);
+      my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @crates;
+      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @dots;
+      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$interval)} @lamps;
       push @collisions, #collide with other marbles too
                  map {dynamic_collision (hash2circle ($marble), hash2circle ($_))} 
                  grep {$_ != $marble}
-                 @marbles;
+                 (@marbles,@squarbles);
       @collisions = grep {$_ and $_->time} @collisions;
       @collisions = sort {$a->time <=> $b->time} @collisions;
       my $collision = $collisions[0];
@@ -116,7 +119,7 @@ while ( $cont ) {
       SDL::Rect->new( 0, 0, 800, 500 ),
       SDL::Video::map_RGB( $app->format, 0,0,0 )
    );
-   for my $crate (@crates){
+   for my $crate (@crates, @squarbles){
       SDL::Video::blit_surface(
          $crate->{surf},
          SDL::Rect->new( 0, 0, $crate->{w}, $crate->{h}),
@@ -164,11 +167,13 @@ while ( $cont ) {
 sub random_dot{
    my $dot = {x=>30+rand(740), y=>200+rand(250), xv=>0, yv=>0};
    $dot->{surf} = init_dot_surf($dot);
+   $dot->{ent} = hash2point $dot;
    return $dot
 }
 sub random_lamp{
    my $lamp = {x=>100+rand(600), y=>200+rand(250), radius => 5+rand(25), xv=>0, yv=>0};
    $lamp->{surf} = init_marble_surf($lamp);
+   $lamp->{ent} = hash2circle $lamp;
    return $lamp
 }
 sub random_marble{
@@ -179,7 +184,13 @@ sub random_marble{
 sub random_crate{
    my $crate = {x=>rand(700), y=>150+rand(100), w=>rand(50)+150, h=>rand(50)+50};
    $crate->{surf} = init_crate_surf($crate);
+   $crate->{ent} = hash2rect $crate;
    return $crate
+}
+sub random_squarble{
+   my $sqbl = {x=>rand(700), y=>150+rand(100), w=>20+rand(30), h=>20+rand(30), xv=>0, yv=>0};
+   $sqbl->{surf} = init_crate_surf($sqbl);
+   return $sqbl
 }
 
 

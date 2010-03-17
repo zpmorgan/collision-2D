@@ -109,6 +109,31 @@ is not used. The relative attributes of $circ1 are assumed to be relative to $ci
 =head2 normalize
 
  $self->normalize($other); # $other isa entity
+
 This compares the absolute attributes of $self and $other.
 It only sets the relative attributes of $self.
 This is necessary to call collide_*($other) methods on $self.
+
+=head2 collide
+
+ my $collision = $self->collide ($other_entity, interval=>4);
+
+Detect collision with another entity. $self must be normalized to $other.
+Takes interval as a parameter. Returns a collision if there is a collision.
+Returns undef if there is no collision.
+
+=head2 intersect
+
+ my $t_or_f = $self->intersect ($other_entity);
+
+Detect intersection (overlapping) with another entity.
+Takes interval as a parameter. Returns a collision if there is a collision.
+Returns undef if there is no collision.
+
+Relative vectors are not considered for intersection, so $self need not be normalized to $other.
+
+
+
+
+
+
