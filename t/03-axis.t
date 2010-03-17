@@ -5,7 +5,7 @@ use warnings;
 use Collision::2D ':all';
 use Test::Number::Delta;
 
-use Test::More tests => 27;
+use Test::More tests => 32;
 
 #first, bounce point off rect
 {
@@ -103,3 +103,22 @@ use Test::More tests => 27;
    delta_ok ($cbvec->[1], -200 + .888, 'inelastic circle bounce'); #0
    
 }
+
+#now test keep_order parameter
+{
+   my $rect = hash2rect  {x=>0  ,y=>1,w=>1,h=>1, xv=>-1};
+   my $dot  = hash2point {x=>-1.5,y=>1.5,w=>1,h=>1, xv=>1};
+   
+   my $collision = dynamic_collision ($rect, $dot, keep_order=>1);
+   ok ($collision, 'keepordered collision exists');
+   delta_ok ($collision->time, 3/4, 'keepordered collision at ~correct time');
+   is ($collision->ent1, $rect, 'keepordered collision preserves order');
+   
+   my $axis = normalize_vec($collision->maxis);
+   is ($axis->[0], -1, 'keepordered collision axis x is -1, respective of rect');
+   is ($axis->[1], 0, 'keepordered collision axis x is 0, of course');
+   
+}
+
+
+
