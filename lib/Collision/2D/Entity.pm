@@ -68,8 +68,8 @@ sub intersect{
 }
 
 sub collide{
-   my ($self, $other) = @_;
-   return Collision::2D::dynamic_collision ($self, $other);
+   my ($self, $other, %params) = @_;
+   return Collision::2D::dynamic_collision ($self, $other, %params);
 }
 
 no Mouse;

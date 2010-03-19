@@ -208,7 +208,7 @@ sub collide_point{
    my $x2 = $x1 - $self->relative_xv * $params{interval};
    my $y2 = $y1 - $self->relative_yv * $params{interval};
    
-   if (sqrt($x1**2 + $y1**2) < $self->radius) {
+   if (($x1**2 + $y1**2) < $self->radius**2) {
       return $self->null_collision($point);
    }
    

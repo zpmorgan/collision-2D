@@ -83,13 +83,16 @@ sub invert{
    my $self = shift;
    my $axis = $self->axis;
    if (ref($axis) eq 'ARRAY'){
+      $axis = [-$axis->[0], -$axis->[1]]
+   }
+   else{ #x or y
       $self->ent2->normalize($self->ent1);
    }
    return Collision::2D::Collision->new(
       ent1=>$self->ent2,
       ent2=>$self->ent1,
       time=>$self->time,
-      axis => ((ref($axis) eq 'ARRAY') ? [-$axis->[0], -$axis->[1]] : $axis),
+      axis => $axis,
    )
    
 }
