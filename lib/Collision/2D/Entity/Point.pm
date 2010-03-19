@@ -73,7 +73,6 @@ sub collide_rect{
    
    #not that simple. either it enters rect, or passes by a corner. check each rect line segment.
    my ($best_time, $best_axis);
-   warn 'FOO' . $params{interval};
    if ($self->relative_xv){
       if ($x1 < 0 and $x2 > 0){ # horizontally pass rect's left side
          my $t = (-$x1) / $self->relative_xv;

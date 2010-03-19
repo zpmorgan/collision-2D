@@ -68,7 +68,6 @@ sub intersect_rect{
 sub collide_rect{
    my ($self, $rect, %params) = @_;
    my @collisions;
-   warn 'BAR' . $params{interval};
    
    #my doing this we can consider $self to be stationary and $rect to be moving.
    #this line segment is path of rect during this interval

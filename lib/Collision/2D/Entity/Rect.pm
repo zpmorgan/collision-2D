@@ -96,7 +96,6 @@ sub collide_rect{
    }
    
    if ($best_time <= $params{interval}){
-   warn $best_time;
       return Collision::2D::Collision->new(
          axis => $best_axis,
          time => $best_time,

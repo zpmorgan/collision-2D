@@ -3,6 +3,7 @@ use Mouse;
 extends 'Collision::2D::Entity';
 use List::AllUtils qw/max min/;
 use POSIX qw(ceil floor);
+use Set::Object;
 
 sub _p{1} #highest priority -- include all relevant methods in this module
 use overload '""'  => sub{'grid'};
@@ -141,8 +142,11 @@ sub add_circle {
 sub intersect_circle {
    my ($self, $circle) = @_;
    my @cells = $self->cells_intersect_circle ($circle);
+   my $done = Set::Object->new();
    for (@cells){
       for my $ent (@{$self->table->[$_->[1]][$_->[0]]}){
+         next if $done->contains($ent);
+         $done->insert($ent);
          return 1 if $circle->intersect($ent);
       }
    }
@@ -151,8 +155,12 @@ sub intersect_circle {
 sub intersect_rect {
    my ($self, $rect) = @_;
    my @cells = $self->cells_intersect_rect ($rect);
+   
+   my $done = Set::Object->new();
    for (@cells){
       for my $ent (@{$self->table->[$_->[1]][$_->[0]]}){
+         next if $done->contains($ent);
+         $done->insert($ent);
          return 1 if $rect->intersect($ent);
       }
    }
@@ -193,7 +201,8 @@ sub collide_point{
    my $cell_y_min = min ($ry/$s, ($ry+$ryv*$params{interval})/$s);
    my $cell_y_max = max ($ry/$s, ($ry+$ryv*$params{interval})/$s);
    
-   my @collisions;
+   my $done = Set::Object->new();
+   my $best_collision;
    for my $y ( $cell_y_min .. $cell_y_max ) {
       next if $y < 0;
       last if $y > $self->cells_y;
@@ -202,12 +211,17 @@ sub collide_point{
          last if $x > $self->cells_x;
          next unless $self->table->[$y][$x];
          for (@{$self->table->[$y][$x]}){ #each ent in cell
-            push @collisions, Collision::2D::dynamic_collision($pt, $_);
+            next if $done->contains($_);
+            $done->insert($_);
+            my $collision = Collision::2D::dynamic_collision($pt, $_, %params);
+            next unless $collision;
+            if (!$best_collision or  ($collision->time < $best_collision->time)){
+               $best_collision = $collision;
+            }
          }
       }
    }
-   @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
-   return $collisions[0];
+   return $best_collision
 }
 
 sub collide_rect{
@@ -224,7 +238,8 @@ sub collide_rect{
    my $cell_x_max = min($self->cells_x-1,  max ($rx/$s, ($rx+$w+$rxv*$params{interval})/$s));
    my $cell_y_max = min($self->cells_y-1,  max ($ry/$s, ($ry+$h+$ryv*$params{interval})/$s));
    
-   my @collisions;
+   my $done = Set::Object->new();
+   my $best_collision;
    for my $y ($cell_y_min .. $cell_y_max) {
       for my $x ($cell_x_min .. $cell_x_max) {
          next unless $self->table->[$y][$x];
@@ -235,12 +250,17 @@ sub collide_rect{
                w => $s, h => $s,
             }));
          for (@{$self->table->[$y][$x]}){ #each ent in cell
-            push @collisions, Collision::2D::dynamic_collision($rect, $_);
+            next if $done->contains($_);
+            $done->insert($_);
+            my $collision = Collision::2D::dynamic_collision($rect, $_, %params);
+            next unless $collision;
+            if (!$best_collision or  ($collision->time < $best_collision->time)){
+               $best_collision = $collision;
+            }
          }
       }
    }
-   @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
-   return $collisions[0];
+   return $best_collision;
 }
 
 no Mouse;
