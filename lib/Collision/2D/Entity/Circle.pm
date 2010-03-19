@@ -324,39 +324,6 @@ sub collide_grid {
 	)[0]; # the earliest collision
 }
 
-
-
-sub write_to_grid {
-	my ($self, $grid) = @_;
-
-	#must find a faster way to find points inside
-	
-	my $r = $self->radius;
-	my $s = $grid->cell_size;
-	for my $x ( (-$r + $self->x) .. ($r + $self->x) ) {
-		for my $y ( (-$r + $self->y) .. ($r + $self->y) ) {
-			my $x1 = $x - $self->x;
-			my $y1 = $y - $self->y;
-			next if ($x1**2) + ($y1**2) > $r**2;
-			# printf("%d,%d,%d\n",$x1**2,$y1**2,$r**2);
-			#
-			# should actually insert $self in that cell, but for debug, we see if it fills correctly
-			#
-			# these divisions can be avoided
-
-			push	@{$grid->table->[$y/$s][$x/$s]}, 
-			    	 $self;
-		}
-	}
-}
-
-
-sub remove_from_grid {
-	#to be implemented
-}
-
-
-
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 
@@ -396,16 +363,5 @@ In any of these collide_* methods, relative coordinates must be set. See L<Entit
 
  $self->normalize ($rect);
  $self->collide_rect($rect, interval=>1);
-
-
-
-=head2 write_to_grid()
-
-Pushes the circle into the cells of the grid which interesect with it.
-
-
-=head2 collide_grid(Collision::2D::Entity::Grid)
-
-Returns earliest collision with some entity on the grid.
 
 

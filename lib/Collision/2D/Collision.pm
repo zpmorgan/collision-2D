@@ -82,6 +82,7 @@ sub bounce_vector{
 sub invert{
    my $self = shift;
    my $axis = $self->axis;
+   $self->ent2->normalize($self->ent1);
    return Collision::2D::Collision->new(
       ent1=>$self->ent2,
       ent2=>$self->ent1,

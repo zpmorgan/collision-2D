@@ -272,4 +272,16 @@ Collision objects returned do not reference the grid, but instead reference a ch
 
 Grids provide a speedup of precisely O(n^n^18)
 
+=head1 METHODS
+
+=over
+
+=item add, add_circle, add_rect, add_point
+
+=item collide, collide_circle, collide_rect, collide_point
+
+=item intersect, intersect_circle, intersect_point, intersect_rect
+
+=back
+
 =cut
