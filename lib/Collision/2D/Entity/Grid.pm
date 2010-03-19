@@ -263,6 +263,46 @@ sub collide_rect{
    return $best_collision;
 }
 
+
+sub collide_circle{
+   my ($self, $circle, %params) = @_;
+   my $rx = -$self->relative_x; #relative loc of circle to grid
+   my $ry = -$self->relative_y; 
+   my $rxv = -$self->relative_xv; #relative velocity of circle to grid
+   my $ryv = -$self->relative_yv; 
+   my $s = $self->cell_size;
+   my $r = $circle->radius;
+   
+   my $cell_x_min = max(0,  min (($rx-$r)/$s, ($rx-$r+$rxv*$params{interval})/$s));
+   my $cell_y_min = max(0,  min (($ry-$r)/$s, ($ry-$r+$ryv*$params{interval})/$s));
+   my $cell_x_max = min($self->cells_x-1,  max (($rx+$r)/$s, ($rx+$r+$rxv*$params{interval})/$s));
+   my $cell_y_max = min($self->cells_y-1,  max (($ry+$r)/$s, ($ry+$r+$ryv*$params{interval})/$s));
+   
+   my $done = Set::Object->new();
+   my $best_collision;
+   for my $y ($cell_y_min .. $cell_y_max) {
+      for my $x ($cell_x_min .. $cell_x_max) {
+         next unless $self->table->[$y][$x];
+         next unless Collision::2D::dynamic_collision ( #circle collides with cell?
+            $circle, Collision::2D::hash2rect ({
+               x => $self->x + $x*$s,
+               y => $self->y + $y*$s,
+               w => $s, h => $s,
+            }));
+         for (@{$self->table->[$y][$x]}){ #each ent in cell
+            next if $done->contains($_);
+            $done->insert($_);
+            my $collision = Collision::2D::dynamic_collision($circle, $_, %params);
+            next unless $collision;
+            if (!$best_collision or  ($collision->time < $best_collision->time)){
+               $best_collision = $collision;
+            }
+         }
+      }
+   }
+   return $best_collision;
+}
+
 no Mouse;
 __PACKAGE__->meta->make_immutable();
 

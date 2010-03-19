@@ -286,43 +286,6 @@ sub collide_circle{
 }
 
 
-
-#broken & not relative.
-sub collide_grid {
-	my ($self,$g) = @_;
-
-	my (@collisions);
-
-	my $r = $self->radius;
-
-
-	my $table = $g->table;
-	my $s     = $g->cell_size;
-
-	for my $x ( (-$r + $self->x) .. ($r + $self->x) ) {
-		for my $y ( (-$r + $self->y) .. ($r + $self->y) ) {
-			my $x1 = $x - $self->x;
-			my $y1 = $y - $self->y;
-			next if ($x1**2) + ($y1**2) > $r**2;
-
-			if($table->[$y/$s]->[$x/$s]) {
-				# we have something in the grid cell
-				for my $entity_inside_cell ( @{$table->[$y/$s]->[$x/$s]} ) {
-					push @collisions,$self->collide_rect( $entity_inside_cell );
-				};
-
-			}
-
-		}
-	};
-
-	return 
-	(
-		sort { $a->time < $b->time }
-		@collisions
-	)[0]; # the earliest collision
-}
-
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 
