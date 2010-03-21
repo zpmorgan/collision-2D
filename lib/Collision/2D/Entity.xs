@@ -7,10 +7,10 @@
 #endif
 
 typedef struct{
-    int x, y;
-    int xv, yv;
-    int relative_x, relative_y;
-    int relative_xv, relative_yv;
+    float x, y;
+    float xv, yv;
+    float relative_x, relative_y;
+    float relative_xv, relative_yv;
     
   } Entity;
 
@@ -35,7 +35,7 @@ ent_new (CLASS)
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_x ( ent, ... )
 	Entity *ent
 	CODE:
@@ -44,7 +44,7 @@ ent_x ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_y ( ent, ... )
 	Entity *ent
 	CODE:
@@ -52,8 +52,8 @@ ent_y ( ent, ... )
 		RETVAL = ent->y;
 	OUTPUT:
 		RETVAL
-
-int
+      
+float
 ent_xv ( ent, ... )
 	Entity *ent
 	CODE:
@@ -62,7 +62,7 @@ ent_xv ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_yv ( ent, ... )
 	Entity *ent
 	CODE:
@@ -71,7 +71,7 @@ ent_yv ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_relative_x ( ent, ... )
 	Entity *ent
 	CODE:
@@ -80,7 +80,7 @@ ent_relative_x ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_relative_y ( ent, ... )
 	Entity *ent
 	CODE:
@@ -89,7 +89,7 @@ ent_relative_y ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_relative_xv ( ent, ... )
 	Entity *ent
 	CODE:
@@ -98,7 +98,7 @@ ent_relative_xv ( ent, ... )
 	OUTPUT:
 		RETVAL
 
-int
+float
 ent_relative_yv ( ent, ... )
 	Entity *ent
 	CODE:
