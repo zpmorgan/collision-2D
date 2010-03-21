@@ -63,8 +63,11 @@ sub null_collision{
 }
 
 sub intersect{
-   my ($self, $other) = @_;
-   return Collision::2D::intersection ($self, $other);
+   my ($self, @others) = @_;
+   for (@others){
+      return 1 if Collision::2D::intersection ($self, $_);
+   }
+   return 0;
 }
 
 sub collide{
