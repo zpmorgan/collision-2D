@@ -186,7 +186,7 @@ q|positively|
 __END__
 =head1 NAME
 
-Collision::2D - A selection of continuous collision detection routines
+Collision::2D - Continuous 2d collision detection
 
 =head1 SYNOPSIS
 
