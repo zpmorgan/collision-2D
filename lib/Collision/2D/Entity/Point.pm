@@ -1,6 +1,6 @@
 package Collision::2D::Entity::Point;
-use Mouse;
-extends 'Collision::2D::Entity';
+
+use parent 'Collision::2D::Entity';
 
 sub _p{3} #meh priority
 use overload '""'  => sub{'point'};

@@ -4,6 +4,7 @@ int *				T_PTR
 float * 			T_PTR
 float				T_NV
 Entity *			O_OBJECT
+Collision *		O_OBJECT
 OUTPUT
 
 # The Perl object is blessed into 'CLASS', which should be a

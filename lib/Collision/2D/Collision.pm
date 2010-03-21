@@ -1,27 +1,19 @@
 package Collision::2D::Collision;
-use Mouse;
+#use Mouse;
+
+use strict;
+use warnings;
+require DynaLoader;
+our @ISA = qw(DynaLoader);
+bootstrap Collision::2D::Entity;
 
 #this might be of use for calculating bounce vectors based on axes of collision. 
 # http://www.members.shaw.ca/mathematica/ahabTutorials/2dCollision.html
 
-has 'axis' => (
-   is => 'ro',
-   #isa => 
-);
-
-has 'time' => (
-   is => 'ro',
-   isa => 'Num',
-   default=> 0,
-);
-has 'ent1' => (
-   isa => 'Collision::2D::Entity',
-   is => 'ro',
-);
-has 'ent2' => (
-   isa => 'Collision::2D::Entity',
-   is => 'ro',
-);
+sub new{
+   my %params = @_;
+   return __PACKAGE__->_new (@params{qw/ent1 ent2 time axis/})
+}
 
 sub maxis{
    my $self = shift;
@@ -97,9 +89,6 @@ sub invert{
    )
    
 }
-no Mouse;
-__PACKAGE__->meta->make_immutable;
-1
 
 __END__
 =head1 NAME

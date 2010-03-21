@@ -13,3 +13,4 @@ Collision-2D-*
 MYMETA.yml
 nytprof*
 *.c
+*.o
