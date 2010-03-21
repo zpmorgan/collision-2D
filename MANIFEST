@@ -10,8 +10,10 @@ lib/Collision/2D/Entity/Circle.pm
 lib/Collision/2D/Entity/Point.pm
 lib/Collision/2D/Entity/Grid.pm
 t/00-load.t
+t/01-intersect.t
 t/02-dynamic.t
 t/03-axis.t
 t/05-grid.t
+t/05-grid-cells.t
 t/manifest.t
 t/pod.t
