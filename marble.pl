@@ -107,14 +107,14 @@ while ( $cont ) {
       @collisions = sort {$a->time <=> $b->time} @collisions;
       my $collision = $collisions[0];
       if ($collision) {
-         die 'aaah' unless $collision->axis;
+         next unless $collision->time;
          $marble->{y} += $marble->{yv} * $collision->time;
-         $marble->{x} += $marble->{xv} * $collision->time; #0..
+         $marble->{x} += $marble->{xv} * $collision->time;
          my $bvec = $collision->bounce_vector(elasticity=>1);
          $marble->{xv} = $bvec->[0];
          $marble->{yv} = $bvec->[1];
          $marble->{interval} -= $collision->time; #leftover frame interval
-         redo;
+         #redo;
       }
       else {
          $marble->{y} += $marble->{yv}*$marble->{interval};

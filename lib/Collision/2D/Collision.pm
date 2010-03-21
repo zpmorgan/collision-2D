@@ -64,6 +64,7 @@ sub bounce_vector{
    my $rv_len = sqrt($rxv**2 + $ryv**2);
    my $dot = $rxv*$axis->[0] + $ryv*$axis->[1];
    warn $rv_len;
+   return [0,0] unless $rv_len;
    my $angle = acos($dot / ($axis_len * $rv_len));
    
    my $axis_scalar = $rv_len * cos($angle) / $axis_len;

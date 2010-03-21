@@ -319,4 +319,11 @@ In any of these collide_* methods, relative coordinates must be set. See L<Entit
  $self->normalize ($rect);
  $self->collide_rect($rect, interval=>1);
 
+=head2 intersect, intersect_point, intersect_circle, intersect_rect
+
+ print 'bam' if $circle->intersect($rect);
+
+Detect intersection (overlap) with other entities. Time and velocity
+are not considered.
+
 
