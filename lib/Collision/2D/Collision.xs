@@ -7,10 +7,19 @@
 #endif
 
 typedef struct{
+    float x, y;
+    float xv, yv;
+    float relative_x, relative_y;
+    float relative_xv, relative_yv;
+    
+  } Entity;
+
+
+typedef struct{
     Entity* ent1;
     Entity* ent2;
     float time;
-    SV axis;
+    SV* axis;
   } Collision;
 
 
@@ -18,7 +27,7 @@ MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX 
 
 
 Collision *
-co__new (CLASS)
+co_new (CLASS)
 	char* CLASS
 	CODE:
 		RETVAL = (Collision *) safemalloc (sizeof(Collision));
@@ -34,7 +43,9 @@ co__new (CLASS)
 Entity *
 co_ent1 ( co )
 	Collision *co
-   CODE:
+	PREINIT:
+		char* CLASS = "Collision::2D::Entity";
+	CODE:
 		RETVAL = co->ent1;
 	OUTPUT:
 		RETVAL
@@ -42,7 +53,9 @@ co_ent1 ( co )
 Entity *
 co_ent2 ( co )
 	Collision *co
-   CODE:
+	PREINIT:
+		char* CLASS = "Collision::2D::Entity";
+	CODE:
 		RETVAL = co->ent2;
 	OUTPUT:
 		RETVAL
@@ -55,7 +68,6 @@ co_time ( co )
 	OUTPUT:
 		RETVAL
 
-float
 SV *
 co_axis ( co )
 	Collision *co
@@ -65,12 +77,11 @@ co_axis ( co )
 		RETVAL
 
 
- #return an arrayref
 SV *
 co_maxis_foo ( co )
 	Collision *co
    CODE:
-      if (SvROK(co->axis)){  #is arrayref
+      if (SvROK(co->axis)){  //is arrayref
          RETVAL = co->axis;
       }
       else{
