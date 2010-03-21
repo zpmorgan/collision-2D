@@ -12,3 +12,4 @@ pod2htm*.tmp
 Collision-2D-*
 MYMETA.yml
 nytprof*
+*.c
