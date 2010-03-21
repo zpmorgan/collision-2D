@@ -79,6 +79,12 @@ co_maxis_foo ( co )
 
 
 
+void
+co_DESTROY(self)
+	Collision *self
+	CODE:
+		safefree( (char *)self );
+
 
 
 
