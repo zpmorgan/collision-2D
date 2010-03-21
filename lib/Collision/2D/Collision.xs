@@ -54,8 +54,8 @@ co_time ( co )
 		RETVAL = co->time;
 	OUTPUT:
 		RETVAL
-float
 
+float
 SV *
 co_axis ( co )
 	Collision *co
@@ -64,11 +64,13 @@ co_axis ( co )
 	OUTPUT:
 		RETVAL
 
-SV* //return an arrayref
+
+ #return an arrayref
+SV *
 co_maxis_foo ( co )
 	Collision *co
    CODE:
-      if (SvROK(co->axis)){  //is arrayref
+      if (SvROK(co->axis)){  #is arrayref
          RETVAL = co->axis;
       }
       else{
