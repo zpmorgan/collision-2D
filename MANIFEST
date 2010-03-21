@@ -1,10 +1,11 @@
 Changes
 MANIFEST
-Makefile.PL
+Build.PL
 README
 lib/Collision/2D.pm
 lib/Collision/2D/Collision.pm
 lib/Collision/2D/Entity.pm
+lib/Collision/2D/Entity.xs
 lib/Collision/2D/Entity/Rect.pm
 lib/Collision/2D/Entity/Circle.pm
 lib/Collision/2D/Entity/Point.pm
@@ -17,3 +18,5 @@ t/05-grid.t
 t/05-grid-cells.t
 t/manifest.t
 t/pod.t
+marble.pl
+typemap
