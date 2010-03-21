@@ -3,7 +3,7 @@ use warnings;
 
 use Collision::2D ':all';
 
-use Test::More  tests => 17;
+use Test::More  tests => 21;
 
 #circle-rect
 {
@@ -42,3 +42,16 @@ use Test::More  tests => 17;
    
    
 }
+
+#circle-circle
+{
+   my $pie = hash2circle {x=>1, y=> -4, radius=> sqrt(2)/2}; 
+   my $pie_in = hash2circle {x=>0.01, y=> -5, radius=> sqrt(2)/2};
+   my $pie_out = hash2circle {x=>-0.01, y=> -5, radius=> sqrt(2)/2};
+   
+   ok ($pie->intersect ($pie_in));
+   ok (!$pie->intersect ($pie_out));
+   ok ($pie->intersect ($pie_in, $pie_out));
+   ok ($pie->intersect ($pie_out, $pie_in));
+}
+
