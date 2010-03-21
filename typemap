@@ -1,4 +1,7 @@
 TYPEMAP
+int				T_IV
+int *				T_PTR
+float * 			T_PTR
 float				T_NV
 Entity *			O_OBJECT
 OUTPUT
