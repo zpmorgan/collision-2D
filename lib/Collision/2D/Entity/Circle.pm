@@ -226,18 +226,11 @@ sub collide_point{
    my $B = 2 * $slope*$y_intercept;
    my $C = $y_intercept**2 - $self->radius**2;
    my @xi; #x component of intersections.
-   if ($A==0){ #true quadratic equation would divide by 0.
-      #Bx+C=0 so x=C/B
-      return if $B==0; #not sure if this seems right.
-      push @xi, ($C/$B)
-   }
-   else{
-      my $blah = $B**2 - 4*$A*$C;
-      return unless $blah>0;
-      $blah = sqrt($blah);
-      push @xi, (-$B + $blah ) / (2*$A);
-      push @xi, (-$B - $blah ) / (2*$A);
-   }
+   my $blah = $B**2 - 4*$A*$C;
+   return unless $blah>0;
+   $blah = sqrt($blah);
+   push @xi, (-$B + $blah ) / (2*$A);
+   push @xi, (-$B - $blah ) / (2*$A);
    #keep intersections within segment
    @xi = grep {($_>=$x1 and $_<=$x2) or ($_<=$x1 and $_>=$x2)} @xi;
    #sort based on closeness to starting point.
