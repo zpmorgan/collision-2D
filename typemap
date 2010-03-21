@@ -1,6 +1,6 @@
 TYPEMAP
 int				T_IV
-Entity *			T_OBJECT
+Entity *			O_OBJECT
 OUTPUT
 
 # The Perl object is blessed into 'CLASS', which should be a

@@ -52,6 +52,7 @@ ent_y ( ent, ... )
 		RETVAL = ent->y;
 	OUTPUT:
 		RETVAL
+
 int
 ent_xv ( ent, ... )
 	Entity *ent
@@ -112,10 +113,10 @@ ent_normalize ( ent, other, ... )
 	Entity *ent
 	Entity *other
 	CODE:
-		ent->relative_x = end->x - other->x;
-		ent->relative_y = end->y - other->y;
-		ent->relative_xv = end->xv - other->xv;
-		ent->relative_yv = end->yv - other->yv;
+		ent->relative_x = ent->x - other->x;
+		ent->relative_y = ent->y - other->y;
+		ent->relative_xv = ent->xv - other->xv;
+		ent->relative_yv = ent->yv - other->yv;
 
 
 

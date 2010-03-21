@@ -13,7 +13,7 @@ limits are in the code.
 Derived from kthakore's shooter.pl.
 
 =cut
-
+use lib 'blib';
 use lib 'lib';
 use Collision::2D ':all';
 use SDL;
