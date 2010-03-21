@@ -1,5 +1,5 @@
 TYPEMAP
-int				T_IV
+float				T_NV
 Entity *			O_OBJECT
 OUTPUT
 
