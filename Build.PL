@@ -7,7 +7,8 @@ my $builder = Module::Build->new(
    license           => 'perl',
    dist_author       => 'Zach Morgan <zpmorgan@cpan.org>',
    dist_version_from => 'lib/Collision/2D.pm',
-   abstract_from     => 'lib/Collision/2D.pm',
+   #abstract_from     => 'lib/Collision/2D.pm',
+   dist_abstract     => 'Continuous 2d collision detection',
    requires          => {
       'Test::More' => 0,
       'Mouse' => 0,
@@ -16,7 +17,7 @@ my $builder = Module::Build->new(
       'POSIX' => 0,
       'Set::Object' => 0,
    },
-   #create_makefile_pl => 'traditional', any reason?
+   #create_makefile_pl => 'traditional', #any reason?
 );
 
 $builder->create_build_script();
