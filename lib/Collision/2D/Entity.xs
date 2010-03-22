@@ -6,6 +6,7 @@
 #define aTHX_
 #endif
 
+#include "collision2d.h"
 
 MODULE = Collision::2D::Entity 	PACKAGE = Collision::2D::Entity    PREFIX = ent_
 
