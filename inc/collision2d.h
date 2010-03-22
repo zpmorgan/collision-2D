@@ -10,7 +10,8 @@ typedef struct Collision{
    Entity* ent1;
    Entity* ent2;
    float time;
-   SV axis;
+   float axis_x;
+   float axis_y;
 } Collision;
 
 
