@@ -6,14 +6,6 @@
 #define aTHX_
 #endif
 
-typedef struct{
-    float x, y;
-    float xv, yv;
-    float relative_x, relative_y;
-    float relative_xv, relative_yv;
-    
-  } Entity;
-
 
 MODULE = Collision::2D::Entity 	PACKAGE = Collision::2D::Entity    PREFIX = ent_
 

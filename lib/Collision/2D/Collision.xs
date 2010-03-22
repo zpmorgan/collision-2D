@@ -1,17 +1,11 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#include "collision2d.h"
 
 #ifndef aTHX_
 #define aTHX_
 #endif
-
-typedef struct{
-    Entity* ent1;
-    Entity* ent2;
-    float time;
-    SV axis;
-  } Collision;
 
 
 MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX = co_

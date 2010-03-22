@@ -18,6 +18,7 @@ my $builder = Module::Build->new(
       'Set::Object' => 0,
    },
    #create_makefile_pl => 'traditional', #any reason?
+   include_dirs => 'inc',
 );
 
 $builder->create_build_script();
