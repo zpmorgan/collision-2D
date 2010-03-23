@@ -313,6 +313,8 @@ Zach P. Morgan, C<< <zpmorgan at cpan.org> >>
 
 Stefan Petrea C<< <stefan.petrea@gmail.com> >>
 
+Kartik Thakore C<< <kthakore@cpan.org> >>
+
 
 =head1 ACKNOWLEDGEMENTS
 
