@@ -1,10 +1,14 @@
 package Collision::2D::Entity::Point;
+use strict;
+use warnings;
 
-use parent 'Collision::2D::Entity';
+require DynaLoader;
+our @ISA = qw(DynaLoader Collision::2D::Entity);
+bootstrap Collision::2D::Point;
+
 
 sub _p{3} #meh priority
 use overload '""'  => sub{'point'};
-
 
 
 #I daresay, 2 points mayn't collide
@@ -121,8 +125,5 @@ sub collide_rect{
       ent2 => $rect,
    );
 }
-
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 
 2

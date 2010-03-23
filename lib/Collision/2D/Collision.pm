@@ -1,11 +1,10 @@
 package Collision::2D::Collision;
-#use Mouse;
 
 use strict;
 use warnings;
 require DynaLoader;
 our @ISA = qw(DynaLoader);
-bootstrap Collision::2D::Entity;
+bootstrap Collision::2D::Collision;
 
 #this might be of use for calculating bounce vectors based on axes of collision. 
 # http://www.members.shaw.ca/mathematica/ahabTutorials/2dCollision.html

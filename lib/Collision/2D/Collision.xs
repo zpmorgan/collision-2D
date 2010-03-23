@@ -12,7 +12,7 @@ MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX 
 
 
 Collision *
-co_new (CLASS, ent1, ent2, time, axis_x, axis_y)
+co__new (CLASS, ent1, ent2, time, axis_x, axis_y)
 	char* CLASS
 	Entity * ent1
 	Entity * ent2

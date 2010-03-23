@@ -1,13 +1,10 @@
 package Collision::2D::Entity;
 use strict;
 use warnings;
-require Exporter;
+
 require DynaLoader;
-our @ISA = qw(Exporter DynaLoader);
-
-
+our @ISA = qw(DynaLoader);
 bootstrap Collision::2D::Entity;
-
 
 #an actual collision at t=0; 
 sub null_collision{
