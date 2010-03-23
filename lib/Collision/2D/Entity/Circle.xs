@@ -40,6 +40,13 @@ circle__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_
 
 
 
+float
+circle_radius ( self )
+	Circle *self
+	CODE:
+		RETVAL = self->radius;
+	OUTPUT:
+		RETVAL
 
 
 
