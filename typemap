@@ -1,8 +1,8 @@
 TYPEMAP
-int				T_IV
+int				T_INT
 int *				T_PTR
 float * 			T_PTR
-float				T_NV
+float				T_FLOAT
 Entity *			O_OBJECT
 Collision *		O_OBJECT
 Point *		   O_OBJECT

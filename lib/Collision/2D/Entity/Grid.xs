@@ -42,6 +42,8 @@ grid__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv
 		RETVAL->cells_x = cells_x;
 		RETVAL->cells_y = cells_y;
 		RETVAL->cell_size = cell_size;
+		AV* tablaeieu = newAV();
+ 		RETVAL->table = newRV_inc((SV*)tablaeieu);
 
 	OUTPUT:
 		RETVAL
@@ -55,4 +57,5 @@ void
 grid_DESTROY(self)
 	Grid *self
 	CODE:
+		SvREFCNT_dec ( (SV*) self->table );
 		safefree( (char *)self );
