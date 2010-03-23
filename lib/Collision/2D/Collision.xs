@@ -11,6 +11,7 @@
 MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX = co_
 
 
+ # _new -- used internally
 Collision *
 co__new (CLASS, ent1, ent2, time, axis_x, axis_y)
 	char* CLASS

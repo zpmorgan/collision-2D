@@ -14,7 +14,7 @@ typedef struct Point{
 
 typedef struct Circle{
    ENT_STUFF
-   float Radius;
+   float radius;
 } Circle;
 
 typedef struct Rect{

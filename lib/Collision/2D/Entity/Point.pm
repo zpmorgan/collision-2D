@@ -4,7 +4,7 @@ use warnings;
 
 require DynaLoader;
 our @ISA = qw(DynaLoader Collision::2D::Entity);
-bootstrap Collision::2D::Entity;
+bootstrap Collision::2D::Entity::Point;
 
 
 sub _p{3} #meh priority
@@ -12,7 +12,7 @@ use overload '""'  => sub{'point'};
 
 sub new{
    my ($package, %params) = @_;
-   my $self = __PACKAGE__->new ($package,
+   my $self = __PACKAGE__->_new ($package,
       @params{qw/x y/},
       $params{xv} || 0,
       $params{yv} || 0,

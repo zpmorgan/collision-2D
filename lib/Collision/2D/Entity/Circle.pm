@@ -1,19 +1,31 @@
 package Collision::2D::Entity::Circle;
-use Mouse;
-use Collision::2D::Entity::Rect;
-extends 'Collision::2D::Entity';
+use strict;
+use warnings;
+
+require DynaLoader;
+our @ISA = qw(DynaLoader Collision::2D::Entity);
+bootstrap Collision::2D::Entity::Circle;
+
+#in a circle, x and y denote center. 
 
 sub _p{2} #highish priority
 use overload '""'  => sub{'circle'};
 
-#in a circle, x and y denote center. 
 
-has 'radius' => (
-   is => 'ro',
-   isa => 'Num',
-   default => 1,
-);
-
+sub new{
+   my ($package, %params) = @_;
+   my $self = __PACKAGE__->_new ($package,
+      @params{qw/x y/},
+      $params{xv} || 0,
+      $params{yv} || 0,
+      $params{relative_x} || 0,
+      $params{relative_y} || 0,
+      $params{relative_xv} || 0,
+      $params{relative_yv} || 0,
+      $params{radius},
+   );
+   return $self;
+}
 
 
 sub intersect_circle{
@@ -277,10 +289,6 @@ sub collide_circle{
       #axis => [-$collision->axis->[0], -$collision->axis->[1]],
    );
 }
-
-
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 
 1
 

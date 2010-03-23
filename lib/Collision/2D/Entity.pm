@@ -6,6 +6,7 @@ require DynaLoader;
 our @ISA = qw(DynaLoader);
 bootstrap Collision::2D::Entity;
 
+
 #an actual collision at t=0; 
 sub null_collision{
    my $self = shift;
@@ -30,6 +31,7 @@ sub collide{
    return Collision::2D::dynamic_collision ($self, $other, %params);
 }
 
+sub new{die}
 1
 
 __END__

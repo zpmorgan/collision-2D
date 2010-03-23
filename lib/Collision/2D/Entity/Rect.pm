@@ -1,22 +1,28 @@
 package Collision::2D::Entity::Rect;
-use Mouse;
-extends 'Collision::2D::Entity';
+use strict;
+use warnings;
+
+require DynaLoader;
+our @ISA = qw(DynaLoader Collision::2D::Entity);
+bootstrap Collision::2D::Entity::Rect;
 
 sub _p{4} #low priority
 use overload '""'  => sub{'rect'};
 
-has 'w' => (
-   isa => 'Num',
-   is => 'ro',
-   required => 1,
-   default=>1,
-);
-has 'h' => (
-   isa => 'Num',
-   is => 'ro',
-   required => 1,
-   default=>1,
-);
+sub new{
+   my ($package, %params) = @_;
+   my $self = __PACKAGE__->_new ($package,
+      @params{qw/x y/},
+      $params{xv} || 0,
+      $params{yv} || 0,
+      $params{relative_x} || 0,
+      $params{relative_y} || 0,
+      $params{relative_xv} || 0,
+      $params{relative_yv} || 0,
+      @params{qw/w h/},
+   );
+   return $self;
+}
 
 sub intersect_rect{
    my ($self, $other) = @_;
@@ -113,8 +119,5 @@ sub contains_point{
       and  $point->x < $self->x + $self->w
       and  $point->y < $self->y + $self->h);
 }
-
-no Mouse;
-__PACKAGE__->meta->make_immutable;
 
 3

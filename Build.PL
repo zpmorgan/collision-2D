@@ -11,7 +11,6 @@ my $builder = Module::Build->new(
    dist_abstract     => 'Continuous 2d collision detection',
    requires          => {
       'Test::More' => 0,
-      'Mouse' => 0,
       'Test::Number::Delta' => 0,
       'List::AllUtils' => 0,
       'POSIX' => 0,

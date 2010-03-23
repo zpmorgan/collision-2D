@@ -8,11 +8,11 @@
 #endif
 
 
-MODULE = Collision::2D::Entity::Point 	PACKAGE = Collision::2D::Entity::Point    PREFIX = point_
+MODULE = Collision::2D::Entity::Grid 	PACKAGE = Collision::2D::Entity::Grid    PREFIX = grid_
 
-
-Point *
-point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv)
+ # _new -- used internally
+Grid *
+grid__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv, w,h,cells_x,cells_y,cell_size)
 	char* CLASS
 	float  x
 	float  y
@@ -22,8 +22,13 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 	float  relative_y
 	float  relative_xv
 	float  relative_yv
+   int w
+   int h
+   int cells_x
+   int cells_y
+   float  cell_size
 	CODE:
-		RETVAL = (Point *) safemalloc (sizeof(Point));
+		RETVAL = (Grid *) safemalloc (sizeof(Grid));
 		RETVAL->x = x;
 		RETVAL->y = y;
 		RETVAL->xv = xv;
@@ -32,6 +37,11 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 		RETVAL->relative_y = relative_y;
 		RETVAL->relative_xv = relative_xv;
 		RETVAL->relative_yv = relative_yv;
+		RETVAL->w = w;
+		RETVAL->h = h;
+		RETVAL->cells_x = cells_x;
+		RETVAL->cells_y = cells_y;
+		RETVAL->cell_size = cell_size;
 
 	OUTPUT:
 		RETVAL
@@ -39,10 +49,10 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 
 
 
+
+
 void
-point_DESTROY(self)
-	Point *self
+grid_DESTROY(self)
+	Grid *self
 	CODE:
 		safefree( (char *)self );
-
-

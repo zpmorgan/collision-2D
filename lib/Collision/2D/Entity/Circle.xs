@@ -8,11 +8,11 @@
 #endif
 
 
-MODULE = Collision::2D::Entity::Point 	PACKAGE = Collision::2D::Entity::Point    PREFIX = point_
+MODULE = Collision::2D::Entity::Circle 	PACKAGE = Collision::2D::Entity::Circle    PREFIX = circle_
 
-
-Point *
-point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv)
+ # _new -- used internally
+Circle *
+circle__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv, radius)
 	char* CLASS
 	float  x
 	float  y
@@ -22,10 +22,12 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 	float  relative_y
 	float  relative_xv
 	float  relative_yv
+   float  radius
 	CODE:
-		RETVAL = (Point *) safemalloc (sizeof(Point));
+		RETVAL = (Circle *) safemalloc (sizeof(Circle));
 		RETVAL->x = x;
 		RETVAL->y = y;
+		RETVAL->radius = radius;
 		RETVAL->xv = xv;
 		RETVAL->yv = yv;
 		RETVAL->relative_x = relative_x;
@@ -39,10 +41,10 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 
 
 
+
+
 void
-point_DESTROY(self)
-	Point *self
+circle_DESTROY(self)
+	Circle *self
 	CODE:
 		safefree( (char *)self );
-
-

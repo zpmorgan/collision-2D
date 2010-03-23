@@ -11,6 +11,7 @@
 MODULE = Collision::2D::Entity 	PACKAGE = Collision::2D::Entity    PREFIX = ent_
 
 
+ # _new -- do we need this?
 Entity *
 ent_new (CLASS)
 	char* CLASS

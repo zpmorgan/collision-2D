@@ -1,6 +1,11 @@
 package Collision::2D::Entity::Grid; 
-use Mouse;
-extends 'Collision::2D::Entity';
+use strict;
+use warnings;
+
+require DynaLoader;
+our @ISA = qw(DynaLoader Collision::2D::Entity);
+bootstrap Collision::2D::Entity::Grid;
+
 use List::AllUtils qw/max min/;
 use POSIX qw(ceil floor);
 use Set::Object;
@@ -9,48 +14,34 @@ sub _p{1} #highest priority -- include all relevant methods in this module
 use overload '""'  => sub{'grid'};
 
 
-# table where we store every grid child;
+# table is where we store every grid child;
 # in each cell, a list of entities which intersect it
 # table is a list of rows, so it's table->[y][x] = [ent,...]
-has table => (
-   isa => 'ArrayRef[ArrayRef[ArrayRef[Collision::2D::Entity]]]',
-   is  => 'ro',
-   lazy => 1,
-   default => sub {
-      [];
-   },
-);
 
-has $_      => (
-   isa => 'Num',
-   is  => 'ro',
-   default => 0,
-) for qw/w h/;
-
+###  has table => []
+###  has w,h     => float
+###  has cells_x,cells_y => int
+###  has cell_size => float
 #there's a reason you can't find, say, cell row count with @{$grid->table}
 #that reason is autovivication
-has cells_x => (
-   isa => 'Int',
-   is  => 'ro',
-   lazy  => 1,
-   default => sub{
-      return ceil( $_[0]->w / $_[0]->cell_size)
-   },
-);
-has cells_y => (
-   isa => 'Int',
-   is  => 'ro',
-   lazy  => 1,
-   default => sub{
-      return ceil( $_[0]->h / $_[0]->cell_size)
-   },
-);
-
 # granularity; cells will be squares of this size
-has cell_size => ( 
-   isa => 'Num',
-   is  => 'ro',
-);
+
+
+sub new{
+   my ($package, %params) = @_;
+   my $self = __PACKAGE__->_new ($package,
+      @params{qw/x y/},
+      $params{xv} || 0,
+      $params{yv} || 0,
+      $params{relative_x} || 0,
+      $params{relative_y} || 0,
+      $params{relative_xv} || 0,
+      $params{relative_yv} || 0,
+      @params{qw/w h cells_x cells_y cell_size/},
+   );
+   return $self;
+}
+
 
 sub add{
    my ($self, @others) = @_;
@@ -302,9 +293,6 @@ sub collide_circle{
    }
    return $best_collision;
 }
-
-no Mouse;
-__PACKAGE__->meta->make_immutable();
 
 1;
 

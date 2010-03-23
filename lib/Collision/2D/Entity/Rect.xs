@@ -8,11 +8,11 @@
 #endif
 
 
-MODULE = Collision::2D::Entity::Point 	PACKAGE = Collision::2D::Entity::Point    PREFIX = point_
+MODULE = Collision::2D::Entity::Rect 	PACKAGE = Collision::2D::Entity::Rect    PREFIX = rect_
 
-
-Point *
-point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv)
+ # _new -- used internally
+Rect *
+rect__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv, w, h)
 	char* CLASS
 	float  x
 	float  y
@@ -22,10 +22,14 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 	float  relative_y
 	float  relative_xv
 	float  relative_yv
+   float  w
+   float  h
 	CODE:
-		RETVAL = (Point *) safemalloc (sizeof(Point));
+		RETVAL = (Rect *) safemalloc (sizeof(Rect));
 		RETVAL->x = x;
 		RETVAL->y = y;
+		RETVAL->w = w;
+		RETVAL->h = h;
 		RETVAL->xv = xv;
 		RETVAL->yv = yv;
 		RETVAL->relative_x = relative_x;
@@ -39,10 +43,10 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 
 
 
+
+
 void
-point_DESTROY(self)
-	Point *self
+rect_DESTROY(self)
+	Rect *self
 	CODE:
 		safefree( (char *)self );
-
-
