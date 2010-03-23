@@ -10,6 +10,19 @@ bootstrap Collision::2D::Point;
 sub _p{3} #meh priority
 use overload '""'  => sub{'point'};
 
+sub new{
+   my ($package, %params) = @_;
+   my $self = __PACKAGE__->new ($package,
+      @params{qw/x y/},
+      $params{xv} || 0,
+      $params{yv} || 0,
+      $params{relative_x} || 0,
+      $params{relative_y} || 0,
+      $params{relative_xv} || 0,
+      $params{relative_yv} || 0,
+   )
+   return $self;
+}
 
 #I daresay, 2 points mayn't collide
 sub collide_point{

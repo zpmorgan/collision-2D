@@ -23,7 +23,7 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 	float  relative_xv
 	float  relative_yv
 	CODE:
-		RETVAL = (Collision *) safemalloc (sizeof(Collision));
+		RETVAL = (Point *) safemalloc (sizeof(Point));
 		RETVAL->x = x;
 		RETVAL->y = y;
 		RETVAL->xv = xv;
@@ -35,4 +35,7 @@ point__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_y
 
 	OUTPUT:
 		RETVAL
+
+
+
 
