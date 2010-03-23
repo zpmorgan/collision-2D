@@ -6,6 +6,9 @@ float				T_NV
 Entity *			O_OBJECT
 Collision *		O_OBJECT
 Point *		   O_OBJECT
+Rect *		   O_OBJECT
+Grid *		   O_OBJECT
+Circle *		   O_OBJECT
 OUTPUT
 
 # The Perl object is blessed into 'CLASS', which should be a

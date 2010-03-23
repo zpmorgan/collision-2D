@@ -4,7 +4,7 @@ use warnings;
 
 require DynaLoader;
 our @ISA = qw(DynaLoader Collision::2D::Entity);
-bootstrap Collision::2D::Point;
+bootstrap Collision::2D::Entity;
 
 
 sub _p{3} #meh priority
@@ -20,7 +20,7 @@ sub new{
       $params{relative_y} || 0,
       $params{relative_xv} || 0,
       $params{relative_yv} || 0,
-   )
+   );
    return $self;
 }
 

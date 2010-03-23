@@ -8,9 +8,13 @@ lib/Collision/2D/Collision.xs
 lib/Collision/2D/Entity.pm
 lib/Collision/2D/Entity.xs
 lib/Collision/2D/Entity/Rect.pm
+lib/Collision/2D/Entity/Rect.xs
 lib/Collision/2D/Entity/Circle.pm
+lib/Collision/2D/Entity/Circle.xs
 lib/Collision/2D/Entity/Point.pm
+lib/Collision/2D/Entity/Point.xs
 lib/Collision/2D/Entity/Grid.pm
+lib/Collision/2D/Entity/Grid.xs
 inc/collision2d.h
 t/00-load.t
 t/01-intersect.t
