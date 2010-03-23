@@ -11,7 +11,7 @@ use overload '""'  => sub{'rect'};
 
 sub new{
    my ($package, %params) = @_;
-   my $self = __PACKAGE__->_new ($package,
+   my $self = __PACKAGE__->_new (
       @params{qw/x y/},
       $params{xv} || 0,
       $params{yv} || 0,
