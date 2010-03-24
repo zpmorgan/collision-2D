@@ -22,7 +22,7 @@ circle__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_
 	float  relative_y
 	float  relative_xv
 	float  relative_yv
-   float  radius
+	float  radius
 	CODE:
 		RETVAL = (Circle *) safemalloc (sizeof(Circle));
 		RETVAL->x = x;
@@ -34,7 +34,6 @@ circle__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_
 		RETVAL->relative_y = relative_y;
 		RETVAL->relative_xv = relative_xv;
 		RETVAL->relative_yv = relative_yv;
-
 	OUTPUT:
 		RETVAL
 

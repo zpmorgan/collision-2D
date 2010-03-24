@@ -15,7 +15,8 @@ use overload '""'  => sub{'circle'};
 sub new{
    my ($package, %params) = @_;
    my $self = __PACKAGE__->_new (
-      @params{qw/x y/},
+      $params{x} || 0,
+      $params{y} || 0,
       $params{xv} || 0,
       $params{yv} || 0,
       $params{relative_x} || 0,

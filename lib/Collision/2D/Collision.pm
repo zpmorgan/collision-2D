@@ -2,6 +2,7 @@ package Collision::2D::Collision;
 
 use strict;
 use warnings;
+use Carp qw/croak confess/;
 require DynaLoader;
 our @ISA = qw(DynaLoader);
 bootstrap Collision::2D::Collision;
@@ -10,7 +11,7 @@ bootstrap Collision::2D::Collision;
 # http://www.members.shaw.ca/mathematica/ahabTutorials/2dCollision.html
 
 sub new{
-   my %params = @_;
+   my ($package,%params) = @_;
    return __PACKAGE__->_new (@params{qw/ent1 ent2 time axis/})
 }
 

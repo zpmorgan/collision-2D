@@ -86,8 +86,8 @@ sub hash2point{
    return Collision::2D::Entity::Point->new (
       x=>$hash->{x},
       y=>$hash->{y},
-      xv=>$hash->{xv} || 0,
-      yv=>$hash->{yv} || 0,
+      xv=>$hash->{xv},
+      yv=>$hash->{yv},
    );
 }
 sub hash2rect{
@@ -95,8 +95,8 @@ sub hash2rect{
    return Collision::2D::Entity::Rect->new (
       x=>$hash->{x},
       y=>$hash->{y},
-      xv=>$hash->{xv} || 0,
-      yv=>$hash->{yv} || 0,
+      xv=>$hash->{xv},
+      yv=>$hash->{yv},
       h=>$hash->{h} || 1,
       w=>$hash->{w} || 1,
    )
@@ -106,8 +106,8 @@ sub obj2point{
    return Collision::2D::Entity::Point->new (
       x=>$obj->x,
       y=>$obj->y,
-      xv=>$obj->xv || 0,
-      yv=>$obj->yv || 0,
+      xv=>$obj->xv,
+      yv=>$obj->yv,
    )
 }
 sub obj2rect{
@@ -115,8 +115,8 @@ sub obj2rect{
    return Collision::2D::Entity::Rect->new (
       x=>$obj->x,
       y=>$obj->y,
-      xv=>$obj->xv || 0,
-      yv=>$obj->yv || 0,
+      xv=>$obj->xv,
+      yv=>$obj->yv,
       h=>$obj->h || 1,
       w=>$obj->w || 1,
    )
@@ -127,8 +127,8 @@ sub hash2circle{
    return Collision::2D::Entity::Circle->new (
       x=>$hash->{x},
       y=>$hash->{y},
-      xv=>$hash->{xv} || 0,
-      yv=>$hash->{yv} || 0,
+      xv=>$hash->{xv},
+      yv=>$hash->{yv},
       radius => $hash->{radius} || $hash->{r} || 1,
    )
 }
@@ -138,8 +138,8 @@ sub obj2circle{
    return Collision::2D::Entity::Circle->new (
       x=>$obj->x,
       y=>$obj->y,
-      xv=>$obj->xv || 0,
-      yv=>$obj->yv || 0,
+      xv=>$obj->xv,
+      yv=>$obj->yv,
       radius => $obj->radius || 1,
    )
    
