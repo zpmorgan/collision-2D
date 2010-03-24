@@ -150,6 +150,8 @@ void
 co_DESTROY(self)
 	Collision *self
 	CODE:
+		SvREFCNT_dec ( (SV*) self->ent1 );
+		SvREFCNT_dec ( (SV*) self->ent2 );
 		safefree( (char *)self );
 
 
