@@ -38,13 +38,17 @@ sub bounce_vector{
    }
    warn $self->axis;
    
-   warn $self->ent1->x;
-   warn $self->ent1->x;
-   warn $self->ent1->x;
+   warn $self->ent1->x; #why do these keep giving different values.
+   warn $self->ent1->x; # does ent1 shift around?
+   warn $self->ent1->x; # If ent1 keeps being converted to & from xs,
+   warn $self->ent1->x; # what's going on with its x and y values?
+   warn $self->ent1->x; # I totally blame kthakore.
+   
    warn $self->ent1->y;
    warn $self->ent1->y;
    warn $self->ent1->y;
    warn $self->ent1->y;
+   
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
    my $rxv = $self->ent1->relative_xv;
    my $ryv = $self->ent1->relative_yv;

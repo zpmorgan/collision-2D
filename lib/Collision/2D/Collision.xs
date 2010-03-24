@@ -23,6 +23,8 @@ co__new (CLASS, ent1, ent2, time, axis)
 		RETVAL = (Collision *) safemalloc (sizeof(Collision));
 		RETVAL->ent1 = ent1;
 		RETVAL->ent2 = ent2;
+		newRV_inc(ent1);
+		newRV_inc(ent2);
 		RETVAL->time = time;
       if (!SvOK(axis)){  //axis is not defined
          RETVAL->axis_type = NO_AXIS;
