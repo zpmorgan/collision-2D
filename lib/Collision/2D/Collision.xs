@@ -92,16 +92,41 @@ co_axis ( self )
 
 
 SV *
-co_vaxis_foo ( self )
+co_vaxis ( self )
    Collision *self
+   ALIAS:
+      maxis = 1
    CODE:
-      if ( self->axis ){  //
-    //     RETVAL = self->axis;
-   //      av_push(RETVAL, newSVnv(self->axis_x) );
-  //       av_push(RETVAL, newSVnv(self->axis_y) );
+      if ( self->axis_type == NO_AXIS ){
+         RETVAL = newSVsv(&PL_sv_undef);
       }
-      else{
-    //     RETVAL = (AV*)sv_2mortal((SV*)newAV());
+      else if (self->axis_type == VECTOR_AXIS) {
+         AV* axis_vec = newAV();
+         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_x)));
+         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_y)));
+         RETVAL = newRV_inc((SV*) axis_vec);
+      } 
+      else { //XORY_AXIS
+         Entity *ent1 = self->ent1;
+         if (self->axis == 'x'){
+            AV* axis_vec = newAV();
+            RETVAL = newRV_inc((SV*) axis_vec);
+            if (ent1->relative_xv > 0){
+               av_push (axis_vec, sv_2mortal(newSViv(1)));
+            } else {
+               av_push (axis_vec, sv_2mortal(newSViv(-1)));
+            }
+            av_push (axis_vec, sv_2mortal(newSViv(0)));
+         } else { //'y'
+            AV* axis_vec = newAV();
+            RETVAL = newRV_inc((SV*) axis_vec);
+            av_push (axis_vec, sv_2mortal(newSViv(0)));
+            if (ent1->relative_yv > 0){
+               av_push (axis_vec, sv_2mortal(newSViv(1)));
+            } else {
+               av_push (axis_vec, sv_2mortal(newSViv(-1)));
+            }
+         }
       }
    OUTPUT:
       RETVAL

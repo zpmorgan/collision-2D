@@ -269,7 +269,7 @@ use Test::Number::Delta;
       #warn ("x=".(200+$_));
       delta_ok ($collision->time, 1);
       #warn join ',',@{normalize_vec($collision->maxis)};
-      is_deeply (normalize_vec($collision->maxis), [0,1]);
+      is_deeply (normalize_vec($collision->vaxis), [0,1]);
    }
 }
 
