@@ -23,7 +23,7 @@ typedef struct Rect{
 } Rect;
 typedef struct Grid{
    ENT_STUFF
-   SV* table;
+   AV* table;
    float h,w;
    int cells_x, cells_y;
    float cell_size;

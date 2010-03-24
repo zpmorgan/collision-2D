@@ -9,6 +9,7 @@ bootstrap Collision::2D::Entity::Grid;
 use List::AllUtils qw/max min/;
 use POSIX qw(ceil floor);
 use Set::Object;
+use Carp qw/cluck confess/;
 
 sub _p{1} #highest priority -- include all relevant methods in this module
 use overload '""'  => sub{'grid'};
@@ -37,7 +38,10 @@ sub new{
       $params{relative_y} || 0,
       $params{relative_xv} || 0,
       $params{relative_yv} || 0,
-      @params{qw/w h cells_x cells_y cell_size/},
+      @params{qw/w h/},
+      $params{cells_x} || ceil($params{w} / $params{cell_size}),
+      $params{cells_y} || ceil($params{h} / $params{cell_size}),
+      $params{cell_size},
    );
    return $self;
 }

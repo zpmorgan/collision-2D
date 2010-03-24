@@ -43,13 +43,63 @@ grid__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv
 		RETVAL->cells_y = cells_y;
 		RETVAL->cell_size = cell_size;
 		AV* tablaeieu = newAV();
- 		RETVAL->table = newRV_inc((SV*)tablaeieu);
-
+		sv_2mortal((SV*)tablaeieu);
+		newRV_inc((SV*)tablaeieu);
+		RETVAL->table = tablaeieu;
 	OUTPUT:
 		RETVAL
 
 
 
+
+float
+grid_w ( self )
+	Grid *self
+	CODE:
+		RETVAL = self->w;
+	OUTPUT:
+		RETVAL
+
+float
+grid_h ( self )
+	Grid *self
+	CODE:
+		RETVAL = self->h;
+	OUTPUT:
+		RETVAL
+
+float
+grid_cell_size ( self )
+	Grid *self
+	CODE:
+		RETVAL = self->cell_size;
+	OUTPUT:
+		RETVAL
+
+int
+grid_cells_x ( self )
+	Grid *self
+	CODE:
+		RETVAL = self->cells_x;
+	OUTPUT:
+		RETVAL
+
+int
+grid_cells_y ( self )
+	Grid *self
+	CODE:
+		RETVAL = self->cells_y;
+	OUTPUT:
+		RETVAL
+
+SV*
+grid_table ( self )
+	Grid *self
+	CODE:
+	//	RETVAL = self->table;
+      RETVAL = newRV_inc((SV*)self->table);
+	OUTPUT:
+		RETVAL
 
 
 
