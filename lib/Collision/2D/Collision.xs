@@ -15,8 +15,8 @@ MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX 
 Collision *
 co__new (CLASS, ent1, ent2, time, axis)
 	char* CLASS
-	Entity * ent1
-	Entity * ent2
+	SV * ent1
+	SV * ent2
 	float  time
 	SV * axis
 	CODE:
@@ -46,7 +46,7 @@ co__new (CLASS, ent1, ent2, time, axis)
 		RETVAL
 
 
-Entity *
+SV *
 co_ent1 ( self )
 	Collision *self
 	PREINIT:
@@ -57,7 +57,7 @@ co_ent1 ( self )
 	OUTPUT:
 		RETVAL
 
-Entity *
+SV *
 co_ent2 ( self )
 	Collision *self
 	PREINIT:

@@ -3,7 +3,13 @@
    float x, y; \
    float xv, yv;\
    float relative_x, relative_y;\
-   float relative_xv, relative_yv;
+   float relative_xv, relative_yv;\
+   float radius; \
+   float h,w; \
+   AV* table; \
+   int cells_x, cells_y; \
+   float cell_size; 
+
 typedef struct Entity{
    ENT_STUFF
 } Entity;
@@ -14,19 +20,19 @@ typedef struct Point{
 
 typedef struct Circle{
    ENT_STUFF
-   float radius;
+ //  float radius;
 } Circle;
 
 typedef struct Rect{
    ENT_STUFF
-   float h,w;
+ //  float h,w;
 } Rect;
 typedef struct Grid{
    ENT_STUFF
-   AV* table;
-   float h,w;
-   int cells_x, cells_y;
-   float cell_size;
+ //  AV* table;
+ //  float h,w;
+ //  int cells_x, cells_y;
+ //  float cell_size;
 } Grid;
 
 
@@ -35,8 +41,8 @@ enum AXIS_TYPE {NO_AXIS, XORY_AXIS, VECTOR_AXIS};
 //enum AXIS_XORY {X_AXIS, Y_AXIS};
 
 typedef struct Collision{
-   Entity* ent1;
-   Entity* ent2;
+   SV* ent1;
+   SV* ent2;
    float time;
    int axis_type;
    char axis; // 'x' or 'y', if XORY_AXIS

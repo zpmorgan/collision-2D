@@ -36,25 +36,13 @@ sub bounce_vector{
       confess 'no bounce vector because no axis.';
       return [0,0];
    }
-   warn $self->axis;
-   
-   warn $self->ent1->x; #why do these keep giving different values.
-   warn $self->ent1->x; # does ent1 shift around?
-   warn $self->ent1->x; # If ent1 keeps being converted to & from xs,
-   warn $self->ent1->x; # what's going on with its x and y values?
-   warn $self->ent1->x; # I totally blame kthakore.
-   
-   warn $self->ent1->y;
-   warn $self->ent1->y;
-   warn $self->ent1->y;
-   warn $self->ent1->y;
    
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
    my $rxv = $self->ent1->relative_xv;
    my $ryv = $self->ent1->relative_yv;
    my $rv_len = sqrt($rxv**2 + $ryv**2);
    my $dot = $rxv*$axis->[0] + $ryv*$axis->[1];
-   warn $rv_len;
+ #  warn $rv_len;
    return [0,0] unless $rv_len;
    my $angle = acos($dot / ($axis_len * $rv_len));
    
