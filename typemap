@@ -1,4 +1,5 @@
 TYPEMAP
+char				T_CHAR
 int				T_INT
 int *				T_PTR
 float * 			T_PTR

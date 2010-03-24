@@ -13,42 +13,54 @@ MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX 
 
  # _new -- used internally
 Collision *
-co__new (CLASS, ent1, ent2, time, axis_x, axis_y)
+co__new (CLASS, ent1, ent2, time, axis)
 	char* CLASS
 	Entity * ent1
 	Entity * ent2
 	float  time
-	float  axis_x
-	float  axis_y
+	SV * axis
 	CODE:
 		RETVAL = (Collision *) safemalloc (sizeof(Collision));
 		RETVAL->ent1 = ent1;
 		RETVAL->ent2 = ent2;
 		RETVAL->time = time;
-		RETVAL->axis_x = axis_x;
-		RETVAL->axis_y = axis_y;
+      if (!SvOK(axis)){  //axis is not defined
+         RETVAL->axis_type = NO_AXIS;
+      } else if (SvROK(axis)) { // axis is arrayref
+         AV * axis_arr = (AV*)SvRV(axis);
+         SV * axis_x = (*av_fetch (axis_arr, 0, 0));
+         RETVAL->axis_x = SvNV(axis_x);
+         SV * axis_y = (*av_fetch (axis_arr, 1, 0));
+         RETVAL->axis_y = SvNV(axis_y);
+         RETVAL->axis_type = VECTOR_AXIS;
+      }
+      else{
+         char * axis_str = SvPV_nolen(axis);
+         RETVAL->axis = axis_str[0]; //'x' or 'y'
+         RETVAL->axis_type = XORY_AXIS;
+      }
 
 	OUTPUT:
 		RETVAL
 
 
 Entity *
-co_ent1 ( co )
-	Collision *co
+co_ent1 ( self )
+	Collision *self
 	PREINIT:
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
-		RETVAL = co->ent1;
+		RETVAL = self->ent1;
 	OUTPUT:
 		RETVAL
 
 Entity *
-co_ent2 ( co )
-	Collision *co
+co_ent2 ( self )
+	Collision *self
 	PREINIT:
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
-		RETVAL = co->ent2;
+		RETVAL = self->ent2;
 	OUTPUT:
 		RETVAL
 
@@ -60,31 +72,39 @@ co_time ( co )
 	OUTPUT:
 		RETVAL
 
-AV *
-co_axis ( co )
-	Collision *co
+SV *
+co_axis ( self )
+	Collision *self
 	CODE:
-		RETVAL = (AV*)sv_2mortal((SV*)newAV());
-		av_push(RETVAL, newSVnv(co->axis_x) );
-		av_push(RETVAL, newSVnv(co->axis_y) );
+      if (self->axis_type == NO_AXIS){
+         RETVAL = newSVsv(&PL_sv_undef);
+      }else if (self->axis_type == XORY_AXIS){
+         RETVAL = newSVpvn (&self->axis, 1);
+      }
+      else{ //VECTOR_AXIS
+         AV* axis_vec = newAV();
+         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_x)));
+         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_y)));
+         RETVAL = newRV_inc((SV*) axis_vec);
+      }
 	OUTPUT:
 		RETVAL
 
 
-AV *
-co_maxis_foo ( co )
-	Collision *co
-	CODE:
-	      //if ( co->axis_y ){  //is arrayref
-			RETVAL = (AV*)sv_2mortal((SV*)newAV());
-			av_push(RETVAL, newSVnv(co->axis_x) );
-			av_push(RETVAL, newSVnv(co->axis_y) );
-	      //}
-	     // else{
-		// RETVAL = (AV*)sv_2mortal((SV*)newAV());
-	     // }
-	OUTPUT:
-		RETVAL
+SV *
+co_vaxis_foo ( self )
+   Collision *self
+   CODE:
+      if ( self->axis ){  //
+    //     RETVAL = self->axis;
+   //      av_push(RETVAL, newSVnv(self->axis_x) );
+  //       av_push(RETVAL, newSVnv(self->axis_y) );
+      }
+      else{
+    //     RETVAL = (AV*)sv_2mortal((SV*)newAV());
+      }
+   OUTPUT:
+      RETVAL
 
 
 

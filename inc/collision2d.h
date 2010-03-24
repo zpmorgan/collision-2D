@@ -29,12 +29,19 @@ typedef struct Grid{
    float cell_size;
 } Grid;
 
+
+
+enum AXIS_TYPE {NO_AXIS, XORY_AXIS, VECTOR_AXIS};
+//enum AXIS_XORY {X_AXIS, Y_AXIS};
+
 typedef struct Collision{
    Entity* ent1;
    Entity* ent2;
    float time;
-   float axis_x;
-   float axis_y;
+   int axis_type;
+   char axis; // 'x' or 'y', if XORY_AXIS
+   float axis_x; // if VECTOR_AXIS
+   float axis_y; // if VECTOR_AXIS
 } Collision;
 
 

@@ -44,6 +44,22 @@ rect__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv
 
 
 
+float
+rect_w ( self )
+	Rect *self
+	CODE:
+		RETVAL = self->w;
+	OUTPUT:
+		RETVAL
+
+float
+rect_h ( self )
+	Rect *self
+	CODE:
+		RETVAL = self->h;
+	OUTPUT:
+		RETVAL
+
 
 void
 rect_DESTROY(self)
