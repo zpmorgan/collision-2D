@@ -50,7 +50,8 @@ co_ent1 ( self )
 	PREINIT:
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
-		RETVAL = self->ent1;
+      RETVAL = self->ent1;
+      newRV_inc(RETVAL);
 	OUTPUT:
 		RETVAL
 
@@ -60,7 +61,8 @@ co_ent2 ( self )
 	PREINIT:
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
-		RETVAL = self->ent2;
+      RETVAL = self->ent2;
+      newRV_inc(RETVAL);
 	OUTPUT:
 		RETVAL
 
@@ -110,14 +112,16 @@ co_vaxis ( self )
       }
       else if (self->axis_type == VECTOR_AXIS) {
          AV* axis_vec = newAV();
-         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_x)));
-         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_y)));
+         sv_2mortal((SV*)axis_vec);
+         av_push (axis_vec, newSVnv(self->axis_x));
+         av_push (axis_vec, newSVnv(self->axis_y));
          RETVAL = newRV_inc((SV*) axis_vec);
       } 
       else { //XORY_AXIS
          Entity *ent1 = self->ent1;
          if (self->axis == 'x'){
             AV* axis_vec = newAV();
+            sv_2mortal((SV*)axis_vec);
             if (ent1->relative_xv > 0){
                av_push (axis_vec, newSViv(1));
             } else {
@@ -127,6 +131,7 @@ co_vaxis ( self )
             RETVAL = newRV_inc((SV*) axis_vec);
          } else { //'y'
             AV* axis_vec = newAV();
+            sv_2mortal((SV*)axis_vec);
             av_push (axis_vec, newSViv(0));
             if (ent1->relative_yv > 0){
                av_push (axis_vec, newSViv(1));

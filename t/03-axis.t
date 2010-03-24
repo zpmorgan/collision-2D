@@ -13,6 +13,7 @@ use Test::More tests => 32;
    #point from left
    my $px_pt = hash2point {x=>-1,y=>0,xv=>2};
    my $px_collision = dynamic_collision ($px_pt, $tallrect);
+  # $px_collision = Collision::2D::Collision->new (time=>1,ent1=>$tallrect,ent2=>$px_pt, axis=>[1,0]);
    is ($px_collision->axis, 'x');
    is ($px_collision->vaxis->[0], 1);
    is ($px_collision->vaxis->[1], 0);

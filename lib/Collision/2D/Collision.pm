@@ -33,11 +33,18 @@ sub bounce_vector{
    my $elasticity = $params{elasticity} // 1;
    my $axis = $self->vaxis;
    unless ($axis){
-      carp 'no bounce vector because no axis.';
+      confess 'no bounce vector because no axis.';
       return [0,0];
    }
-   warn $self->axis_type;
+   warn $self->axis;
    
+   warn $self->ent1->x;
+   warn $self->ent1->x;
+   warn $self->ent1->x;
+   warn $self->ent1->y;
+   warn $self->ent1->y;
+   warn $self->ent1->y;
+   warn $self->ent1->y;
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
    my $rxv = $self->ent1->relative_xv;
    my $ryv = $self->ent1->relative_yv;

@@ -30,37 +30,37 @@ ent_new (CLASS)
 		RETVAL
 
 float
-ent_x ( ent, ... )
+ent_x ( ent )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->x = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->x = SvIV(ST(1)); 
 		RETVAL = ent->x;
 	OUTPUT:
 		RETVAL
 
 float
-ent_y ( ent, ... )
+ent_y ( ent )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->y = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->y = SvIV(ST(1)); 
 		RETVAL = ent->y;
 	OUTPUT:
 		RETVAL
       
 float
-ent_xv ( ent, ... )
+ent_xv ( ent )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->xv = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->xv = SvIV(ST(1)); 
 		RETVAL = ent->xv;
 	OUTPUT:
 		RETVAL
 
 float
-ent_yv ( ent, ... )
+ent_yv ( ent )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->yv = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->yv = SvIV(ST(1)); 
 		RETVAL = ent->yv;
 	OUTPUT:
 		RETVAL
