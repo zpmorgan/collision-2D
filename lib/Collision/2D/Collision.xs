@@ -65,10 +65,18 @@ co_ent2 ( self )
 		RETVAL
 
 float
-co_time ( co )
-	Collision *co
+co_time ( self )
+	Collision *self
 	CODE:
-		RETVAL = co->time;
+		RETVAL = self->time;
+	OUTPUT:
+		RETVAL
+
+float
+co_axis_type ( self )
+	Collision *self
+	CODE:
+		RETVAL = self->axis_type;
 	OUTPUT:
 		RETVAL
 
@@ -83,8 +91,8 @@ co_axis ( self )
       }
       else{ //VECTOR_AXIS
          AV* axis_vec = newAV();
-         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_x)));
-         av_push (axis_vec, sv_2mortal(newSVnv(self->axis_y)));
+         av_push (axis_vec, newSVnv(self->axis_x));
+         av_push (axis_vec, newSVnv(self->axis_y));
          RETVAL = newRV_inc((SV*) axis_vec);
       }
 	OUTPUT:
@@ -110,22 +118,22 @@ co_vaxis ( self )
          Entity *ent1 = self->ent1;
          if (self->axis == 'x'){
             AV* axis_vec = newAV();
-            RETVAL = newRV_inc((SV*) axis_vec);
             if (ent1->relative_xv > 0){
-               av_push (axis_vec, sv_2mortal(newSViv(1)));
+               av_push (axis_vec, newSViv(1));
             } else {
-               av_push (axis_vec, sv_2mortal(newSViv(-1)));
+               av_push (axis_vec, newSViv(-1));
             }
-            av_push (axis_vec, sv_2mortal(newSViv(0)));
+            av_push (axis_vec, newSViv(0));
+            RETVAL = newRV_inc((SV*) axis_vec);
          } else { //'y'
             AV* axis_vec = newAV();
-            RETVAL = newRV_inc((SV*) axis_vec);
-            av_push (axis_vec, sv_2mortal(newSViv(0)));
+            av_push (axis_vec, newSViv(0));
             if (ent1->relative_yv > 0){
-               av_push (axis_vec, sv_2mortal(newSViv(1)));
+               av_push (axis_vec, newSViv(1));
             } else {
-               av_push (axis_vec, sv_2mortal(newSViv(-1)));
+               av_push (axis_vec, newSViv(-1));
             }
+            RETVAL = newRV_inc((SV*) axis_vec);
          }
       }
    OUTPUT:
@@ -140,5 +148,27 @@ co_DESTROY(self)
 		safefree( (char *)self );
 
 
+ // axis type constants
+
+int
+co_NO_AXIS()
+	CODE:
+      RETVAL = NO_AXIS;
+   OUTPUT:
+      RETVAL
+
+int
+co_XORY_AXIS()
+	CODE:
+      RETVAL = XORY_AXIS;
+   OUTPUT:
+      RETVAL
+      
+int
+co_VECTOR_AXIS()
+	CODE:
+      RETVAL = VECTOR_AXIS;
+   OUTPUT:
+      RETVAL
 
 

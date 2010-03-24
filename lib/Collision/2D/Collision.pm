@@ -2,7 +2,7 @@ package Collision::2D::Collision;
 
 use strict;
 use warnings;
-use Carp qw/croak confess/;
+use Carp qw/carp croak confess/;
 require DynaLoader;
 our @ISA = qw(DynaLoader);
 bootstrap Collision::2D::Collision;
@@ -15,23 +15,6 @@ sub new{
    return __PACKAGE__->_new (@params{qw/ent1 ent2 time axis/})
 }
 
-sub maxis{
-   my $self = shift;
-   my $axis = $self->axis;
-   return unless $axis;
-   return $axis if ref $axis eq 'ARRAY';
-   if ($axis eq 'x'){
-      if ($self->ent1->relative_xv > 0){
-         return [1,0];
-      }
-      return [-1,0];
-   }
-   #$axis eq 'y'
-   if ($self->ent1->relative_yv > 0){
-      return [0,1];
-   }
-   return [0,-1];
-}
 
 sub does_mario_defeat_goomba{}
 
@@ -48,7 +31,12 @@ use Math::Trig qw/acos/;
 sub bounce_vector{ 
    my ($self,%params) = @_;
    my $elasticity = $params{elasticity} // 1;
-   my $axis = $self->maxis;
+   my $axis = $self->vaxis;
+   unless ($axis){
+      carp 'no bounce vector because no axis.';
+      return [0,0];
+   }
+   warn $self->axis_type;
    
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
    my $rxv = $self->ent1->relative_xv;

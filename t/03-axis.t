@@ -14,15 +14,15 @@ use Test::More tests => 32;
    my $px_pt = hash2point {x=>-1,y=>0,xv=>2};
    my $px_collision = dynamic_collision ($px_pt, $tallrect);
    is ($px_collision->axis, 'x');
-   is ($px_collision->maxis->[0], 1);
-   is ($px_collision->maxis->[1], 0);
+   is ($px_collision->vaxis->[0], 1);
+   is ($px_collision->vaxis->[1], 0);
    
    #point from right
    my $nx_pt = hash2point {x=>2,y=>0,xv=>-2};
    my $nx_collision = dynamic_collision ($nx_pt, $tallrect);
    is ($nx_collision->axis, 'x');
-   is ($nx_collision->maxis->[0], -1);
-   is ($nx_collision->maxis->[1], 0);
+   is ($nx_collision->vaxis->[0], -1);
+   is ($nx_collision->vaxis->[1], 0);
    
    
    my $widerect = hash2rect {y=>0,x=>-100, w=>200};
@@ -30,15 +30,15 @@ use Test::More tests => 32;
    my $py_pt = hash2point {x=>0,y=>-1,yv=>2};
    my $py_collision = dynamic_collision ($py_pt, $widerect);
    is ($py_collision->axis, 'y');
-   is ($py_collision->maxis->[0], 0);
-   is ($py_collision->maxis->[1], 1);
+   is ($py_collision->vaxis->[0], 0);
+   is ($py_collision->vaxis->[1], 1);
    
    #from above
    my $ny_pt = hash2point {x=>0,y=>2,yv=>-2};
    my $ny_collision = dynamic_collision ($ny_pt, $widerect);
    is ($ny_collision->axis, 'y');
-   is ($ny_collision->maxis->[0], 0);
-   is ($ny_collision->maxis->[1], -1);
+   is ($ny_collision->vaxis->[0], 0);
+   is ($ny_collision->vaxis->[1], -1);
 }
 
 #now axis from point-circ and circ-circ.
@@ -47,18 +47,18 @@ use Test::More tests => 32;
    my $pt = hash2point {x=>-1,y=>-1, xv=>1, yv=>1};
    #my $collision = dynamic_collision ($pt, $unitpie);
    $unitpie->normalize($pt);
-   my $collision = $unitpie->collide_point ($unitpie, interval=>5);
+   my $collision = $unitpie->collide_point ($pt, interval=>5);
    my $axis = normalize_vec ($collision->axis);
-   delta_ok ($axis->[0], -sqrt(2)/2);
-   delta_ok ($axis->[1], -sqrt(2)/2);
+   delta_ok ($axis->[0], -sqrt(2)/2, 'circpt axis x');
+   delta_ok ($axis->[1], -sqrt(2)/2, 'circpt axis y');
    
    my $nonpie = hash2circle {x=>-2,y=>-2, xv=>1, yv=>1};
    $nonpie->normalize($unitpie);
    my $collision2 = $nonpie->collide_circle ($unitpie, interval=>5);
    delta_ok ($collision2->time, 2-sqrt(2));
    my $axis2 = normalize_vec ($collision2->axis);
-   is ($axis2->[0], sqrt(2)/2);
-   is ($axis2->[1], sqrt(2)/2);
+   delta_ok ($axis2->[0], sqrt(2)/2);
+   delta_ok ($axis2->[1], sqrt(2)/2, 'foo?');
    
 }
 
@@ -69,8 +69,8 @@ use Test::More tests => 32;
    my $px_pt = hash2point {x=>-1.222,y=>1.666,xv=>2, yv=>1};
    my $px_collision = dynamic_collision ($px_pt, $tallrect);
    my $bounce_vec = $px_collision->bounce_vector;
-   is ($bounce_vec->[0], -2);
-   is ($bounce_vec->[1], 1);
+   is ($bounce_vec->[0], -2, '1st bouncevec x');
+   is ($bounce_vec->[1], 1, '1st bouncevec y');
    
    
    my $widerect = hash2rect {x=>-100, w=>200, y=>0, h=>1};
