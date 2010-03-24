@@ -120,7 +120,8 @@ co_vaxis ( self )
          RETVAL = newRV_inc((SV*) axis_vec);
       } 
       else { //XORY_AXIS
-         Entity *ent1 = self->ent1;
+         void** pointers = (void**)(SvIV((SV*)SvRV( self->ent1 ))); 
+         Entity * ent1 = (Entity*)(pointers[0]);
          if (self->axis == 'x'){
             AV* axis_vec = newAV();
             sv_2mortal((SV*)axis_vec);

@@ -5,7 +5,7 @@ use warnings;
 use Collision::2D ':all';
 use Test::Number::Delta;
 
-use Test::More tests => 32;
+use Test::More tests => 34;
 
 #first, bounce point off rect
 {
@@ -38,6 +38,8 @@ use Test::More tests => 32;
    my $ny_pt = hash2point {x=>0,y=>2,yv=>-2};
    my $ny_collision = dynamic_collision ($ny_pt, $widerect);
    is ($ny_collision->axis, 'y');
+   is ($ny_collision->ent1, 'point', 'ent1 point');
+   is ($ny_collision->ent2, 'rect', 'ent2 rect');
    is ($ny_collision->vaxis->[0], 0);
    is ($ny_collision->vaxis->[1], -1);
 }
@@ -115,7 +117,7 @@ use Test::More tests => 32;
    delta_ok ($collision->time, 3/4, 'keepordered collision at ~correct time');
    is ($collision->ent1, $rect, 'keepordered collision preserves order');
    
-   my $axis = normalize_vec($collision->maxis);
+   my $axis = normalize_vec($collision->vaxis);
    is ($axis->[0], -1, 'keepordered collision axis x is -1, respective of rect');
    is ($axis->[1], 0, 'keepordered collision axis x is 0, of course');
    
