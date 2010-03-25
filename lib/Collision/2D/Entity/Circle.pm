@@ -78,7 +78,7 @@ sub intersect_rect{
    return 0;
 }
 
-sub collide_rect{
+sub _collide_rect{
    my ($self, $rect, %params) = @_;
    my @collisions;
    
@@ -139,7 +139,7 @@ sub collide_rect{
          relative_yv => -$self->relative_yv,
          radius => $self->radius,
       );
-      my $collision = $new_relative_circle->collide_point ($origin_point, interval=>$params{interval});
+      my $collision = $new_relative_circle->_collide_point ($origin_point, interval=>$params{interval});
       next unless $collision;
       #$_->{collision} = 
       push @collisions, Collision::2D::Collision->new(
@@ -180,7 +180,7 @@ sub collide_rect{
          relative_xv => $self->relative_xv,
          relative_yv => $self->relative_yv,
       );
-      my $collision = $rpt->collide_rect($rect, interval=>$params{interval});
+      my $collision = $rpt->_collide_rect($rect, interval=>$params{interval});
       next unless $collision;
       push @collisions, new Collision::2D::Collision(
          time => $collision->time,
@@ -211,7 +211,7 @@ sub collide_rect{
 # roots (where circle intersects on the x axis) are at
 # ( -B ± sqrt(B**2 - 4AC) ) / 2A
 #Then, see which intercept, if any, is the closest after starting point
-sub collide_point{
+sub _collide_point{
    my ($self, $point, %params) = @_;
    #x1,etc. is the path of the point, relative to $self.
    #it's probably easier to consider the point as stationary.
@@ -265,7 +265,7 @@ sub collide_point{
 }
 
 #Say, can't we just use the point algorithm by transferring the radius of one circle to the other?
-sub collide_circle{
+sub _collide_circle{
    my ($self, $other, %params) = @_;
    my $double_trouble = Collision::2D::Entity::Circle->new(
       relative_x => $self->relative_x,
@@ -279,7 +279,7 @@ sub collide_circle{
    my $pt = Collision::2D::Entity::Point->new(
       #y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
    );
-   my $collision = $double_trouble->collide_point($pt, %params);
+   my $collision = $double_trouble->_collide_point($pt, %params);
    return unless $collision;
    
    return Collision::2D::Collision->new(
@@ -311,28 +311,22 @@ Each point on the circle is this distance from the center, at C<< ($circ->x, $ci
 
 =head1 METHODS
 
-In any of these collide_* methods, relative coordinates must be set. See L<Entity|Collision::2D::Entity> for more info.
+Anything in L<Collision::2D::Entity>.
 
-=head2 collide_point
+=head2 collide
 
- $self->normalize ($pt);
- $self->collide_point($pt, interval=>1);
+See L<Collision::2D::Entity->collide($v)|Collision::2D::Entity/collide>
 
-=head2 collide_circle
+ print 'boom' if $circle->collide($rect);
+ print 'zing' if $circle->collide($circle);
+ print 'yotz' if $circle->collide($grid);
+ 
+=head2 intersect
 
- $self->normalize ($circ);
- $self->collide_circle($circ, interval=>1);
-
-=head2 collide_rect
-
- $self->normalize ($rect);
- $self->collide_rect($rect, interval=>1);
-
-=head2 intersect, intersect_point, intersect_circle, intersect_rect
+See L<Collision::2D::Entity->intersect($v)|Collision::2D::Entity/intersect>
 
  print 'bam' if $circle->intersect($rect);
+ # etc..
 
-Detect intersection (overlap) with other entities. Time and velocity
-are not considered.
 
 

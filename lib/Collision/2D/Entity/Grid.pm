@@ -219,7 +219,7 @@ sub collide_point{
    return $best_collision
 }
 
-sub collide_rect{
+sub _collide_rect{
    my ($self, $rect, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of rect to grid
    my $ry = -$self->relative_y; 
@@ -259,7 +259,7 @@ sub collide_rect{
 }
 
 
-sub collide_circle{
+sub _collide_circle{
    my ($self, $circle, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of circle to grid
    my $ry = -$self->relative_y; 
@@ -328,11 +328,15 @@ Grids provide a speedup of precisely O(n^n^18)
 
 =over
 
+=item intersect($ent), collide($ent)
+
+Pretty much the same as in L<Collision::2D::Entity>. Returns the first collision or intersection
+with a child of the grid. Perhaps in the future, this will be more versatile
+with respect to the nature of the grid children.
+
 =item add, add_circle, add_rect, add_point
 
-=item collide, collide_circle, collide_rect, collide_point
-
-=item intersect, intersect_circle, intersect_point, intersect_rect
+Add stuff to the grid
 
 =back
 

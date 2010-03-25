@@ -33,7 +33,7 @@ sub intersect_rect{
             && ($self->y + $self->h > $other->y));
 }
 
-sub collide_rect{
+sub _collide_rect{
    my ($self, $other, %params) = @_;
    my $xv = $self->relative_xv;
    my $yv = $self->relative_yv;
@@ -121,3 +121,41 @@ sub contains_point{
 }
 
 3
+
+__END__
+=head1 NAME
+
+Collision::2D::Entity::Rect - A rectangle entity.
+
+=head1 DESCRIPTION
+
+This is an entity with height and width.
+Attributes (x, y) is one corner of the rect, whereas (x+w,y+h)
+is the opposite corner.
+
+=head1 ATTRIBUTES
+
+=head2 w, h
+
+Width and height of the rectangle.
+
+=head1 METHODS
+
+Anything in L<Collision::2D::Entity>.
+
+=head2 collide
+
+See L<Collision::2D::Entity->collide($v)|Collision::2D::Entity/collide>
+
+ print 'boom' if $rect->collide($rect);
+ print 'zing' if $rect->collide($circle);
+ print 'yotz' if $rect->collide($grid);
+ 
+=head2 intersect
+
+See L<Collision::2D::Entity->intersect($v)|Collision::2D::Entity/intersect>
+
+ print 'bam' if $rect->intersect($rect);
+ # etc..
+
+

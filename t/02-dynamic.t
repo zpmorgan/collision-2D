@@ -7,7 +7,7 @@ use Collision::2D ':all';
 use Test::More tests => 145;
 use Test::Number::Delta;
 
-#First do rect-point collisions. the method is $point->collide_rect($rect,...)
+#First do rect-point collisions. the method is $point->_collide_rect($rect,...)
 {
    my $andy = hash2rect {x=>-1, y=>-1, h=>2, w=>2};
    my $bullet1 = hash2point { x=>-51, y=>0, xv=>100, yv=>16 }; #wild miss
@@ -70,7 +70,7 @@ use Test::Number::Delta;
    
 }
 
-#now circle-point collisions. The method is $circle->collide_point($point,...)
+#now circle-point collisions. The method is $circle->_collide_point($point,...)
 {
    my $pie = hash2circle { x=>0, y=>0, radius=>1 };#the unit pie
    my $raisinH = hash2point { x=>-2, y=>0, xv=>1 };
@@ -224,11 +224,11 @@ use Test::Number::Delta;
    $square2->normalize($square1);
    $square1->normalize($square2);
    #horizontal:
-   my $collision = $square1->collide_rect($square2, interval=>2);
+   my $collision = $square1->_collide_rect($square2, interval=>2);
    ok($collision, 'squares collide h1');
    delta_ok($collision->time, 1, 'squares collide at t=1');
    is($collision->axis, 'x', 'vcollide axis is x');
-   $collision = $square2->collide_rect($square1, interval=>2);
+   $collision = $square2->_collide_rect($square1, interval=>2);
    ok($collision, 'squares collide h2');
    delta_ok($collision->time, 1, 'squares collide at t=1');
    is($collision->axis, 'x', 'vcollide axis is x');
@@ -237,11 +237,11 @@ use Test::Number::Delta;
    my $square3 = hash2rect {x=>0, y=>-4, h=>2,w=>2, yv=>2};
    $square3->normalize($square1);
    $square1->normalize($square3);
-   $collision = $square1->collide_rect($square3, interval=>2);
+   $collision = $square1->_collide_rect($square3, interval=>2);
    ok($collision, 'squares collide v1');
    delta_ok($collision->time, .5, 'squares vcollide at t=.5');
    is($collision->axis, 'y', 'vcollide axis is y');
-   $collision = $square3->collide_rect($square1, interval=>2);
+   $collision = $square3->_collide_rect($square1, interval=>2);
    ok($collision, 'squares collide v2');
    delta_ok($collision->time, .5, 'squares vcollide at t=.5');
    is($collision->axis, 'y', 'vcollide axis is y');
@@ -268,7 +268,7 @@ use Test::Number::Delta;
       my $collision = dynamic_collision ($rect, $circ, interval=>2);
       #warn ("x=".(200+$_));
       delta_ok ($collision->time, 1);
-      #warn join ',',@{normalize_vec($collision->maxis)};
+      #warn join ',',@{normalize_vec($collision->vaxis)};
       is_deeply (normalize_vec($collision->vaxis), [0,1]);
    }
 }

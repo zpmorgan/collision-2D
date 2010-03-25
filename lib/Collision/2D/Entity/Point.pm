@@ -26,14 +26,14 @@ sub new{
 }
 
 #I daresay, 2 points mayn't collide
-sub collide_point{
+sub _collide_point{
    return;
 }
 
 
 #Here, $self is assumed to be normalized.
 
-sub collide_rect{
+sub _collide_rect{
    my ($self, $rect, %params) = @_;
    #if we start inside rect, return the null collision, so to speak.
    #if ($rect->contains_point($self)){
@@ -141,3 +141,38 @@ sub collide_rect{
 }
 
 2
+
+__END__
+=head1 NAME
+
+Collision::2D::Entity::Rect - A rectangle entity.
+
+=head1 DESCRIPTION
+
+This is a point entity.
+Attributes (x, y) are the location of this point. See L<Collision::2D::Entity>.
+
+Points can not collide with other points. Use a very small circle instead.
+
+=head1 ATTRIBUTES
+
+Anything in L<Collision::2D::Entity>.
+
+=head1 METHODS
+
+Anything in L<Collision::2D::Entity>.
+
+=head2 collide
+
+See L<Collision::2D::Entity->collide($v)|Collision::2D::Entity/collide>
+
+ print 'boom' if $point->collide($rect);
+ print 'zing' if $point->collide($circle);
+ print 'yotz' if $point->collide($grid);
+ 
+=head2 intersect
+
+See L<Collision::2D::Entity->intersect($v)|Collision::2D::Entity/intersect>
+
+ print 'bam' if $point->intersect($rect);
+ # etc..

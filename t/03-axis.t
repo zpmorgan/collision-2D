@@ -50,14 +50,14 @@ use Test::More tests => 34;
    my $pt = hash2point {x=>-1,y=>-1, xv=>1, yv=>1};
    #my $collision = dynamic_collision ($pt, $unitpie);
    $unitpie->normalize($pt);
-   my $collision = $unitpie->collide_point ($pt, interval=>5);
+   my $collision = $unitpie->_collide_point ($pt, interval=>5);
    my $axis = normalize_vec ($collision->axis);
    delta_ok ($axis->[0], -sqrt(2)/2, 'circpt axis x');
    delta_ok ($axis->[1], -sqrt(2)/2, 'circpt axis y');
    
    my $nonpie = hash2circle {x=>-2,y=>-2, xv=>1, yv=>1};
    $nonpie->normalize($unitpie);
-   my $collision2 = $nonpie->collide_circle ($unitpie, interval=>5);
+   my $collision2 = $nonpie->_collide_circle ($unitpie, interval=>5);
    delta_ok ($collision2->time, 2-sqrt(2));
    my $axis2 = normalize_vec ($collision2->axis);
    delta_ok ($axis2->[0], sqrt(2)/2);
@@ -89,7 +89,7 @@ use Test::More tests => 34;
    my $nxcirc = hash2circle {x=> 2, y=> sqrt(2), xv=>-100, radius=>2 , yv=>.888 };
    
    $pxcirc->normalize($nxcirc);
-   my $circ_collision = $pxcirc->collide_circle ($nxcirc, interval=>1);
+   my $circ_collision = $pxcirc->_collide_circle ($nxcirc, interval=>1);
    
    my $axis = normalize_vec $circ_collision->axis;
    delta_ok ($axis->[0], sqrt(2)/2, 'circ-circ "deflection" axis of collision(x)');

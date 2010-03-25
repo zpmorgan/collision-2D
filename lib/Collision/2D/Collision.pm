@@ -107,7 +107,7 @@ This vector will not be normal (normal means of length 1).
 L<Collision::2D::normalize_vec($v)|Collision::2D/normalize_vec>
 is provided for that purpose.
 
-=item maxis
+=item vaxis
 
 Again, the axis of collision. If you call this, it will always return the mathematical
 form [$x,$y]. If the axis existed as 'x' or 'y', it is translated to [$x,$y].

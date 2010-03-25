@@ -54,24 +54,18 @@ L<dynamic_collision|Collision::2D/dynamic_collision>
 
 =head2 relative_x, relative_y, relative_xv, relative_yv
 
+You shouldn't worry about these. Move along now.
+
 Relative position and velocity in space.
 these are necessary if you want to do collisions directly through entity methods,
 
- $circ1->collide_circle($circ2);
+ $circ1->_collide_circle($circ2);
 
 In this case, both the absolute and relative position and velocity of $circ2
 is not used. The relative attributes of $circ1 are assumed to be relative to $circ2.
 
 
 =head1 METHODS
-
-=head2 normalize
-
- $self->normalize($other); # $other isa entity
-
-This compares the absolute attributes of $self and $other.
-It only sets the relative attributes of $self.
-This is necessary to call collide_*($other) methods on $self.
 
 =head2 collide
 
@@ -81,6 +75,15 @@ Detect collision with another entity. $self must be normalized to $other.
 Takes interval as a parameter. Returns a collision if there is a collision.
 Returns undef if there is no collision.
 
+With the collide method, the entity order is preserved.
+Consider this example:
+
+ my $collision1 = $panel->collide($droplet);
+ my $collision2 = $droplet->collide($panel);
+
+If these objects collide, then its C<$collision1->ent1> will be C<$panel>, and
+C<$collision2->ent1> will be C<$droplet>.
+
 =head2 intersect
 
  my $t_or_f = $self->intersect ($other_entity);
@@ -89,10 +92,16 @@ Detect intersection (overlapping) with another entity.
 Takes interval as a parameter. Returns a collision if there is a collision.
 Returns undef if there is no collision.
 
-Relative vectors are not considered for intersection, so $self need not be normalized to $other.
+Relative vectors and velocity are not considered for intersection.
 
+=head2 normalize
 
+You probably shouldn't use this directly. At all. 
+Relative vectors are handled automatically
+in C<dynamic_collision> and in  C<$ent1->collide($ent2)>
 
+ $self->normalize($other); # $other isa entity
 
-
-
+This compares the absolute attributes of $self and $other.
+It only sets the relative attributes of $self.
+This is necessary to call _collide_*($other) methods on $self.
