@@ -28,6 +28,7 @@ sub intersect{
 
 sub collide{
    my ($self, $other, %params) = @_;
+   $params{keep_order} = 1;
    return Collision::2D::dynamic_collision ($self, $other, %params);
 }
 
