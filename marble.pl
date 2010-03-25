@@ -65,8 +65,6 @@ my $event = SDL::Event->new();
 my $cont=1;
 #Our level game loop
 while ( $cont ) {
-   
-   
    while ( SDL::Events::poll_event($event) )
    {    #Get all events from the event queue in our event
       if ($event->type == SDL_QUIT)
@@ -108,13 +106,15 @@ while ( $cont ) {
       my $collision = $collisions[0];
       if ($collision) {
          next unless $collision->time;
-         $marble->{y} += $marble->{yv} * $collision->time;
-         $marble->{x} += $marble->{xv} * $collision->time;
+         $marble->{y} += $marble->{yv} * $collision->time*.5;
+         $marble->{x} += $marble->{xv} * $collision->time*.5;
          my $bvec = $collision->bounce_vector(elasticity=>1);
          $marble->{xv} = $bvec->[0];
          $marble->{yv} = $bvec->[1];
-         $marble->{interval} -= $collision->time; #leftover frame interval
+         #$marble->{interval} -= $collision->time; #leftover frame interval
          #redo;
+         $marble->{interval} -= $collision->time+.1; #leftover frame interval
+         redo if $marble->{interval} > 1;
       }
       else {
          $marble->{y} += $marble->{yv}*$marble->{interval};

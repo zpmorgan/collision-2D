@@ -23,8 +23,8 @@ co__new (CLASS, ent1, ent2, time, axis)
 		RETVAL = (Collision *) safemalloc (sizeof(Collision));
 		RETVAL->ent1 = ent1;
 		RETVAL->ent2 = ent2;
-		newRV_inc(ent1);
-		newRV_inc(ent2);
+		SvREFCNT_inc(ent1);
+		SvREFCNT_inc(ent2);
 		RETVAL->time = time;
       if (!SvOK(axis)){  //axis is not defined
          RETVAL->axis_type = NO_AXIS;
@@ -53,7 +53,7 @@ co_ent1 ( self )
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
       RETVAL = self->ent1;
-      newRV_inc(RETVAL);
+      SvREFCNT_inc (RETVAL);
 	OUTPUT:
 		RETVAL
 
@@ -64,7 +64,7 @@ co_ent2 ( self )
 		char* CLASS = "Collision::2D::Entity";
 	CODE:
       RETVAL = self->ent2;
-      newRV_inc(RETVAL);
+      SvREFCNT_inc (RETVAL);
 	OUTPUT:
 		RETVAL
 

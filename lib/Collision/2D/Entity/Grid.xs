@@ -44,7 +44,7 @@ grid__new (CLASS, x, y, xv, yv, relative_x, relative_y, relative_xv, relative_yv
 		RETVAL->cell_size = cell_size;
 		AV* tablaeieu = newAV();
 		sv_2mortal((SV*)tablaeieu);
-		newRV_inc((SV*)tablaeieu);
+		SvREFCNT_inc ((SV*)tablaeieu);
 		RETVAL->table = tablaeieu;
 	OUTPUT:
 		RETVAL
