@@ -51,7 +51,7 @@ use Test::Number::Delta;
    #How about where both things are moving?
    #This stuff may look failure-prone, but it actually passes when made orders of magnitude more precise
    #attempt to hit at y=20000, x=10000, t=100
-   my $tiny_rect = hash2rect {x=>15000-.00005, y=>30000-.00005, h=>.0001, w=>.0001, xv=>-50, yv=>-100};
+   my $tiny_rect = hash2rect {x=>15000-.0025, y=>30000-.0045, h=>.005, w=>.005, xv=>-50, yv=>-100};
    my $accurate_bullet = hash2point { x=>-40000, y=>80100, xv=>500, yv=> -601};
    my $strange_collision = dynamic_collision ($accurate_bullet, $tiny_rect, interval=>400);
    ok($strange_collision, 'small object at long distance');
