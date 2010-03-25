@@ -1,25 +1,29 @@
-Collision-2D
+Collision::2D
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+An object-oriented continuous collision detection library.
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it to get an idea of the module's uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
-
+Here's how to use Collision::2D
+1. Create some entities. Say you want detect a collision
+   betwixt 2 rectangles. I recommend using hash2rect for
+   DWIMMY goodness, or the constructor
+   Collision::2D::Entity::Rect->new(%params).
+   Parameters are x, y, h, w, xv, and yv.
+2. Detect collisions with 
+   my $collision = Collision::2D::dynamic_collision($ent1, $ent2, interval=>1);
+   A Collision::2D::Collision object is returned in the event of a collision.
+   This will return undef if the entities do not collide.
+2. Alternatively, to detect static collision, i.e. intersection, 
+   my $intersects = Collision::2D::intersection($ent1, $ent2);
+   $intersects is a true or false value.
 
 INSTALLATION
 
 To install this module, run the following commands:
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+	perl Build.PL
+	./Build
+	./Build test
+	./Build install
 
 SUPPORT AND DOCUMENTATION
 
@@ -30,18 +34,14 @@ perldoc command.
 
 You can also look for information at:
 
-    RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Collision-2D
-
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Collision-2D
-
-    CPAN Ratings
-        http://cpanratings.perl.org/d/Collision-2D
-
-    Search CPAN
-        http://search.cpan.org/dist/Collision-2D/
-
+   Search CPAN
+   http://search.cpan.org/dist/Collision-2D/
+   
+   Github
+   http://github.com/zpmorgan/collision-2D
+   
+   irc.perl.org
+   #sdl
 
 LICENSE AND COPYRIGHT
 

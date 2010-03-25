@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
    #abstract_from     => 'lib/Collision/2D.pm',
    dist_abstract     => 'Continuous 2d collision detection',
    requires          => {
+      'Carp' => 0,
       'Test::More' => 0,
       'Test::Number::Delta' => 0,
       'List::AllUtils' => 0,
