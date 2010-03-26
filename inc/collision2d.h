@@ -8,20 +8,8 @@
 #endif
 
 
-typedef struct All_Entity_Stuff{
-   float x, y; 
-   float xv, yv;
-   float relative_x, relative_y;
-   float relative_xv, relative_yv;
-   float radius; //circle
-   float h,w; //rect, and also grid
-   AV* table; //grid
-   int cells_x, cells_y; //grid
-   float cell_size;  //grid
-} All_Entity_Stuff;
-
-
-#define ENT_STUFF \
+#define ENTITY_AS(ENT_TYPE) \
+typedef struct ENT_TYPE{ \
    float x, y; \
    float xv, yv;\
    float relative_x, relative_y;\
@@ -30,32 +18,14 @@ typedef struct All_Entity_Stuff{
    float h,w; \
    AV* table; \
    int cells_x, cells_y; \
-   float cell_size; 
+   float cell_size; \
+} ENT_TYPE;
 
-typedef struct Entity{
-   ENT_STUFF
-} Entity;
-
-typedef struct Point{
-   ENT_STUFF
-} Point;
-
-typedef struct Circle{
-   ENT_STUFF
- //  float radius;
-} Circle;
-
-typedef struct Rect{
-   ENT_STUFF
- //  float h,w;
-} Rect;
-typedef struct Grid{
-   ENT_STUFF
- //  AV* table;
- //  float h,w;
- //  int cells_x, cells_y;
- //  float cell_size;
-} Grid;
+ENTITY_AS(Entity)
+ENTITY_AS(Circle)
+ENTITY_AS(Point)
+ENTITY_AS(Rect)
+ENTITY_AS(Grid)
 
 
 
