@@ -259,7 +259,7 @@ sub init_marble_surf {
    SDL::GFX::Primitives::aacircle_color( $particle, $size / 2, $size / 2,
       $size / 2 - 1, 0x000000FF );
 
-     my $pixel = SDL::Color->new( 60, 60, 60 );
+     my $pixel = SDL::Color->new( 0, 0, 0 );
    SDL::Video::set_color_key( $particle, SDL_SRCCOLORKEY, $pixel );
   $particle = SDL::Video::display_format_alpha($particle);
 
