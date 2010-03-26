@@ -27,4 +27,4 @@ t/manifest.t
 t/pod.t
 marble.pl
 typemap
-META.yml
+MYMETA.yml

@@ -108,11 +108,11 @@ while ( $cont ) {
          next unless $collision->time;
          $marble->{y} += $marble->{yv} * $collision->time*.5;
          $marble->{x} += $marble->{xv} * $collision->time*.5;
-         my $bvec = $collision->bounce_vector(elasticity=>1);
+         my $bvec = $collision->bounce_vector(elasticity=>5);
          $marble->{xv} = $bvec->[0];
          $marble->{yv} = $bvec->[1];
-         #$marble->{interval} -= $collision->time; #leftover frame interval
-         #redo;
+         $marble->{interval} -= $collision->time; #leftover frame interval
+         redo;
          $marble->{interval} -= $collision->time+.1; #leftover frame interval
          redo if $marble->{interval} > 1;
       }
