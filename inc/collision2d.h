@@ -1,5 +1,11 @@
 
+#include "EXTERN.h"
+#include "perl.h"
+#include "XSUB.h"
 
+#ifndef aTHX_
+#define aTHX_
+#endif
 
 
 typedef struct All_Entity_Stuff{

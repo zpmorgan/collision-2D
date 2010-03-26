@@ -1,11 +1,5 @@
-#include "EXTERN.h"
-#include "perl.h"
-#include "XSUB.h"
-#include "collision2d.h"
 
-#ifndef aTHX_
-#define aTHX_
-#endif
+#include "collision2d.h"
 
 
 MODULE = Collision::2D::Collision 	PACKAGE = Collision::2D::Collision    PREFIX = co_
@@ -122,10 +116,12 @@ co_vaxis ( self )
       else { //XORY_AXIS
          void** pointers = (void**)(SvIV((SV*)SvRV( self->ent1 ))); 
          Entity * ent1 = (Entity*)(pointers[0]);
+         pointers = (void**)(SvIV((SV*)SvRV( self->ent2 ))); 
+         Entity * ent2 = (Entity*)(pointers[0]);
          if (self->axis == 'x'){
             AV* axis_vec = newAV();
             sv_2mortal((SV*)axis_vec);
-            if (ent1->relative_xv > 0){
+            if (ent1->xv - ent2->xv > 0){
                av_push (axis_vec, newSViv(1));
             } else {
                av_push (axis_vec, newSViv(-1));
@@ -136,7 +132,7 @@ co_vaxis ( self )
             AV* axis_vec = newAV();
             sv_2mortal((SV*)axis_vec);
             av_push (axis_vec, newSViv(0));
-            if (ent1->relative_yv > 0){
+            if (ent1->yv - ent2->yv > 0){
                av_push (axis_vec, newSViv(1));
             } else {
                av_push (axis_vec, newSViv(-1));

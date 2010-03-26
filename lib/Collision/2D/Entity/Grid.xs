@@ -1,12 +1,5 @@
-#include "EXTERN.h"
-#include "perl.h"
-#include "XSUB.h"
+
 #include "collision2d.h"
-
-#ifndef aTHX_
-#define aTHX_
-#endif
-
 
 MODULE = Collision::2D::Entity::Grid 	PACKAGE = Collision::2D::Entity::Grid    PREFIX = grid_
 

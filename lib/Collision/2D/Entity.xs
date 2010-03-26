@@ -1,10 +1,3 @@
-#include "EXTERN.h"
-#include "perl.h"
-#include "XSUB.h"
-
-#ifndef aTHX_
-#define aTHX_
-#endif
 
 #include "collision2d.h"
 
