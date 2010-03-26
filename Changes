@@ -13,3 +13,6 @@ Revision history for Collision::2D
         Mouse taken away,
         moving to an XS struct backend, 
         normalize and vaxis ported to xs.
+0.06    Mar 26, 2010
+        pod fixes
+        bounce_vector fix, marble.pl works

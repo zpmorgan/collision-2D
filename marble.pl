@@ -54,7 +54,7 @@ my $dot_size = 4; #even though it's a point, it has to be visible
 my @crates = map {random_crate()} (1..2);
 my @dots = map {random_dot()} (1..8);
 my @lamps = map {random_lamp()} (1..5);
-my @marbles = map {random_marble()} (1..2);
+my @marbles = map {random_marble()} (1..7);
 my @squarbles = map {random_squarble()} (1..2);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
@@ -232,7 +232,7 @@ sub init_crate_surf {
 }
 
 #from shooter.pl
-# Make an initail surface for the marble
+# Make an initial surface for the marble
 # so we only use it once
 sub init_marble_surf {
    my $marble = shift;
@@ -240,13 +240,13 @@ sub init_marble_surf {
 
    #make a surface based on the size
    my $particle =
-      SDL::Surface->new( SDL_SWSURFACE, $size + 15, $size + 15, 32, 0, 0, 0,
-      255 );
+      SDL::Surface->new( SDL_SWSURFACE|SDL_SRCALPHA, $size + 15, $size + 15, 32, 0, 0, 0,
+      127 );
 
       SDL::Video::fill_rect(
          $particle,
          SDL::Rect->new( 0, 0, $size + 15, $size + 15 ),
-         SDL::Video::map_RGB( $app->format, 0,0,0 )
+         SDL::Video::map_RGBA( $app->format, 0,0,0,127 )
       );
 
    #draw a circle on it with a random color
