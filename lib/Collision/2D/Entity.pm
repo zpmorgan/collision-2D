@@ -86,11 +86,13 @@ C<$collision2->ent1> will be C<$droplet>.
 
 =head2 intersect
 
- my $t_or_f = $self->intersect ($other_entity);
+ my $t_or_f = $self->intersect ($other_entity, interval=>2.5);
 
 Detect intersection (overlapping) with another entity.
 Takes interval as a parameter. Returns a collision if there is a collision.
 Returns undef if there is no collision.
+
+C<interval> is optional. C<interval> is 1 by default.
 
 Relative vectors and velocity are not considered for intersection.
 

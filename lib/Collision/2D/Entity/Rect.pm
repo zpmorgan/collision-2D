@@ -145,7 +145,7 @@ Anything in L<Collision::2D::Entity>.
 
 =head2 collide
 
-See L<Collision::2D::Entity->collide($v)|Collision::2D::Entity/collide>
+See L<< Collision::2D::Entity->collide|Collision::2D::Entity/collide >>
 
  print 'boom' if $rect->collide($rect);
  print 'zing' if $rect->collide($circle);
@@ -153,7 +153,7 @@ See L<Collision::2D::Entity->collide($v)|Collision::2D::Entity/collide>
  
 =head2 intersect
 
-See L<Collision::2D::Entity->intersect($v)|Collision::2D::Entity/intersect>
+See L<< Collision::2D::Entity->intersect|Collision::2D::Entity/intersect >>
 
  print 'bam' if $rect->intersect($rect);
  # etc..

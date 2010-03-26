@@ -109,7 +109,7 @@ is provided for that purpose.
 
 =item vaxis
 
-Again, the axis of collision. If you call this, it will always return the mathematical
+Again, the axis of collision. If you call this, it will always return the vector
 form [$x,$y]. If the axis existed as 'x' or 'y', it is translated to [$x,$y].
 
 This vector will not be normal (normal means of length 1).
@@ -121,7 +121,9 @@ is provided for that purpose.
  $collision->ent1
 
 This is to provide some context for L</axis>. This is useful because
-dynamic_collision doesn't preserve the order of your entities.
+dynamic_collision doesn't preserve the order of your entities. If you would
+like for the order to be preserved, use the C<< entity->collide($ent2) >> method,
+or use the keep_order parameter in C<dynamic_collision>.
 
 =back
 
@@ -130,6 +132,11 @@ dynamic_collision doesn't preserve the order of your entities.
 =over
 
 =item bounce_vector
+
+ my $bouncevec = $co->bounce_vector (elasticity => .8);
+
+Assuming that C<< $co->ent2 >> has infinite mass, the C<< $co->bounce_vector >> is
+the resulting velocity of C<< $co->ent1 >>. The elasticity parameter is 1 by default.
 
 =item invert
 

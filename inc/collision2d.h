@@ -1,4 +1,20 @@
 
+
+
+
+typedef struct All_Entity_Stuff{
+   float x, y; 
+   float xv, yv;
+   float relative_x, relative_y;
+   float relative_xv, relative_yv;
+   float radius; //circle
+   float h,w; //rect, and also grid
+   AV* table; //grid
+   int cells_x, cells_y; //grid
+   float cell_size;  //grid
+} All_Entity_Stuff;
+
+
 #define ENT_STUFF \
    float x, y; \
    float xv, yv;\

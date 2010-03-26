@@ -5,7 +5,7 @@ use warnings; use strict;
 
 =head1 NAME Shooter.pl
 
-A demonstration to demonstrate marbles colliding with static circles, rects, and points.
+marble.pl - A demonstration to demonstrate marbles colliding with static circles, rects, and points.
 
 Parameters like the numbers of marbles & static objects, gravity, and speed 
 limits are in the code.

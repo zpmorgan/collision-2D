@@ -221,11 +221,12 @@ dynamic collision detection between moving circles, rectangles, and points.
 
 Typically, collision detection in games and game libraries tends to be static. 
 That is, they only detect overlap of motionless polygons.  
-This is somewhat simple, but naive, because often the developer may want to describe the
+This is somewhat simple, but naive, because often the developer may want a
+description of the
 collision, so that he may implement a response.
 
-Supply Collision::2D with any 2 moving entities (
-L<rects|Collision::2D::Entity::Rect>, 
+Supply Collision::2D with any 2 moving entities
+(L<rects|Collision::2D::Entity::Rect>, 
 L<circles|Collision::2D::Entity::Circle>, and 
 L<points|Collision::2D::Entity::Point>)
 and an interval of time and it will return a Collision::2D::Collision object.
@@ -233,14 +234,19 @@ This $collision has attributes ->time and ->axis, which describe when and how th
 
 =head2 HOW
 
-Initially, I implemented point-rect and point-circle. I used these to compose teh other types of detection.
+Initially, I implemented point-rect and point-circle. I used these to compose the other types of detection.
 
 Circle-circle is just an extension of point-circle, and it reduces to a single 
 point-circle detection.
 
-Circle-rect and rect-rect may use a bunch of calls to point-collision routines. This is a worst case, though.
+Circle-rect and may use a bunch of calls to point-collision routines. This is a worst case, though.
 If both entities stay entirely separate on either dimension, no such calculation is required.
 If they intersect at t=0, it returns the null collision, with no axis involved.
+
+Rect-rect operates independently of point operations.
+
+In any case, if one entity is observed to remain on one side of the other, then
+we can be certain that they don't collide.
 
 =head1 FUNCTIONS
 
