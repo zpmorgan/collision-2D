@@ -47,15 +47,15 @@ croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
 my $grav = 1;
-my $spd_limit = 15;
+my $spd_limit = 35;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
 my @crates = map {random_crate()} (1..2);
 my @dots = map {random_dot()} (1..8);
 my @lamps = map {random_lamp()} (1..5);
-my @marbles = map {random_marble()} (1..7);
-my @squarbles = map {random_squarble()} (1..2);
+my @marbles = map {random_marble()} (1..3);
+my @squarbles = map {random_squarble()} (1..3);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
@@ -258,11 +258,11 @@ sub init_marble_surf {
       $size / 2 - 2, 0x000000FF );
    SDL::GFX::Primitives::aacircle_color( $particle, $size / 2, $size / 2,
       $size / 2 - 1, 0x000000FF );
-
-     my $pixel = SDL::Color->new( 0, 0, 0 );
+   
+   my $pixel = SDL::Color->new( 0, 0, 0 );
    SDL::Video::set_color_key( $particle, SDL_SRCCOLORKEY, $pixel );
-  $particle = SDL::Video::display_format_alpha($particle);
-
+   $particle = SDL::Video::display_format_alpha($particle);
+   
    return $particle;
 }
 
