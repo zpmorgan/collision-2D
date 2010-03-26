@@ -47,15 +47,15 @@ croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
 my $grav = 1;
-my $spd_limit = 15;
+my $spd_limit = 116;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
 my @crates = map {random_crate()} (1..2);
 my @dots = map {random_dot()} (1..8);
 my @lamps = map {random_lamp()} (1..5);
-my @marbles = map {random_marble()} (1..3);
-my @squarbles = map {random_squarble()} (1..3);
+my @marbles = map {random_marble()} (1..0);
+my @squarbles = map {random_squarble()} (1..1);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
@@ -77,10 +77,10 @@ while ( $cont ) {
       $marble->{interval} = 1;
    }
    for my $marble (@marbles,@squarbles){
-      $marble->{y} = -60 if $marble->{y} > 560;#wrap y
-      $marble->{y} = 560 if $marble->{y} < -60;#wrap y
-      $marble->{x} = -60 if $marble->{x} > 960;#wrap x
-      $marble->{x} = 960 if $marble->{x} < -60;#wrap x
+      $marble->{y} -= 600 if $marble->{y} > 560;#wrap y
+      $marble->{y} += 600 if $marble->{y} < -60;#wrap y
+      $marble->{x} -= 1000 if $marble->{x} > 960;#wrap x
+      $marble->{x} += 1000 if $marble->{x} < -60;#wrap x
       $marble->{yv} = $spd_limit if $marble->{yv} > $spd_limit; #y speed limit
       $marble->{yv} = -$spd_limit if $marble->{yv} < -$spd_limit; #y speed limit
       $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
