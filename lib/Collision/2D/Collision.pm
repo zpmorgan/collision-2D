@@ -38,12 +38,15 @@ sub bounce_vector{
    }
    
    my $axis_len = sqrt($axis->[0]**2 + $axis->[1]**2);
-   my $rxv = $self->ent1->relative_xv;
-   my $ryv = $self->ent1->relative_yv;
+   my $rxv = $self->ent1->xv - $self->ent2->xv;
+   my $ryv = $self->ent1->yv - $self->ent2->yv;
    my $rv_len = sqrt($rxv**2 + $ryv**2);
    my $dot = $rxv*$axis->[0] + $ryv*$axis->[1];
- #  warn $rv_len;
-   return [0,0] unless $rv_len;
+   unless ($rv_len){
+      #warn "FOO FOO ". $self->time;
+      #warn $rv_len;
+      return [0,0];
+   }
    my $angle = acos($dot / ($axis_len * $rv_len));
    
    my $axis_scalar = $rv_len * cos($angle) / $axis_len;

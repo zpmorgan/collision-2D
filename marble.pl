@@ -47,15 +47,15 @@ croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
 my $grav = 1;
-my $spd_limit = 116;
+my $spd_limit = 15;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
 my @crates = map {random_crate()} (1..2);
 my @dots = map {random_dot()} (1..8);
 my @lamps = map {random_lamp()} (1..5);
-my @marbles = map {random_marble()} (1..0);
-my @squarbles = map {random_squarble()} (1..1);
+my @marbles = map {random_marble()} (1..2);
+my @squarbles = map {random_squarble()} (1..2);
 #my $marble_surf = init_marble_surf();
 #my $crate_surf = init_crate_surf();
 
@@ -77,48 +77,49 @@ while ( $cont ) {
       $marble->{interval} = 1;
    }
    for my $marble (@marbles,@squarbles){
-      $marble->{y} -= 600 if $marble->{y} > 560;#wrap y
-      $marble->{y} += 600 if $marble->{y} < -60;#wrap y
-      $marble->{x} -= 1000 if $marble->{x} > 960;#wrap x
-      $marble->{x} += 1000 if $marble->{x} < -60;#wrap x
-      $marble->{yv} = $spd_limit if $marble->{yv} > $spd_limit; #y speed limit
-      $marble->{yv} = -$spd_limit if $marble->{yv} < -$spd_limit; #y speed limit
-      $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
-      $marble->{xv} = -$spd_limit if $marble->{xv} < -$spd_limit; #x speed limit
-      $marble->{yv} += $grav;
-      
-      #squarble?
-      my $ent = $marble->{h} ? hash2rect($marble) : hash2circle ($marble);
-      my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @crates;
-      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @dots;
-      push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @lamps;
-      push @collisions, #collide with other marbles too
-                 map {dynamic_collision (
-                     $ent, 
-                     $_->{h} ? hash2rect($_) : hash2circle ($_),
-                     interval=>$marble->{interval},
-                     keep_order=>1
-                     )} 
-                 grep {$_ != $marble}
-                 (@marbles,@squarbles);
-      @collisions = grep {$_ and $_->time} @collisions;
-      @collisions = sort {$a->time <=> $b->time} @collisions;
-      my $collision = $collisions[0];
-      if ($collision) {
-         next unless $collision->time;
-         $marble->{y} += $marble->{yv} * $collision->time*.04;
-         $marble->{x} += $marble->{xv} * $collision->time*.04;
-         my $bvec = $collision->bounce_vector(elasticity=>1);
-         $marble->{xv} = $bvec->[0];
-         $marble->{yv} = $bvec->[1];
-         #$marble->{interval} -= $collision->time; #leftover frame interval
-         #redo;
-         $marble->{interval} -= $collision->time+.1; #leftover frame interval
-         redo if $marble->{interval} > 1;
-      }
-      else {
-         $marble->{y} += $marble->{yv}*$marble->{interval};
-         $marble->{x} += $marble->{xv}*$marble->{interval};
+      while ($marble->{interval} > 0){
+         $marble->{y} -= 600 if $marble->{y} > 560;#wrap y
+         $marble->{y} += 600 if $marble->{y} < -60;#wrap y
+         $marble->{x} -= 1000 if $marble->{x} > 960;#wrap x
+         $marble->{x} += 1000 if $marble->{x} < -60;#wrap x
+         $marble->{yv} = $spd_limit if $marble->{yv} > $spd_limit; #y speed limit
+         $marble->{yv} = -$spd_limit if $marble->{yv} < -$spd_limit; #y speed limit
+         $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
+         $marble->{xv} = -$spd_limit if $marble->{xv} < -$spd_limit; #x speed limit
+         $marble->{yv} += $grav;
+         
+         #squarble?
+         my $ent = $marble->{h} ? hash2rect($marble) : hash2circle ($marble);
+         my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @crates;
+         push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @dots;
+         push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @lamps;
+         push @collisions, #collide with other marbles too
+                    map {dynamic_collision (
+                        $ent, 
+                        $_->{h} ? hash2rect($_) : hash2circle ($_),
+                        interval=>$marble->{interval},
+                        keep_order=>1
+                        )} 
+                    grep {$_ != $marble}
+                    (@marbles,@squarbles);
+         @collisions = grep {$_ and ($_->time>0)} @collisions;
+         @collisions = sort {$a->time <=> $b->time} @collisions;
+         my $collision = $collisions[0];
+         if ($collision and $collision->time) {
+            next unless $collision->time;
+            $marble->{x} += $marble->{xv} * $collision->time*.94;
+            $marble->{y} += $marble->{yv} * $collision->time*.94;
+            my $bvec = $collision->bounce_vector(elasticity=>1);
+            $marble->{xv} = $bvec->[0];
+            $marble->{yv} = $bvec->[1];
+            $marble->{interval} -= $collision->time+.1; #leftover frame interval
+            #will repeat if interval > 0
+         }
+         else {
+            $marble->{y} += $marble->{yv}*$marble->{interval};
+            $marble->{x} += $marble->{xv}*$marble->{interval};
+            $marble->{interval} = 0;
+         }
       }
    }
    SDL::Video::fill_rect(
