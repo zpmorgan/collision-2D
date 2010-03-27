@@ -145,7 +145,7 @@ sub _collide_rect{
 __END__
 =head1 NAME
 
-Collision::2D::Entity::Rect - A rectangle entity.
+Collision::2D::Entity::Rect - A Point entity.
 
 =head1 DESCRIPTION
 

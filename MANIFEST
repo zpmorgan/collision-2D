@@ -28,3 +28,4 @@ t/pod.t
 marble.pl
 typemap
 MYMETA.yml
+META.yml
