@@ -20,6 +20,7 @@ use SDL;
 use SDL::Video;
 use SDL::Surface;;
 use SDL::Event;
+use SDL::Events;
 use SDL::Rect;
 use SDL::Color;
 use SDL::GFX::Primitives;
@@ -27,7 +28,6 @@ use SDL::GFX::Primitives;
 use Carp;
 
 =comment 
-use SDL::Events;
 use SDL::Time;
 use Data::Dumper;
 
