@@ -46,8 +46,8 @@ my $app = SDL::Video::set_video_mode( 800, 500, 32, SDL_SWSURFACE );
 croak 'Cannot init video mode 800x500x32: ' . SDL::get_error() if !($app);
 
 #constants
-my $grav = 1;
-my $spd_limit = 35;
+my $grav = .31;
+my $spd_limit = 11;
 my $dot_size = 4; #even though it's a point, it has to be visible
 
 #the things that move & collide
