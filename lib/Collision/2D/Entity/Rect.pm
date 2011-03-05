@@ -8,6 +8,7 @@ bootstrap Collision::2D::Entity::Rect;
 
 sub _p{4} #low priority
 use overload '""'  => sub{'rect'};
+sub typename{'rect'}
 
 sub new{
    my ($package, %params) = @_;

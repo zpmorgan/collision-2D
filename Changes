@@ -16,3 +16,6 @@ Revision history for Collision::2D
 0.06    Mar 26, 2010
         pod fixes
         bounce_vector fix, marble.pl works
+0.07    Mar 5, 2011
+        fixed a bug introduced with some version of Test::More
+

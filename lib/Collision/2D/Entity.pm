@@ -6,6 +6,8 @@ require DynaLoader;
 our @ISA = qw(DynaLoader);
 bootstrap Collision::2D::Entity;
 
+sub typename{'entity'}
+
 
 #an actual collision at t=0; 
 sub null_collision{

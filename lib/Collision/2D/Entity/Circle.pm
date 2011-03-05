@@ -10,6 +10,7 @@ bootstrap Collision::2D::Entity::Circle;
 
 sub _p{2} #highish priority
 use overload '""'  => sub{'circle'};
+sub typename{'circle'}
 
 
 sub new{

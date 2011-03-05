@@ -13,6 +13,7 @@ use Carp qw/cluck confess/;
 
 sub _p{1} #highest priority -- include all relevant methods in this module
 use overload '""'  => sub{'grid'};
+sub typename{'grid'}
 
 
 # table is where we store every grid child;

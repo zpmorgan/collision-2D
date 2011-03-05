@@ -9,6 +9,7 @@ bootstrap Collision::2D::Entity::Point;
 
 sub _p{3} #meh priority
 use overload '""'  => sub{'point'};
+sub typename{'point'}
 
 sub new{
    my ($package, %params) = @_;
