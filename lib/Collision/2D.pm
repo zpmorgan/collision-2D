@@ -13,7 +13,7 @@ use Collision::2D::Entity::Grid;
 BEGIN {
    require Exporter;
    our @ISA = qw(Exporter);
-   our @EXPORT_OK = qw( 
+   our @EXPORT_OK = qw(
       dynamic_collision
       intersection
       hash2point hash2rect
@@ -33,14 +33,14 @@ our $VERSION = '0.07';
 sub dynamic_collision{
    my ($ent1, $ent2, %params) = @_;
    $params{interval} //= 1;
-   
+
    #if $obj2 is an arrayref, do this for each thing in @$obj
    # and return all collisions, starting with the closest
    if (ref $ent2 eq 'ARRAY'){
       my @collisions = map {dynamic_collision($ent1,$_,%params)} @$ent2;
       return sort{$a->time <=> $b->time} grep{defined$_} @collisions;
    }
-   
+
    #now, we sort by package name. This is so we can find specific routine in predictable namespace.
    #for example, p comes before r, so point-rect collisions are at $point->_collide_rect
    my $swapped;
@@ -49,7 +49,7 @@ sub dynamic_collision{
       $swapped=1
    }
    my $method = "_collide_$ent2";
-   
+
    $ent1->normalize($ent2);
    my $collision = $ent1->$method($ent2, %params);
    return unless $collision;
@@ -70,7 +70,7 @@ sub intersection{
    }
    ($ent1, $ent2) =  ($ent2, $ent1)  if  ($ent1->_p > $ent2->_p );
    my $method = "intersect_$ent2";
-   
+
    return 1 if $ent1->$method($ent2);
    return 0;
 }
@@ -142,7 +142,7 @@ sub obj2circle{
       yv=>$obj->yv,
       radius => $obj->radius || 1,
    )
-   
+
 }
 
 # x and y are be derivable from specified number of $cells?
@@ -153,11 +153,11 @@ sub obj2circle{
 # do what? do + dimensions even need to be constrained?
 sub hash2grid{
    my $hash = shift;
-   my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y) 
+   my ($cell_size, $w, $h, $x, $y, $cells, $cells_x, $cells_y)
       = @{$hash}{qw/cell_size w h x y cells cells_x cells_y/};
    die 'where?' unless defined $y and defined $x;
    die 'require cell_size' unless $cell_size;
-   
+
    if ($cells) {
       $w = $cell_size * $cells_x;
       $h = $cell_size * $cells_y;
@@ -171,7 +171,7 @@ sub hash2grid{
       }
    }
    die 'require some form of w and h' unless $w and $h;
-   
+
    return Collision::2D::Entity::Grid->new (
       x=>$x,
       y=>$y,
@@ -194,7 +194,7 @@ Collision::2D - Continuous 2d collision detection
   my $rect = hash2rect ({x=>0, y=>0, h=>1, w=>1});
   my $circle = hash2circle ({x=>0, y=>0, radius => 1});
   my $collision = dynamic_collision ($rect, $circle);
-  
+
   #When your geometric objects do not move, it is static.
   #Collision::2D is also capable of dynamic collisions, eith moving entities.
   my $roach = hash2circle ({x=>-1, y=>-12, radius => .08, xv = 3, yv => 22});
@@ -204,8 +204,8 @@ Collision::2D - Continuous 2d collision detection
      print "collision is at t=" . $co2->time . "\n"
      print "axis of collision is (" . join(',', @{$co2->axis}) .")\n";
   }
-  
-  #we can also detect whether points collide with circles and rects. 
+
+  #we can also detect whether points collide with circles and rects.
   #these entities collide at around y=20000, x=10000, t=100:
   my $tiny_rect = hash2rect {x=>15000-.00005, y=>30000-.00005, h=>.0001, w=>.0001, xv=>-50, yv=>-100};
   my $accurate_bullet = hash2point { x=>-40000, y=>80100, xv=>500, yv=> -601};
@@ -219,15 +219,15 @@ dynamic collision detection between moving circles, rectangles, and points.
 
 =head2 WHY
 
-Typically, collision detection in games and game libraries tends to be static. 
-That is, they only detect overlap of motionless polygons.  
+Typically, collision detection in games and game libraries tends to be static.
+That is, they only detect overlap of motionless polygons.
 This is somewhat simple, but naive, because often the developer may want a
 description of the
 collision, so that he may implement a response.
 
 Supply Collision::2D with any 2 moving entities
-(L<rects|Collision::2D::Entity::Rect>, 
-L<circles|Collision::2D::Entity::Circle>, and 
+(L<rects|Collision::2D::Entity::Rect>,
+L<circles|Collision::2D::Entity::Circle>, and
 L<points|Collision::2D::Entity::Point>)
 and an interval of time and it will return a Collision::2D::Collision object.
 This $collision has attributes ->time and ->axis, which describe when and how the collision took place.
@@ -236,7 +236,7 @@ This $collision has attributes ->time and ->axis, which describe when and how th
 
 Initially, I implemented point-rect and point-circle. I used these to compose the other types of detection.
 
-Circle-circle is just an extension of point-circle, and it reduces to a single 
+Circle-circle is just an extension of point-circle, and it reduces to a single
 point-circle detection.
 
 Circle-rect and may use a bunch of calls to point-collision routines. This is a worst case, though.
@@ -302,7 +302,7 @@ Normalize your 2d vectors
 
 =head1 EXPORTABLE SYMBOLS
 
-Collision::2D doesn't export anything by default. You have to explicitly 
+Collision::2D doesn't export anything by default. You have to explicitly
 define function names or use the :all tag.
 
 =head1 TODO

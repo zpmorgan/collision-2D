@@ -47,14 +47,14 @@ sub _collide_rect{
    my $y2 = $y1 + ($self->relative_yv * $params{interval});
    my $w = $rect->w;
    my $h = $rect->h;
-   
+
    #if it contains point at t=0, relatively...
    if (  $x1>0 and $x1<$w
      and $y1>0 and $y1<$h){
       return $self->null_collision($rect);
    }
    else{
-      #start outside box, so return if no relative movement 
+      #start outside box, so return if no relative movement
       return unless $params{interval} and ($self->relative_x or $self->relative_y);
    }
    unless ($self->relative_xv){ #no horizontal movement. Don't worry about inverting, it's easy.
@@ -74,7 +74,7 @@ sub _collide_rect{
          ent2 => $rect,
       );
    }
-   
+
    #now see if point starts and ends on one of 4 sides of this rect.
    #probably worth it because most things don't collide with each other every frame
    if ($x1 > $w and $x2 > $w ){
@@ -89,7 +89,7 @@ sub _collide_rect{
    if ($y1 < 0 and $y2 < 0){
       return
    }
-   
+
    #not that simple. either it enters rect, or passes by a corner. check each rect line segment.
    my ($best_time, $best_axis);
    if ($self->relative_xv){
@@ -170,7 +170,7 @@ See L<< Collision::2D::Entity->collide|Collision::2D::Entity/collide >>
  print 'boom' if $point->collide($rect);
  print 'zing' if $point->collide($circle);
  print 'yotz' if $point->collide($grid);
- 
+
 =head2 intersect
 
 See L<< Collision::2D::Entity->intersect|Collision::2D::Entity/intersect >>

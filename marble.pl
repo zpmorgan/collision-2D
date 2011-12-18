@@ -7,7 +7,7 @@ use warnings; use strict;
 
 marble.pl - A demonstration to demonstrate marbles colliding with static circles, rects, and points.
 
-Parameters like the numbers of marbles & static objects, gravity, and speed 
+Parameters like the numbers of marbles & static objects, gravity, and speed
 limits are in the code.
 
 Derived from kthakore's shooter.pl.
@@ -27,7 +27,7 @@ use SDL::GFX::Primitives;
 
 use Carp;
 
-=comment 
+=comment
 use SDL::Time;
 use Data::Dumper;
 
@@ -69,10 +69,10 @@ while ( $cont ) {
    {    #Get all events from the event queue in our event
       if ($event->type == SDL_QUIT)
       {
-         $cont = 0 
+         $cont = 0
       }
    }
-   
+
    for my $marble (@marbles,@squarbles){
       $marble->{interval} = 1;
    }
@@ -87,7 +87,7 @@ while ( $cont ) {
          $marble->{xv} = $spd_limit if $marble->{xv} > $spd_limit; #x speed limit
          $marble->{xv} = -$spd_limit if $marble->{xv} < -$spd_limit; #x speed limit
          $marble->{yv} += $grav;
-         
+
          #squarble?
          my $ent = $marble->{h} ? hash2rect($marble) : hash2circle ($marble);
          my @collisions = map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @crates;
@@ -95,11 +95,11 @@ while ( $cont ) {
          push @collisions, map {dynamic_collision ($ent, $_->{ent}, interval=>$marble->{interval}, keep_order=>1)} @lamps;
          push @collisions, #collide with other marbles too
                     map {dynamic_collision (
-                        $ent, 
+                        $ent,
                         $_->{h} ? hash2rect($_) : hash2circle ($_),
                         interval=>$marble->{interval},
                         keep_order=>1
-                        )} 
+                        )}
                     grep {$_ != $marble}
                     (@marbles,@squarbles);
          @collisions = grep {$_ and ($_->time>0)} @collisions;
@@ -138,7 +138,7 @@ while ( $cont ) {
          )
       )
    }
-   
+
    for my $dot (@dots){
       SDL::Video::blit_surface(
          $dot->{surf},
@@ -150,7 +150,7 @@ while ( $cont ) {
          )
       )
    }
-   
+
    for my $marble (@marbles,@lamps){
       SDL::Video::blit_surface(
          $marble->{surf},
@@ -164,7 +164,7 @@ while ( $cont ) {
          )
       );
    }
-   
+
    #Update the entire window
    #This is one frame!
    SDL::Video::flip($app);
@@ -258,11 +258,11 @@ sub init_marble_surf {
       $size / 2 - 2, 0x000000FF );
    SDL::GFX::Primitives::aacircle_color( $particle, $size / 2, $size / 2,
       $size / 2 - 1, 0x000000FF );
-   
+
    my $pixel = SDL::Color->new( 0, 0, 0 );
    SDL::Video::set_color_key( $particle, SDL_SRCCOLORKEY, $pixel );
    $particle = SDL::Video::display_format_alpha($particle);
-   
+
    return $particle;
 }
 

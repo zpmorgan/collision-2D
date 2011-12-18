@@ -28,9 +28,9 @@ sub new{
 sub intersect_rect{
    my ($self, $other) = @_;
    return (
-               ($self->x < $other->x + $other->w) 
-            && ($self->y < $other->y + $other->h) 
-            && ($self->x + $self->w > $other->x) 
+               ($self->x < $other->x + $other->w)
+            && ($self->y < $other->y + $other->h)
+            && ($self->x + $self->w > $other->x)
             && ($self->y + $self->h > $other->y));
 }
 
@@ -46,10 +46,10 @@ sub _collide_rect{
    my $sh = $self->h;
    my $ow = $other->w;
    my $oh = $other->h;
-   
+
    #start intersected?
    return $self->null_collision($other) if (
-      $y1+$sh > 0 and 
+      $y1+$sh > 0 and
       $x1+$sw > 0 and
       $x1 < $ow and
       $y1 < $oh
@@ -62,7 +62,7 @@ sub _collide_rect{
    );
    my $best_time = $params{interval}+1;
    my $best_axis;
-   
+
    if ($x1+$sw < 0){ #hit on left of $other
       my $time = -($x1+$sw)/$xv;
       my $yatt = $y1+$yv*$time;
@@ -101,7 +101,7 @@ sub _collide_rect{
          }
       }
    }
-   
+
    if ($best_time <= $params{interval}){
       return Collision::2D::Collision->new(
          axis => $best_axis,
@@ -151,7 +151,7 @@ See L<< Collision::2D::Entity->collide|Collision::2D::Entity/collide >>
  print 'boom' if $rect->collide($rect);
  print 'zing' if $rect->collide($circle);
  print 'yotz' if $rect->collide($grid);
- 
+
 =head2 intersect
 
 See L<< Collision::2D::Entity->intersect|Collision::2D::Entity/intersect >>

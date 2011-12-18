@@ -1,4 +1,4 @@
-package Collision::2D::Entity::Grid; 
+package Collision::2D::Entity::Grid;
 use strict;
 use warnings;
 
@@ -57,7 +57,7 @@ sub add{
       my $method = "add_$_";
       $self->$method($_);
    }
-   
+
 }
 
 
@@ -66,13 +66,13 @@ sub add{
 sub cells_intersect_circle{
    my ($self, $circle) = @_;
    my @cells; # [int,int], ...
-   
+
    #must find a faster way to find points inside
    my $r = $circle->radius;
    my $rx = $circle->x - $self->x; #relative
    my $ry = $circle->y - $self->y;
    my $s = $self->cell_size;
-   
+
    for my $y ( max(0, ($ry-$r)/$s) .. floor min ($self->cells_y-1, ($ry+$r)/$s) ) {
       for my $x ( max(0, ($rx-$r)/$s) .. floor min ($self->cells_x-1, ($rx+$r)/$s) ) {
          my $rect = Collision::2D::Entity::Rect->new (
@@ -91,11 +91,11 @@ sub cells_intersect_circle{
 sub cells_intersect_rect{
    my ($self, $rect) = @_;
    my @cells; # [int,int], ...
-   
+
    my $rx = $rect->x - $self->x; #relative
    my $ry = $rect->y - $self->y;
    my $s = $self->cell_size;
-   
+
    for my $y ( max(0, $ry/$s) .. floor min ($self->cells_y-1, ($ry + $rect->h)/$s) ) {
       for my $x ( max(0, $rx/$s) .. floor min ($self->cells_x-1, ($rx + $rect->w)/$s) ) {
          next if $x < 0;
@@ -115,7 +115,7 @@ sub add_point {
    return if $ry < 0;
    return if $rx > $self->w;
    return if $ry > $self->h;
-   
+
    my $cell_x = int ($rx / $s);
    my $cell_y = int ($ry / $s);
    push @{$self->table->[$cell_y][$cell_x]}, $pt;
@@ -151,7 +151,7 @@ sub intersect_circle {
 sub intersect_rect {
    my ($self, $rect) = @_;
    my @cells = $self->cells_intersect_rect ($rect);
-   
+
    my $done = Set::Object->new();
    for (@cells){
       for my $ent (@{$self->table->[$_->[1]][$_->[0]]}){
@@ -170,11 +170,11 @@ sub remove_circle{
 sub intersect_point{
    my ($self, $pt) = @_;
    my $rx = $pt->x - $self->x; #relative loc of point to grid
-   my $ry = $pt->y - $self->y; 
+   my $ry = $pt->y - $self->y;
    my $s = $self->cell_size;
    my $cell_x = $rx/$s;
    my $cell_y = $ry/$s;
-   return if $cell_x<0 or $cell_y<0 
+   return if $cell_x<0 or $cell_y<0
           or $cell_x>= $self->cells_x
           or $cell_y>= $self->cells_y;
    my @collisions;
@@ -184,19 +184,19 @@ sub intersect_point{
    @collisions = sort {$a->time <=> $b->time} grep{defined $_} @collisions;
    return $collisions[0];
 }
-   
+
 sub collide_point{
    my ($self, $pt, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of point to grid
-   my $ry = -$self->relative_y; 
+   my $ry = -$self->relative_y;
    my $rxv = -$self->relative_xv; #relative velocity of point to grid
-   my $ryv = -$self->relative_yv; 
+   my $ryv = -$self->relative_yv;
    my $s = $self->cell_size;
    my $cell_x_min = min ($rx/$s, ($rx+$rxv*$params{interval})/$s);
    my $cell_x_max = max ($rx/$s, ($rx+$rxv*$params{interval})/$s);
    my $cell_y_min = min ($ry/$s, ($ry+$ryv*$params{interval})/$s);
    my $cell_y_max = max ($ry/$s, ($ry+$ryv*$params{interval})/$s);
-   
+
    my $done = Set::Object->new();
    my $best_collision;
    for my $y ( $cell_y_min .. $cell_y_max ) {
@@ -223,9 +223,9 @@ sub collide_point{
 sub _collide_rect{
    my ($self, $rect, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of rect to grid
-   my $ry = -$self->relative_y; 
+   my $ry = -$self->relative_y;
    my $rxv = -$self->relative_xv; #relative velocity of rect to grid
-   my $ryv = -$self->relative_yv; 
+   my $ryv = -$self->relative_yv;
    my $s = $self->cell_size;
    my $w = $rect->w;
    my $h = $rect->h;
@@ -233,7 +233,7 @@ sub _collide_rect{
    my $cell_y_min = max(0,  min ($ry/$s, ($ry+$ryv*$params{interval})/$s));
    my $cell_x_max = min($self->cells_x-1,  max ($rx/$s, ($rx+$w+$rxv*$params{interval})/$s));
    my $cell_y_max = min($self->cells_y-1,  max ($ry/$s, ($ry+$h+$ryv*$params{interval})/$s));
-   
+
    my $done = Set::Object->new();
    my $best_collision;
    for my $y ($cell_y_min .. $cell_y_max) {
@@ -263,17 +263,17 @@ sub _collide_rect{
 sub _collide_circle{
    my ($self, $circle, %params) = @_;
    my $rx = -$self->relative_x; #relative loc of circle to grid
-   my $ry = -$self->relative_y; 
+   my $ry = -$self->relative_y;
    my $rxv = -$self->relative_xv; #relative velocity of circle to grid
-   my $ryv = -$self->relative_yv; 
+   my $ryv = -$self->relative_yv;
    my $s = $self->cell_size;
    my $r = $circle->radius;
-   
+
    my $cell_x_min = max(0,  min (($rx-$r)/$s, ($rx-$r+$rxv*$params{interval})/$s));
    my $cell_y_min = max(0,  min (($ry-$r)/$s, ($ry-$r+$ryv*$params{interval})/$s));
    my $cell_x_max = min($self->cells_x-1,  max (($rx+$r)/$s, ($rx+$r+$rxv*$params{interval})/$s));
    my $cell_y_max = min($self->cells_y-1,  max (($ry+$r)/$s, ($ry+$r+$ryv*$params{interval})/$s));
-   
+
    my $done = Set::Object->new();
    my $best_collision;
    for my $y ($cell_y_min .. $cell_y_max) {

@@ -9,7 +9,7 @@ bootstrap Collision::2D::Entity;
 sub typename{'entity'}
 
 
-#an actual collision at t=0; 
+#an actual collision at t=0;
 sub null_collision{
    my $self = shift;
    my $other = shift;
@@ -49,7 +49,7 @@ Collision::2D::Entity - A moving entity. Don't use this directly.
 =head2 x,y,xv,yv
 
 Absolute position and velocity in space.
-These are necessary if you want to do collisions through 
+These are necessary if you want to do collisions through
 L<dynamic_collision|Collision::2D/dynamic_collision>
 
  dynamic_collision($circ1, $circ2);
@@ -100,7 +100,7 @@ Relative vectors and velocity are not considered for intersection.
 
 =head2 normalize
 
-You probably shouldn't use this directly. At all. 
+You probably shouldn't use this directly. At all.
 Relative vectors are handled automatically
 in C<dynamic_collision> and in  C<$ent1->collide($ent2)>
 

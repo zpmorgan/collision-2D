@@ -112,11 +112,11 @@ co_vaxis ( self )
          av_push (axis_vec, newSVnv(self->axis_x));
          av_push (axis_vec, newSVnv(self->axis_y));
          RETVAL = newRV_inc((SV*) axis_vec);
-      } 
+      }
       else { //XORY_AXIS
-         void** pointers = (void**)(SvIV((SV*)SvRV( self->ent1 ))); 
+         void** pointers = (void**)(SvIV((SV*)SvRV( self->ent1 )));
          Entity * ent1 = (Entity*)(pointers[0]);
-         pointers = (void**)(SvIV((SV*)SvRV( self->ent2 ))); 
+         pointers = (void**)(SvIV((SV*)SvRV( self->ent2 )));
          Entity * ent2 = (Entity*)(pointers[0]);
          if (self->axis == 'x'){
             AV* axis_vec = newAV();
@@ -169,7 +169,7 @@ co_XORY_AXIS()
       RETVAL = XORY_AXIS;
    OUTPUT:
       RETVAL
-      
+
 int
 co_VECTOR_AXIS()
 	CODE:

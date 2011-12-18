@@ -25,7 +25,7 @@ use Test::More  tests => 98;
       hash2point ({x=>1.8889 + sqrt(2), y=>-1.1234 - sqrt(2)}),
    );
    #$grid->add_point ($_) for (@points_in, @points_out);
-   
+
    for my $s (.444,.543,.642,.741,.84,.949,1.048){
       my $grid = hash2grid {x=>-15, y=>-15, w=>30, h=>30,  cell_size => $s };
       $grid->add_circle($pie);
@@ -47,7 +47,7 @@ use Test::More  tests => 98;
    my $pie = hash2circle {x=>.5, y=>.5, radius=>.51}; #motionless
    my $grid = hash2grid {x=>-1, y=>-1, w=>4, h=>4,  cell_size => 1 };
    $grid->add_circle ($pie);
-   
+
    ok ($grid->table->[1][1], 'circle is primarily here');
    ok ($grid->table->[1][2], 'cell clips right of circle');
    ok ($grid->table->[1][0], 'cell clips left of circle');
@@ -71,7 +71,7 @@ use Test::More  tests => 98;
    ok ($grid->collide (hash2rect {x=>1,      y=>-.9994, h=>1, w=>1}));
    ok ($grid->collide (hash2rect {x=>-.9994, y=>1,      h=>1, w=>1}));
    ok ($grid->collide (hash2rect {x=>-.9994, y=>-.9994, h=>1, w=>1}));
-   
+
    #now in srsly motion
    ok ($grid->collide (hash2rect {x=>1+5,      y=>1-5,      h=>1, w=>1, xv=>-5, yv=>5}), 'RR, NE corner from SE');
    ok ($grid->collide (hash2rect {x=>1-5,      y=>1+5,      h=>1, w=>1, xv=>5, yv=>-5}), 'RR, NE corner from NW');
@@ -93,23 +93,23 @@ use Test::More  tests => 98;
    $both_grid1->add(hash2point({x=>4.52,y=>0}));
    my $both_grid2 = hash2grid {x=>0.46, y=>-3, h=>6, w=>9, cell_size=>1};
    $both_grid2->add(hash2point({x=>5.48,y=>0}));
-   
+
    my $s_grid = hash2grid {x=>-2, y=>-6, h=>6, w=>9, cell_size=>1};
    my $n_grid = hash2grid {x=>-2, y=>3,  h=>6, w=>9, cell_size=>1};
    $s_grid->add(hash2point({x=>0,y=>-5}));
    $n_grid->add(hash2point({x=>0,y=>5}));
-   
+
    ok (dynamic_collision($s_circ, $both_grid1));
    ok (dynamic_collision($n_circ, $both_grid1));
    ok (dynamic_collision($s_circ, $both_grid2));
    ok (dynamic_collision($n_circ, $both_grid2));
-   
+
    ok (dynamic_collision($s_circ, $s_grid));
    ok (dynamic_collision($n_circ, $n_grid));
-   
+
    ok (!dynamic_collision($s_circ, $n_grid), 's. circle misses far point');
    ok (!dynamic_collision($n_circ, $s_grid), 'n. circle misses far point');
-   
+
    my $miss_grid = $s_grid = hash2grid {x=>-2.634154315345, y=>-3.21314324, h=>6, w=>9, cell_size=>1};
    $miss_grid->add(hash2point({x=>3,y=>0}));
    $miss_grid->add(hash2point({x=>6.01,y=>0}));
@@ -117,7 +117,7 @@ use Test::More  tests => 98;
    $miss_grid->add(hash2point({x=>5,y=>-3}));
    ok (!dynamic_collision($s_circ, $miss_grid), 's. circle misses a bunch of points');
    ok (!dynamic_collision($n_circ, $miss_grid), 'n. circle misses a bunch of points');
-   
+
 }
 
 

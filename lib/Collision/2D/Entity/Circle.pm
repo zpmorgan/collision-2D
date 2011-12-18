@@ -6,7 +6,7 @@ require DynaLoader;
 our @ISA = qw(DynaLoader Collision::2D::Entity);
 bootstrap Collision::2D::Entity::Circle;
 
-#in a circle, x and y denote center. 
+#in a circle, x and y denote center.
 
 sub _p{2} #highish priority
 use overload '""'  => sub{'circle'};
@@ -34,8 +34,8 @@ sub intersect_circle{
    my ($self, $other) = @_;
 
    #sqrt is more expensive than square
-   return  ($self->radius + $other->radius)**2 > 
-         ($self->x - $other->x)**2 + 
+   return  ($self->radius + $other->radius)**2 >
+         ($self->x - $other->x)**2 +
          ($self->y - $other->y)**2;
 }
 
@@ -43,7 +43,7 @@ sub intersect_circle{
 sub intersect_point{
    my ($self, $point) = @_;
    return   $self->radius**2 >
-         ($self->x - $point->x)**2 + 
+         ($self->x - $point->x)**2 +
          ($self->y - $point->y)**2;
 }
 
@@ -55,8 +55,8 @@ sub intersect_rect{
    my $h = $rect->h;
    my $x = $self->x - $rect->x; #of self, relative to rect!
    my $y = $self->y - $rect->y; #of self, relative to rect!
-   
-   
+
+
    if   ($x-$r > $w
       or $y-$r > $h
       or $x+$r < 0
@@ -70,7 +70,7 @@ sub intersect_rect{
    return 1 if ($x**2 + ($y-$h)**2) < $r**2;
    #detect 'imposition', whereall corner+side points are outside the other entity
    return 1 if (($x-$w/2)**2 + ($y-$h/2)**2) < $r**2;
-   
+
    for ([$x,$y-$r], [$x-$r,$y], [$x,$y+$r], [$x+$r,$y]){
       my ($x,$y) = @$_;
       return 1 if $x>0 and $y>0
@@ -82,7 +82,7 @@ sub intersect_rect{
 sub _collide_rect{
    my ($self, $rect, %params) = @_;
    my @collisions;
-   
+
    #my doing this we can consider $self to be stationary and $rect to be moving.
    #this line segment is path of rect during this interval
    my $r = $self->radius;
@@ -92,7 +92,7 @@ sub _collide_rect{
    my $x2 = $x1 - ($self->relative_xv * $params{interval});
    my $y1 = -$self->relative_y;
    my $y2 = $y1 - ($self->relative_yv * $params{interval});
-   
+
    #now see if point starts and ends on one of 4 sides of this rect.
    #probably worth it because most things don't collide with each other every frame
    if ($x1 > $r and $x2 > $r ){
@@ -110,7 +110,7 @@ sub _collide_rect{
    if (($x1+$w/2)**2 + ($y1+$h/2)**2 < $r**2) { #imposition?
       return $self->null_collision($rect);
    }
-   
+
    #which of rect's 4 points should I consider?
  #  my @start_pts = ([$x1, $y1], [$x1+$w, $y1], [$x1+$w, $y1+$h], [$x1, $y1+$h]);
  #  my @end_pts = ([$x2, $y2], [$x2+$w, $y2], [$x2+$w, $y2+$h], [$x2, $y2+$h]);
@@ -142,7 +142,7 @@ sub _collide_rect{
       );
       my $collision = $new_relative_circle->_collide_point ($origin_point, interval=>$params{interval});
       next unless $collision;
-      #$_->{collision} = 
+      #$_->{collision} =
       push @collisions, Collision::2D::Collision->new(
          axis => $collision->axis,
          time => $collision->time,
@@ -153,8 +153,8 @@ sub _collide_rect{
    #return unless @collisions;
    #@collisions = sort {$a->time <=> $b->time} @collisions;
    #return $collisions[0] if defined $collisions[0];
-   
-   # that looked at the rect corners. that was half of it. 
+
+   # that looked at the rect corners. that was half of it.
    # now look for collisions between a side of the circle
    #  and a side of the rect
    my @circ_points; #these are relative coordinates to rect
@@ -220,11 +220,11 @@ sub _collide_point{
    my $y1 = -$self->relative_y;
    my $x2 = $x1 - $self->relative_xv * $params{interval};
    my $y2 = $y1 - $self->relative_yv * $params{interval};
-   
+
    if (($x1**2 + $y1**2) < $self->radius**2) {
       return $self->null_collision($point);
    }
-   
+
    if ($x2-$x1 == 0  or  abs(($y2-$y1)/($x2-$x1)) > 100) { #a bit too vertical for my liking. so invert.
       if ($y2-$y1 == 0){ #relatively motionless.
          return
@@ -232,7 +232,7 @@ sub _collide_point{
       ($x1, $y1) = ($y1,$x1);
       ($x2, $y2) = ($y2,$x2);
    }
-   
+
    #now do quadratic
    my $slope = ($y2-$y1)/($x2-$x1);
    my $y_intercept = $y1 - $slope*$x1;
@@ -250,13 +250,13 @@ sub _collide_point{
    #sort based on closeness to starting point.
    @xi = sort {abs($a-$x1) <=> abs($b-$x1)} @xi;
    return unless defined $xi[0];
-   
+
    #get away from invertedness
    my $time = $params{interval} * ($xi[0]-$x1) / ($x2-$x1);
    my $x_at_t = $self->relative_x + $self->relative_xv*$time;
    my $y_at_t = $self->relative_y + $self->relative_yv*$time;
    my $axis = [-$x_at_t, -$y_at_t]; #vector from self to point
-   
+
    my $collision = Collision::2D::Collision->new(
       time => $time, axis => $axis,
       ent1 => $self,
@@ -276,13 +276,13 @@ sub _collide_circle{
       radius => $self->radius + $other->radius,
       #y=>0,x=>0, #these will not be used, as we're doing all relative calculations
    );
-   
+
    my $pt = Collision::2D::Entity::Point->new(
       #y=>44,x=>44, #these willn't be used, as we're doing all relative calculations
    );
    my $collision = $double_trouble->_collide_point($pt, %params);
    return unless $collision;
-   
+
    return Collision::2D::Collision->new(
       ent1 => $self,
       ent2 => $other,
@@ -321,7 +321,7 @@ See L<< Collision::2D::Entity->collide|Collision::2D::Entity/collide >>
  print 'boom' if $circle->collide($rect);
  print 'zing' if $circle->collide($circle);
  print 'yotz' if $circle->collide($grid);
- 
+
 =head2 intersect
 
 See L<< Collision::2D::Entity->intersect|Collision::2D::Entity/intersect >>
