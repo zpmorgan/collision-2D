@@ -26,7 +26,7 @@ float
 ent_x ( ent )
 	Entity *ent
 	CODE:
-	//	if (items > 1 ) ent->x = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->x = SvIV(ST(1));
 		RETVAL = ent->x;
 	OUTPUT:
 		RETVAL
@@ -35,16 +35,16 @@ float
 ent_y ( ent )
 	Entity *ent
 	CODE:
-	//	if (items > 1 ) ent->y = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->y = SvIV(ST(1));
 		RETVAL = ent->y;
 	OUTPUT:
 		RETVAL
-      
+
 float
 ent_xv ( ent )
 	Entity *ent
 	CODE:
-	//	if (items > 1 ) ent->xv = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->xv = SvIV(ST(1));
 		RETVAL = ent->xv;
 	OUTPUT:
 		RETVAL
@@ -53,7 +53,7 @@ float
 ent_yv ( ent )
 	Entity *ent
 	CODE:
-	//	if (items > 1 ) ent->yv = SvIV(ST(1)); 
+	//	if (items > 1 ) ent->yv = SvIV(ST(1));
 		RETVAL = ent->yv;
 	OUTPUT:
 		RETVAL
@@ -62,7 +62,7 @@ float
 ent_relative_x ( ent, ... )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->relative_x = SvIV(ST(1)); 
+		if (items > 1 ) ent->relative_x = SvIV(ST(1));
 		RETVAL = ent->relative_x;
 	OUTPUT:
 		RETVAL
@@ -71,7 +71,7 @@ float
 ent_relative_y ( ent, ... )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->relative_y = SvIV(ST(1)); 
+		if (items > 1 ) ent->relative_y = SvIV(ST(1));
 		RETVAL = ent->relative_y;
 	OUTPUT:
 		RETVAL
@@ -80,7 +80,7 @@ float
 ent_relative_xv ( ent, ... )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->relative_xv = SvIV(ST(1)); 
+		if (items > 1 ) ent->relative_xv = SvIV(ST(1));
 		RETVAL = ent->relative_xv;
 	OUTPUT:
 		RETVAL
@@ -89,7 +89,7 @@ float
 ent_relative_yv ( ent, ... )
 	Entity *ent
 	CODE:
-		if (items > 1 ) ent->relative_yv = SvIV(ST(1)); 
+		if (items > 1 ) ent->relative_yv = SvIV(ST(1));
 		RETVAL = ent->relative_yv;
 	OUTPUT:
 		RETVAL

@@ -11,7 +11,7 @@ Revision history for Collision::2D
 0.05    Mar 25, 2010
         Collision::Grid added,
         Mouse taken away,
-        moving to an XS struct backend, 
+        moving to an XS struct backend,
         normalize and vaxis ported to xs.
 0.06    Mar 26, 2010
         pod fixes

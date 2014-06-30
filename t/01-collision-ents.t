@@ -16,7 +16,7 @@ use Data::Dumper;
       time=>1,
       axis=>'x',
    );
-   
+
    is ($collision->ent1->x, -3);
    is ($collision->ent1->h, 2);
    is ($collision->ent1->h, 2);
