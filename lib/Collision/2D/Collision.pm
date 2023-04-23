@@ -148,3 +148,4 @@ my $other_collision = $self->invert();
 This returns the inverse of this collision. That is, the time remains,
 but ent1 and ent2 are swapped, and the axis is inversed. This does not effect $self.
 
+=back
